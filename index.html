@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
@@ -35,6 +35,9 @@
       font-family: 'Segoe UI', system-ui, sans-serif;
       color: var(--text); transition: background 0.3s, color 0.3s;
     }
+    
+    button:active { transform: scale(0.97); }
+
     /* ── Layout ── */
     .page { max-width: 500px; margin: 0 auto; padding: 1.5rem 1rem 6rem; }
     
@@ -67,7 +70,8 @@
       transition: transform 0.2s; padding: 4px;
     }
     .section-toggle.open { transform: rotate(180deg); }
-    .collapsible-body { display: none; width: 100%; margin-top: 1rem; }
+    .collapsible-body { display: none; width: 100%; margin-top: 1rem; opacity: 0; transition: opacity 0.3s ease-in-out; }
+    .collapsible-body.open { opacity: 1; }
     #pomo-body.open { display: flex; flex-direction: column; align-items: center; }
 
     /* ════ STREAK HEATMAP ════ */
@@ -292,7 +296,7 @@
     /* ── Confetti canvas ── */
     #confetti-canvas {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      pointer-events: none; z-index: 9999;
+      pointer-events: none; z-index: 9999; will-change: transform;
     }
     
     /* ── Install banner ── */
@@ -816,12 +820,20 @@ pomoBtnStart.addEventListener('click', () => {
     isPomoRunning = true; 
     pomoBtnStart.textContent = "Pause";
     pomoStatus.textContent = isWorkSession ? "Focusing..." : "Taking a Break!";
+    
+    // NEW: Calculate the exact end time in the future
+    const endTime = Date.now() + (pomoTimeLeft * 1000);
+    
     pomoTimer = setInterval(() => {
-      pomoTimeLeft--; 
+      // NEW: Calculate remaining time based on the system clock
+      pomoTimeLeft = Math.max(0, Math.round((endTime - Date.now()) / 1000)); 
       updatePomoDisplay();
+      
       if (pomoTimeLeft <= 0) {
         clearInterval(pomoTimer); 
         isPomoRunning = false;
+        
+        // Play sound
         const ctx = new (window.AudioContext || window.webkitAudioContext)();
         const osc = ctx.createOscillator(); 
         osc.type = 'sine'; 
@@ -1378,7 +1390,31 @@ document.getElementById('add-btn').addEventListener('click', () => {
 const SUB_COLORS = ['#7c6af5','#48c78e','#f05252','#f0a030','#3b9eff','#f06292','#26c6da','#ff7043','#ab47bc'];
 
 function loadTopicData() {
-  return JSON.parse(localStorage.getItem('tp-data') || 'null') || { goal: 3, subjects: [], lastReset: '' };
+  const defaultData = { 
+    goal: 3, 
+    lastReset: '',
+    subjects: [
+      { 
+        name: 'Physics', 
+        open: true, 
+        topics: [
+          { name: 'Electrostatics', checked: false, diff: 'hard' },
+          { name: 'Electric Dipoles', checked: false, diff: 'med' },
+          { name: 'Gauss\'s Theorem', checked: false, diff: 'hard' }
+        ] 
+      },
+      { name: 'Chemistry', open: true, topics: [] },
+      { name: 'Mathematics', open: true, topics: [] },
+      { 
+        name: 'English', 
+        open: false, 
+        topics: [
+          { name: 'Article Writing', checked: false, diff: 'easy' }
+        ] 
+      }
+    ]
+  };
+  return JSON.parse(localStorage.getItem('tp-data') || 'null') || defaultData;
 }
 function saveTopicData(data) {
   localStorage.setItem('tp-data', JSON.stringify(data));
