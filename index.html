@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
@@ -21,6 +21,8 @@
       --bg: #0f0f14; --surface: #1a1a24; --surface2: #0f0f14;
       --border: #2e2e40; --text: #e8e6f0; --muted: #6b6880;
       --accent: #7c6af5; --accent-light: rgba(124,106,245,0.12);
+      /* New Colors for Difficulty */
+      --easy: #48c78e; --med: #f0a030; --hard: #f05252;
     }
     [data-theme="light"] {
       --bg: #f4f3fb; --surface: #ffffff; --surface2: #f0effe;
@@ -35,13 +37,14 @@
     }
     /* ── Layout ── */
     .page { max-width: 500px; margin: 0 auto; padding: 1.5rem 1rem 6rem; }
+    
     /* ── Top bar ── */
     .topbar {
       display: flex; align-items: center; justify-content: space-between;
       margin-bottom: 1.5rem;
     }
     .topbar h1 { font-size: 1.2rem; font-weight: 600; letter-spacing: -0.02em; }
-    .topbar-actions { display: flex; gap: 8px; }
+    .topbar-actions { display: flex; gap: 8px; align-items: center; }
     .icon-btn {
       background: var(--surface); border: 1px solid var(--border);
       border-radius: 10px; width: 36px; height: 36px;
@@ -50,12 +53,122 @@
       transition: background 0.2s, color 0.2s;
     }
     .icon-btn:hover { background: var(--accent-light); color: var(--accent); }
+    
     /* ── Language selector ── */
     .lang-select {
       background: var(--surface); border: 1px solid var(--border);
       border-radius: 10px; padding: 0 10px; height: 36px;
       font-size: 0.8rem; color: var(--text); cursor: pointer; outline: none;
     }
+
+    /* ════ COLLAPSIBLE UI ════ */
+    .section-toggle {
+      font-size: 0.75rem; color: var(--muted); flex-shrink: 0;
+      transition: transform 0.2s; padding: 4px;
+    }
+    .section-toggle.open { transform: rotate(180deg); }
+    .collapsible-body { display: none; width: 100%; margin-top: 1rem; }
+    #pomo-body.open { display: flex; flex-direction: column; align-items: center; }
+
+    /* ════ STREAK HEATMAP ════ */
+    .streak-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 20px; padding: 1.25rem; margin-bottom: 1.25rem;
+    }
+    .streak-header {
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted);
+    }
+    .heatmap-scroll { overflow-x: auto; padding-bottom: 5px; scrollbar-width: none; width: 100%; }
+    .heatmap-scroll::-webkit-scrollbar { display: none; }
+    .heatmap-grid { display: grid; grid-template-rows: repeat(7, 1fr); grid-auto-flow: column; gap: 4px; }
+    .heatmap-cell {
+      width: 12px; height: 12px; border-radius: 3px; background: var(--surface2);
+      border: 1px solid var(--border); transition: background 0.3s;
+    }
+    .heatmap-cell.done {
+      background: var(--easy); border-color: var(--easy); box-shadow: 0 0 5px rgba(72,199,142,0.3);
+    }
+
+    /* ════ TIMETABLE ════ */
+    .tt-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 20px; padding: 1.25rem; margin-bottom: 1.25rem;
+    }
+    .tt-header { display: flex; justify-content: space-between; align-items: center; }
+    .tt-title { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
+    .tt-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px; width: 100%; }
+    .tt-row {
+      display: flex; align-items: center; gap: 8px; background: var(--surface2);
+      padding: 0.5rem; border-radius: 12px; border: 1px solid var(--border);
+    }
+    .tt-color {
+      width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0;
+      cursor: pointer; border: 2px solid transparent;
+    }
+    .tt-time-input {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 6px;
+      padding: 4px; font-size: 0.75rem; color: var(--text); outline: none; color-scheme: dark;
+    }
+    [data-theme="light"] .tt-time-input { color-scheme: light; }
+    .tt-label-input {
+      flex: 1; background: none; border: none; font-size: 0.8rem;
+      color: var(--text); outline: none; min-width: 0;
+    }
+    .tt-label-input::placeholder { color: var(--muted); }
+    .tt-del-btn {
+      background: none; border: none; color: var(--muted); font-size: 1rem; cursor: pointer; padding: 0 4px;
+    }
+    .tt-del-btn:hover { color: var(--hard); }
+    .tt-add-btn {
+      width: 100%; background: var(--accent-light); border: 1px dashed rgba(124,106,245,0.4);
+      border-radius: 10px; padding: 0.6rem; font-size: 0.8rem; color: var(--accent);
+      cursor: pointer; font-weight: 600; transition: all 0.2s;
+    }
+    .tt-add-btn:hover { background: var(--accent); color: #fff; border-style: solid; }
+
+    /* ════ POMODORO TIMER ════ */
+    .pomo-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 20px; padding: 1.25rem; margin-bottom: 1.25rem;
+      display: flex; flex-direction: column; align-items: center;
+    }
+    .pomo-header {
+      width: 100%; display: flex; justify-content: space-between; align-items: center;
+    }
+    .pomo-title { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
+    .pomo-settings-btn { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 1rem; }
+    .pomo-settings-btn:hover { color: var(--accent); }
+    .pomo-display {
+      font-size: 3.5rem; font-weight: 700; font-variant-numeric: tabular-nums;
+      letter-spacing: -0.02em; color: var(--text); line-height: 1; margin-bottom: 0.5rem;
+    }
+    .pomo-status {
+      font-size: 0.8rem; color: var(--accent); font-weight: 600;
+      margin-bottom: 1.25rem; text-transform: uppercase; letter-spacing: 0.05em;
+    }
+    .pomo-controls { display: flex; gap: 10px; }
+    .pomo-btn {
+      background: var(--surface2); border: 1px solid var(--border); border-radius: 12px;
+      padding: 0.6rem 1.5rem; font-size: 0.9rem; font-weight: 600; color: var(--text);
+      cursor: pointer; transition: all 0.2s;
+    }
+    .pomo-btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .pomo-btn.primary:hover { opacity: 0.9; transform: translateY(-1px); }
+    .pomo-btn:hover { background: var(--accent-light); color: var(--accent); border-color: var(--accent); }
+    .pomo-settings {
+      width: 100%; background: var(--surface2); border-radius: 12px; padding: 1rem;
+      margin-top: 1rem; display: none; gap: 10px; border: 1px solid var(--border);
+    }
+    .pomo-settings.open { display: flex; }
+    .pomo-input-group { flex: 1; display: flex; flex-direction: column; gap: 5px; }
+    .pomo-input-group label { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; }
+    .pomo-input {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+      padding: 0.5rem; color: var(--text); outline: none; width: 100%; text-align: center;
+    }
+    .pomo-input:focus { border-color: var(--accent); }
+
     /* ── Tracker card ── */
     .card {
       background: var(--surface); border: 1px solid var(--border);
@@ -81,6 +194,7 @@
       border-radius: 6px; transition: color 0.2s, background 0.2s;
     }
     .delete-btn:hover { color: #f05252; background: rgba(240,82,82,0.1); }
+    
     /* ── Inputs ── */
     .inputs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 1.25rem; }
     .field label {
@@ -95,6 +209,7 @@
     }
     [data-theme="light"] .field input[type="date"] { color-scheme: light; }
     .field input[type="date"]:focus { border-color: var(--accent); }
+    
     /* ── Ring ── */
     .ring-section { display: flex; flex-direction: column; align-items: center; margin-bottom: 1.25rem; }
     .ring-wrap { position: relative; width: 160px; height: 160px; }
@@ -107,6 +222,7 @@
     .ring-lbl { font-size: 0.68rem; color: var(--muted); margin-top: 3px; text-transform: uppercase; letter-spacing: 0.07em; }
     .bar-wrap { margin-top: 1rem; background: var(--surface2); border-radius: 99px; height: 5px; overflow: hidden; width: 160px; }
     .bar-fill { height: 100%; border-radius: 99px; width: 0%; transition: width 0.6s cubic-bezier(0.4,0,0.2,1), background 0.4s; }
+    
     /* ── Badge ── */
     .status-badge {
       margin-top: 1rem; display: inline-block; font-size: 0.75rem;
@@ -116,11 +232,13 @@
     .status-badge.active { background: var(--accent-light); border-color: rgba(124,106,245,0.35); color: var(--accent); }
     .status-badge.done   { background: rgba(72,199,142,0.1); border-color: rgba(72,199,142,0.3); color: #48c78e; }
     .status-badge.danger { background: rgba(240,82,82,0.1);  border-color: rgba(240,82,82,0.3);  color: #f05252; }
+    
     /* ── Stats ── */
     .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 1rem; }
     .stat { background: var(--surface2); border: 1px solid var(--border); border-radius: 12px; padding: 0.65rem; text-align: center; }
     .stat-num { font-size: 1.15rem; font-weight: 700; letter-spacing: -0.03em; }
     .stat-name { font-size: 0.64rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.07em; margin-top: 2px; }
+    
     /* ── Week/month breakdown ── */
     .breakdown { margin-top: 0.5rem; }
     .breakdown-title { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 8px; }
@@ -135,6 +253,7 @@
     }
     .month-cell.filled { color: #fff; border-color: transparent; }
     .month-cell.partial { color: #fff; border-color: transparent; }
+    
     /* ── Color picker popup ── */
     .color-popup {
       display: none; position: absolute; z-index: 100;
@@ -149,6 +268,7 @@
     }
     .cp-swatch:hover { transform: scale(1.15); }
     .cp-swatch.selected { border-color: var(--text); }
+    
     /* ── Add tracker button ── */
     .add-btn {
       width: 100%; padding: 0.75rem; background: var(--surface);
@@ -158,6 +278,7 @@
       margin-bottom: 1rem;
     }
     .add-btn:hover { background: var(--accent-light); color: var(--accent); border-color: var(--accent); }
+    
     /* ── Share / Screenshot row ── */
     .action-row { display: flex; gap: 8px; margin-top: 0.75rem; }
     .action-btn {
@@ -167,11 +288,13 @@
       transition: background 0.2s, color 0.2s;
     }
     .action-btn:hover { background: var(--accent-light); color: var(--accent); border-color: var(--accent); }
+    
     /* ── Confetti canvas ── */
     #confetti-canvas {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       pointer-events: none; z-index: 9999;
     }
+    
     /* ── Install banner ── */
     #install-banner {
       display: none; position: fixed; bottom: 1.25rem; left: 50%;
@@ -188,6 +311,7 @@
     .b-text span { font-size: 0.74rem; color: var(--muted); }
     .b-install { background: var(--accent); color: #fff; border: none; border-radius: 8px; padding: 0.45rem 0.9rem; font-size: 0.8rem; font-weight: 600; cursor: pointer; }
     .b-close { background: none; border: none; color: var(--muted); font-size: 1.3rem; cursor: pointer; }
+    
     /* ── iOS hint ── */
     #ios-hint {
       display: none; position: fixed; bottom: 1.25rem; left: 50%;
@@ -200,6 +324,7 @@
     #ios-hint.show { display: block; }
     #ios-hint strong { color: var(--text); }
     #ios-hint .ios-close { display: block; margin-top: 0.5rem; color: var(--accent); cursor: pointer; font-size: 0.78rem; }
+    
     /* ── Reminder alert ── */
     .reminder-row { display: flex; align-items: center; gap: 8px; margin-top: 0.75rem; }
     .reminder-row label { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.07em; }
@@ -312,6 +437,16 @@
     }
     .topic-name-input::placeholder { color: var(--muted); }
     .topic-name-input.done { text-decoration: line-through; color: var(--muted); }
+
+    /* Topic Difficulty Indicator */
+    .topic-diff { 
+      width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--border); 
+      cursor: pointer; flex-shrink: 0; transition: all 0.2s; 
+    }
+    .topic-diff.easy { background: var(--easy); border-color: var(--easy); }
+    .topic-diff.med { background: var(--med); border-color: var(--med); }
+    .topic-diff.hard { background: var(--hard); border-color: var(--hard); }
+
     .topic-del-btn {
       background: none; border: none; color: var(--muted); font-size: 0.85rem;
       cursor: pointer; padding: 1px 4px; border-radius: 4px;
@@ -350,16 +485,17 @@
       font-size: 0.8rem; color: var(--muted); text-align: center;
       padding: 1rem 0 0.5rem;
     }
+
+    #import-file { display: none; }
   </style>
 </head>
 <body>
 
 <canvas id="confetti-canvas"></canvas>
 
-<!-- Install banners -->
 <div id="install-banner">
   <div class="b-icon">📲</div>
-  <div class="b-text"><strong>Add to Home Screen</strong><span>Install for quick offline access</span></div>
+  <div class="b-text"><strong>Add to Home Screen</strong><span>Install for offline access</span></div>
   <button class="b-install" id="install-btn">Install</button>
   <button class="b-close" id="banner-close">×</button>
 </div>
@@ -369,10 +505,13 @@
 </div>
 
 <div class="page">
-  <!-- Top bar -->
   <div class="topbar">
     <h1 id="app-title">📅 Date Progress</h1>
     <div class="topbar-actions">
+      <button class="icon-btn" id="export-btn" title="Backup/Export Data">💾</button>
+      <button class="icon-btn" id="import-btn" title="Restore/Import Data">📂</button>
+      <input type="file" id="import-file" accept=".json">
+      
       <select class="lang-select" id="lang-select">
         <option value="en">🇬🇧 EN</option>
         <option value="hi">🇮🇳 HI</option>
@@ -386,14 +525,63 @@
     </div>
   </div>
 
-  <!-- ══ TOPIC TRACKER ══ -->
+  <div class="streak-card">
+    <div class="streak-header" id="streak-head" style="cursor: pointer;">
+      <span>🔥 70-Day Study Streak</span>
+      <div class="section-toggle" id="streak-toggle">▼</div>
+    </div>
+    <div class="collapsible-body" id="streak-body">
+      <div class="heatmap-scroll" id="heatmap-scroll">
+        <div class="heatmap-grid" id="heatmap-grid"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pomo-card">
+    <div class="pomo-header" id="pomo-head" style="cursor: pointer;">
+      <span class="pomo-title">⏱️ Focus Timer</span>
+      <div style="display:flex; gap:10px; align-items:center;">
+        <button class="pomo-settings-btn" id="pomo-settings-toggle" onclick="event.stopPropagation()">⚙️</button>
+        <div class="section-toggle" id="pomo-toggle">▼</div>
+      </div>
+    </div>
+    <div class="collapsible-body" id="pomo-body">
+      <div class="pomo-display" id="pomo-display">45:00</div>
+      <div class="pomo-status" id="pomo-status">Ready to Study</div>
+      <div class="pomo-controls">
+        <button class="pomo-btn primary" id="pomo-start">Start</button>
+        <button class="pomo-btn" id="pomo-reset">Reset</button>
+      </div>
+      <div class="pomo-settings" id="pomo-settings">
+        <div class="pomo-input-group">
+          <label>Work (min)</label>
+          <input type="number" id="pomo-work-in" class="pomo-input" value="45" min="1" max="120">
+        </div>
+        <div class="pomo-input-group">
+          <label>Break (min)</label>
+          <input type="number" id="pomo-break-in" class="pomo-input" value="10" min="1" max="30">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tt-card">
+    <div class="tt-header" id="tt-head" style="cursor: pointer;">
+      <div class="tt-title">🗓️ Daily Time Table</div>
+      <div class="section-toggle" id="tt-toggle">▼</div>
+    </div>
+    <div class="collapsible-body" id="tt-body">
+      <div class="tt-list" id="tt-list"></div>
+      <button class="tt-add-btn" id="tt-add-btn">+ Add Block</button>
+    </div>
+  </div>
+
   <div class="topic-section" id="topic-section">
     <div class="topic-section-header">
       <div class="topic-section-title">📚 Topic Tracker</div>
       <button class="topic-add-sub-btn" id="topic-add-sub-btn">＋ Add Subject</button>
     </div>
 
-    <!-- Daily goal bar -->
     <div class="topic-daily-bar">
       <span>Daily goal</span>
       <input class="topic-daily-goal-input" id="topic-goal-input" type="number" min="1" max="30" value="3" title="Topics per day goal">
@@ -409,14 +597,47 @@
     <div class="topic-reset-notice" id="topic-reset-notice"></div>
   </div>
 
-  <!-- Trackers container -->
   <div id="trackers"></div>
-  <!-- Add new tracker -->
   <button class="add-btn" id="add-btn">＋ <span id="add-label">Add another tracker</span></button>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script>
+// ══════════════════════════════════════════════
+//  UI COLLAPSE LOGIC
+// ══════════════════════════════════════════════
+function setupCollapsible(headId, bodyId, toggleId, storageKey, defaultOpen) {
+  const head = document.getElementById(headId);
+  const body = document.getElementById(bodyId);
+  const toggle = document.getElementById(toggleId);
+  let isOpen = JSON.parse(localStorage.getItem(storageKey));
+  if (isOpen === null) isOpen = defaultOpen;
+
+  function updateUI() {
+    if (isOpen) {
+      body.classList.add('open');
+      body.style.display = bodyId === 'pomo-body' ? 'flex' : 'block';
+      toggle.classList.add('open');
+    } else {
+      body.classList.remove('open');
+      body.style.display = 'none';
+      toggle.classList.remove('open');
+    }
+  }
+  updateUI();
+
+  head.addEventListener('click', () => {
+    isOpen = !isOpen;
+    localStorage.setItem(storageKey, JSON.stringify(isOpen));
+    updateUI();
+  });
+}
+
+// Start with them closed by default for a clean UI
+setupCollapsible('streak-head', 'streak-body', 'streak-toggle', 'ui-streak-open', false);
+setupCollapsible('pomo-head', 'pomo-body', 'pomo-toggle', 'ui-pomo-open', false);
+setupCollapsible('tt-head', 'tt-body', 'tt-toggle', 'ui-tt-open', false);
+
 // ══════════════════════════════════════════════
 //  TRANSLATIONS
 // ══════════════════════════════════════════════
@@ -480,6 +701,280 @@ function applyLang() {
 document.getElementById('lang-select').addEventListener('change', e => {
   lang = e.target.value; save(); applyLang();
 });
+
+// ══════════════════════════════════════════════
+//  BACKUP & RESTORE
+// ══════════════════════════════════════════════
+document.getElementById('export-btn').addEventListener('click', () => {
+  const data = {
+    theme: localStorage.getItem('dp-theme'), 
+    lang: localStorage.getItem('dp-lang'),
+    trackers: localStorage.getItem('dp-trackers'), 
+    topics: localStorage.getItem('tp-data'),
+    pomo: localStorage.getItem('pomo-data'), 
+    streak: localStorage.getItem('streak-data'),
+    tt: localStorage.getItem('tt-data'), 
+    ui_pomo: localStorage.getItem('ui-pomo-open'),
+    ui_streak: localStorage.getItem('ui-streak-open'), 
+    ui_tt: localStorage.getItem('ui-tt-open')
+  };
+  const blob = new Blob([JSON.stringify(data)], {type: "application/json"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); 
+  a.href = url; 
+  a.download = 'date-progress-backup.json';
+  a.click(); 
+  URL.revokeObjectURL(url);
+});
+
+document.getElementById('import-btn').addEventListener('click', () => {
+  document.getElementById('import-file').click();
+});
+
+document.getElementById('import-file').addEventListener('change', (e) => {
+  const file = e.target.files[0]; 
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (ev) => {
+    try {
+      const data = JSON.parse(ev.target.result);
+      if(data.theme) localStorage.setItem('dp-theme', data.theme);
+      if(data.lang) localStorage.setItem('dp-lang', data.lang);
+      if(data.trackers) localStorage.setItem('dp-trackers', data.trackers);
+      if(data.topics) localStorage.setItem('tp-data', data.topics);
+      if(data.pomo) localStorage.setItem('pomo-data', data.pomo);
+      if(data.streak) localStorage.setItem('streak-data', data.streak);
+      if(data.tt) localStorage.setItem('tt-data', data.tt);
+      if(data.ui_pomo) localStorage.setItem('ui-pomo-open', data.ui_pomo);
+      if(data.ui_streak) localStorage.setItem('ui-streak-open', data.ui_streak);
+      if(data.ui_tt) localStorage.setItem('ui-tt-open', data.ui_tt);
+      alert('Data restored successfully! The page will now reload.'); 
+      location.reload();
+    } catch(err) { 
+      alert('Invalid backup file.'); 
+    }
+  };
+  reader.readAsText(file);
+});
+
+// ══════════════════════════════════════════════
+//  POMODORO TIMER
+// ══════════════════════════════════════════════
+let pomoData = JSON.parse(localStorage.getItem('pomo-data')) || { work: 45, break: 10 };
+let pomoTimer = null; 
+let pomoTimeLeft = pomoData.work * 60; 
+let isWorkSession = true; 
+let isPomoRunning = false;
+
+const pomoDisplay = document.getElementById('pomo-display');
+const pomoStatus = document.getElementById('pomo-status');
+const pomoBtnStart = document.getElementById('pomo-start');
+const pomoBtnReset = document.getElementById('pomo-reset');
+const pomoWorkIn = document.getElementById('pomo-work-in');
+const pomoBreakIn = document.getElementById('pomo-break-in');
+
+pomoWorkIn.value = pomoData.work; 
+pomoBreakIn.value = pomoData.break;
+
+document.getElementById('pomo-settings-toggle').addEventListener('click', () => { 
+  document.getElementById('pomo-settings').classList.toggle('open'); 
+});
+
+[pomoWorkIn, pomoBreakIn].forEach(inp => {
+  inp.addEventListener('change', () => {
+    pomoData = { work: parseInt(pomoWorkIn.value)||25, break: parseInt(pomoBreakIn.value)||5 };
+    localStorage.setItem('pomo-data', JSON.stringify(pomoData));
+    if(!isPomoRunning) resetPomo();
+  });
+});
+
+function updatePomoDisplay() {
+  const m = Math.floor(pomoTimeLeft / 60).toString().padStart(2, '0');
+  const s = (pomoTimeLeft % 60).toString().padStart(2, '0');
+  pomoDisplay.textContent = `${m}:${s}`; 
+  document.title = `${m}:${s} - Date Progress`;
+}
+
+function resetPomo() {
+  clearInterval(pomoTimer); 
+  isPomoRunning = false; 
+  isWorkSession = true;
+  pomoTimeLeft = pomoData.work * 60; 
+  pomoStatus.textContent = "Ready to Study";
+  pomoStatus.style.color = "var(--accent)"; 
+  pomoBtnStart.textContent = "Start";
+  updatePomoDisplay(); 
+  document.title = "Date Progress Tracker";
+}
+
+pomoBtnStart.addEventListener('click', () => {
+  if (isPomoRunning) { 
+    clearInterval(pomoTimer); 
+    isPomoRunning = false; 
+    pomoBtnStart.textContent = "Resume";
+  } else {
+    isPomoRunning = true; 
+    pomoBtnStart.textContent = "Pause";
+    pomoStatus.textContent = isWorkSession ? "Focusing..." : "Taking a Break!";
+    pomoTimer = setInterval(() => {
+      pomoTimeLeft--; 
+      updatePomoDisplay();
+      if (pomoTimeLeft <= 0) {
+        clearInterval(pomoTimer); 
+        isPomoRunning = false;
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = ctx.createOscillator(); 
+        osc.type = 'sine'; 
+        osc.frequency.setValueAtTime(440, ctx.currentTime);
+        osc.connect(ctx.destination); 
+        osc.start(); 
+        osc.stop(ctx.currentTime + 0.5);
+        
+        isWorkSession = !isWorkSession; 
+        pomoTimeLeft = (isWorkSession ? pomoData.work : pomoData.break) * 60;
+        pomoStatus.textContent = isWorkSession ? "Ready to Focus" : "Time for a Break!";
+        pomoStatus.style.color = isWorkSession ? "var(--accent)" : "#48c78e";
+        pomoBtnStart.textContent = "Start " + (isWorkSession ? "Work" : "Break"); 
+        updatePomoDisplay();
+      }
+    }, 1000);
+  }
+});
+pomoBtnReset.addEventListener('click', resetPomo); 
+updatePomoDisplay();
+
+// ══════════════════════════════════════════════
+//  TIMETABLE LOGIC
+// ══════════════════════════════════════════════
+function loadTTData() {
+  let data = JSON.parse(localStorage.getItem('tt-data'));
+  if (!data || data.length === 0) {
+    data = [
+      { id: Date.now()+1, start: "06:20", end: "07:30", label: "Wake up & Morning Routine", color: "#f0a030" },
+      { id: Date.now()+2, start: "07:45", end: "14:00", label: "School", color: "#7c6af5" },
+      { id: Date.now()+3, start: "14:30", end: "16:00", label: "Rest / Snack", color: "#3b9eff" },
+      { id: Date.now()+4, start: "16:00", end: "18:00", label: "Study Block 1", color: "#48c78e" }
+    ];
+  }
+  return data;
+}
+
+function renderTimeTable() {
+  const data = loadTTData();
+  const list = document.getElementById('tt-list');
+  list.innerHTML = '';
+  
+  data.sort((a,b) => a.start.localeCompare(b.start)).forEach((block, index) => {
+    const row = document.createElement('div'); 
+    row.className = 'tt-row';
+    
+    // Custom Color Dot + Popup
+    const dotWrap = document.createElement('div'); 
+    dotWrap.style.position = 'relative';
+    const dot = document.createElement('div'); 
+    dot.className = 'tt-color'; 
+    dot.style.background = block.color;
+    
+    const popup = document.createElement('div'); 
+    popup.className = 'color-popup';
+    COLORS.forEach(c => {
+      const sw = document.createElement('div'); 
+      sw.className = 'cp-swatch'; 
+      sw.style.background = c;
+      if(c === block.color) sw.classList.add('selected');
+      sw.addEventListener('click', (e) => {
+        e.stopPropagation(); 
+        block.color = c; 
+        localStorage.setItem('tt-data', JSON.stringify(data));
+        renderTimeTable();
+      });
+      popup.appendChild(sw);
+    });
+    dot.addEventListener('click', e => { e.stopPropagation(); popup.classList.toggle('open'); });
+    document.addEventListener('click', () => popup.classList.remove('open'));
+    dotWrap.append(dot, popup);
+
+    const startIn = document.createElement('input'); 
+    startIn.type = 'time'; 
+    startIn.className = 'tt-time-input';
+    startIn.value = block.start;
+    startIn.addEventListener('change', () => { 
+      block.start = startIn.value; 
+      localStorage.setItem('tt-data', JSON.stringify(data)); 
+      renderTimeTable(); 
+    });
+
+    const span = document.createElement('span'); 
+    span.textContent = '-'; 
+    span.style.color = 'var(--muted)';
+
+    const endIn = document.createElement('input'); 
+    endIn.type = 'time'; 
+    endIn.className = 'tt-time-input';
+    endIn.value = block.end;
+    endIn.addEventListener('change', () => { 
+      block.end = endIn.value; 
+      localStorage.setItem('tt-data', JSON.stringify(data)); 
+      renderTimeTable(); 
+    });
+
+    const lblIn = document.createElement('input'); 
+    lblIn.type = 'text'; 
+    lblIn.className = 'tt-label-input';
+    lblIn.value = block.label; 
+    lblIn.placeholder = "Activity name...";
+    lblIn.addEventListener('input', () => { 
+      block.label = lblIn.value; 
+      localStorage.setItem('tt-data', JSON.stringify(data)); 
+    });
+
+    const delBtn = document.createElement('button'); 
+    delBtn.className = 'tt-del-btn'; 
+    delBtn.textContent = '×';
+    delBtn.addEventListener('click', () => {
+      data.splice(index, 1); 
+      localStorage.setItem('tt-data', JSON.stringify(data)); 
+      renderTimeTable();
+    });
+
+    row.append(dotWrap, startIn, span, endIn, lblIn, delBtn);
+    list.appendChild(row);
+  });
+}
+
+document.getElementById('tt-add-btn').addEventListener('click', () => {
+  const data = loadTTData();
+  data.push({ id: Date.now(), start: "18:00", end: "19:00", label: "", color: COLORS[data.length % COLORS.length] });
+  localStorage.setItem('tt-data', JSON.stringify(data));
+  renderTimeTable();
+});
+renderTimeTable();
+
+// ══════════════════════════════════════════════
+//  HEATMAP STREAK LOGIC
+// ══════════════════════════════════════════════
+function renderHeatmap() {
+  const streakData = JSON.parse(localStorage.getItem('streak-data') || '{}');
+  const grid = document.getElementById('heatmap-grid');
+  grid.innerHTML = '';
+  
+  // Render last 70 days (10 weeks)
+  const today = new Date();
+  for(let i=69; i>=0; i--) {
+    const d = new Date(today); 
+    d.setDate(d.getDate() - i);
+    const dStr = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+    
+    const cell = document.createElement('div');
+    cell.className = 'heatmap-cell' + (streakData[dStr] ? ' done' : '');
+    cell.title = dStr + (streakData[dStr] ? ' (Goal Met)' : '');
+    grid.appendChild(cell);
+  }
+  
+  const scrollContainer = document.getElementById('heatmap-scroll');
+  scrollContainer.scrollLeft = scrollContainer.scrollWidth;
+}
+renderHeatmap();
 
 // ══════════════════════════════════════════════
 //  CONFETTI
@@ -938,6 +1433,17 @@ function renderTopicTracker() {
     fillEl.style.background = pct >= 100 ? '#48c78e' : 'var(--accent)';
     countEl.textContent = done + '/' + goal;
     countEl.style.color = pct >= 100 ? '#48c78e' : 'var(--accent)';
+    
+    // Streak logic update
+    const today = todayStr();
+    let streakData = JSON.parse(localStorage.getItem('streak-data') || '{}');
+    if (done >= goal && done > 0) { 
+        streakData[today] = true; 
+    } else { 
+        streakData[today] = false; 
+    }
+    localStorage.setItem('streak-data', JSON.stringify(streakData));
+    renderHeatmap(); 
   }
 
   function rebuildSubjects() {
@@ -1056,6 +1562,17 @@ function renderTopicTracker() {
         tpInput.value = tp.name;
         tpInput.addEventListener('input', () => { tp.name = tpInput.value; saveTopicData(data); });
 
+        // Difficulty Cycler
+        const diffCycler = document.createElement('div');
+        diffCycler.className = 'topic-diff ' + (tp.diff || '');
+        diffCycler.title = "Difficulty: " + (tp.diff || "None");
+        diffCycler.addEventListener('click', () => {
+          const cycle = { '': 'easy', 'easy': 'med', 'med': 'hard', 'hard': '' };
+          tp.diff = cycle[tp.diff || ''];
+          diffCycler.className = 'topic-diff ' + tp.diff;
+          saveTopicData(data);
+        });
+
         const tpDel = document.createElement('button');
         tpDel.className = 'topic-del-btn';
         tpDel.textContent = '×';
@@ -1067,6 +1584,7 @@ function renderTopicTracker() {
 
         row.appendChild(chk);
         row.appendChild(tpInput);
+        row.appendChild(diffCycler);
         row.appendChild(tpDel);
         return row;
       }
@@ -1087,7 +1605,7 @@ function renderTopicTracker() {
       function doAddTopic() {
         const name = addInput.value.trim();
         if (!name) { addInput.focus(); return; }
-        sub.topics.push({ name, checked: false });
+        sub.topics.push({ name, checked: false, diff: '' });
         saveTopicData(data); rebuildSubjects(); updateGoalBar();
         // Re-open subject
         setTimeout(() => {
