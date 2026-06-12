@@ -51,8 +51,8 @@
       font-family: 'Segoe UI', system-ui, sans-serif;
       color: var(--text); transition: background 0.3s, color 0.3s;
     }
-    /* Add bottom padding for the nav bar */
-    .page { max-width: 500px; margin: 0 auto; padding: 1.5rem 1rem 80px; }
+    /* Fixed bottom padding so the menu never covers the content */
+    .page { max-width: 500px; margin: 0 auto; padding: 1.5rem 1rem 120px; }
     
     /* ── Top bar ── */
     .topbar {
@@ -81,7 +81,10 @@
       position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
       width: 100%; max-width: 500px; background: var(--surface);
       border-top: 1px solid var(--border); display: flex;
-      justify-content: space-around; padding: 10px 0 20px 0; z-index: 1000;
+      justify-content: space-around; 
+      /* Added safe-area padding for modern phones */
+      padding: 10px 0 calc(20px + env(safe-area-inset-bottom)); 
+      z-index: 1000;
     }
     .nav-btn {
       background: none; border: none; color: var(--muted);
@@ -90,6 +93,11 @@
     }
     .nav-btn.active { color: var(--accent); font-weight: 600; }
     .nav-icon { font-size: 1.2rem; }
+    
+    /* FIX: Hide bottom nav automatically when the keyboard opens */
+    @media (max-height: 500px) {
+      .bottom-nav { display: none; }
+    }
     
     /* ════ TAB PANES ════ */
     .tab-pane { display: none; animation: fadeIn 0.3s ease; }
@@ -873,7 +881,7 @@ function loadCLData() {
   const today = todayStr();
   if (data.date !== today) {
     data.date = today;
-    data.tasks.forEach(t => t.done = false); // Soft reset: uncheck all tasks instead of deleting
+    data.tasks.forEach(t => t.done = false); 
     localStorage.setItem('cl-data', JSON.stringify(data));
   }
   return data;
@@ -973,7 +981,6 @@ function renderFCDecks() {
   list.innerHTML = '';
   
   data.forEach((deck, i) => {
-    // Count cards to review today
     const now = Date.now();
     const dueCount = deck.cards.filter(c => c.nextReview <= now).length;
     
@@ -1042,18 +1049,16 @@ document.getElementById('fc-save-card-btn').onclick = () => {
   const aIn = document.getElementById('fc-a-in');
   if(!qIn.value.trim() || !aIn.value.trim()) return;
   const data = loadFCData();
-  data[currentDeckIndex].cards.push({ q: qIn.value.trim(), a: aIn.value.trim(), nextReview: 0 }); // 0 means due immediately
+  data[currentDeckIndex].cards.push({ q: qIn.value.trim(), a: aIn.value.trim(), nextReview: 0 }); 
   saveFCData(data);
   qIn.value = ''; aIn.value = '';
   qIn.focus();
 };
 
-// Review Logic
 function startReview(deckIndex) {
   const data = loadFCData();
   const now = Date.now();
   currentDeckIndex = deckIndex;
-  // Get cards due
   currentReviewQueue = data[deckIndex].cards.filter(c => c.nextReview <= now);
   if(currentReviewQueue.length === 0) return alert('No cards due right now!');
   
@@ -1080,7 +1085,6 @@ function showNextCard() {
 document.getElementById('fc-flip-container').onclick = function() {
   if(currentReviewQueue.length === 0) return;
   this.classList.toggle('flipped');
-  // Show controls when flipped to back
   if(this.classList.contains('flipped')) {
     document.getElementById('fc-review-controls').style.display = 'flex';
   } else {
@@ -1089,7 +1093,6 @@ document.getElementById('fc-flip-container').onclick = function() {
 };
 
 document.getElementById('fc-btn-hard').onclick = () => {
-  // Move to back of queue
   const card = currentReviewQueue.shift();
   currentReviewQueue.push(card);
   showNextCard();
@@ -1097,12 +1100,11 @@ document.getElementById('fc-btn-hard').onclick = () => {
 
 document.getElementById('fc-btn-easy').onclick = () => {
   const cardToUpdate = currentReviewQueue.shift();
-  // Find in main data and update nextReview to 1 day from now
   const data = loadFCData();
   const deck = data[currentDeckIndex];
   const realCard = deck.cards.find(c => c.q === cardToUpdate.q && c.a === cardToUpdate.a);
   if(realCard) {
-    realCard.nextReview = Date.now() + (86400000); // +1 Day
+    realCard.nextReview = Date.now() + (86400000); 
   }
   saveFCData(data);
   showNextCard();
