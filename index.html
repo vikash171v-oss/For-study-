@@ -96,13 +96,20 @@
     .tab-pane.active { display: block; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
+    /* ════ COLLAPSIBLE UI ════ */
+    .section-toggle { font-size: 0.75rem; color: var(--muted); flex-shrink: 0; transition: transform 0.2s; padding: 4px; }
+    .section-toggle.open { transform: rotate(180deg); }
+    .collapsible-body { display: none; width: 100%; margin-top: 1rem; }
+    #pomo-body.open { display: flex; flex-direction: column; align-items: center; }
+
     /* ════ STREAK HEATMAP ════ */
     .streak-card {
       background: var(--surface); border: 1px solid var(--border);
       border-radius: 20px; padding: 1.25rem; margin-bottom: 1.25rem;
     }
     .streak-header {
-      font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 0.8rem;
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted);
     }
     .heatmap-scroll { overflow-x: auto; padding-bottom: 5px; scrollbar-width: none; width: 100%; }
     .heatmap-scroll::-webkit-scrollbar { display: none; }
@@ -111,16 +118,15 @@
       width: 12px; height: 12px; border-radius: 3px; background: var(--surface2);
       border: 1px solid var(--border); transition: background 0.3s;
     }
-    .heatmap-cell.done {
-      background: var(--easy); border-color: var(--easy); box-shadow: 0 0 5px rgba(72,199,142,0.3);
-    }
+    .heatmap-cell.done { background: var(--easy); border-color: var(--easy); box-shadow: 0 0 5px rgba(72,199,142,0.3); }
 
     /* ════ TIMETABLE ════ */
     .tt-card {
       background: var(--surface); border: 1px solid var(--border);
       border-radius: 20px; padding: 1.25rem; margin-bottom: 1.25rem;
     }
-    .tt-header { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom:1rem; }
+    .tt-header { display: flex; justify-content: space-between; align-items: center; }
+    .tt-title { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
     .tt-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px; width: 100%; }
     .tt-row {
       display: flex; align-items: center; gap: 8px; background: var(--surface2);
@@ -149,74 +155,53 @@
     }
     .tt-add-btn:hover { background: var(--accent); color: #fff; border-style: solid; }
 
+    /* ════ DAILY CHECKLIST ════ */
+    .checklist-card { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 1.25rem; margin-bottom: 1.25rem; }
+    .cl-list { display: flex; flex-direction: column; gap: 6px; margin-bottom: 10px; }
+    .cl-item { display: flex; align-items: center; gap: 8px; padding: 6px 0; border-bottom: 1px solid var(--border); }
+    .cl-item:last-child { border-bottom: none; }
+    .cl-check { width: 18px; height: 18px; border-radius: 5px; flex-shrink: 0; border: 2px solid var(--border); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; background: var(--surface); transition: all 0.2s; }
+    .cl-check.checked { border-color: var(--easy); background: var(--easy); }
+    .cl-check.checked::after { content: '✓'; color: #fff; font-weight: 700; }
+    .cl-text { flex: 1; font-size: 0.85rem; color: var(--text); outline: none; border: none; background: none; }
+    .cl-text.done { text-decoration: line-through; color: var(--muted); }
+    .cl-del { background: none; border: none; color: var(--muted); font-size: 0.9rem; cursor: pointer; opacity: 0.6; }
+    .cl-del:hover { color: var(--hard); opacity: 1; }
+
     /* ════ POMODORO TIMER ════ */
     .pomo-card {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: 20px; padding: 1.25rem; margin-bottom: 1.25rem;
-      display: flex; flex-direction: column; align-items: center;
+      background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 1.25rem; margin-bottom: 1.25rem; display: flex; flex-direction: column; align-items: center;
     }
     .pomo-header { width: 100%; display: flex; justify-content: space-between; align-items: center; }
     .pomo-title { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
     .pomo-settings-btn { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 1rem; }
     .pomo-settings-btn:hover { color: var(--accent); }
-    .pomo-display {
-      font-size: 3.5rem; font-weight: 700; font-variant-numeric: tabular-nums;
-      letter-spacing: -0.02em; color: var(--text); line-height: 1; margin-bottom: 0.5rem;
-    }
-    .pomo-status {
-      font-size: 0.8rem; color: var(--accent); font-weight: 600;
-      margin-bottom: 1.25rem; text-transform: uppercase; letter-spacing: 0.05em;
-    }
+    .pomo-display { font-size: 3.5rem; font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing: -0.02em; color: var(--text); line-height: 1; margin-bottom: 0.5rem; }
+    .pomo-status { font-size: 0.8rem; color: var(--accent); font-weight: 600; margin-bottom: 1.25rem; text-transform: uppercase; letter-spacing: 0.05em; }
     .pomo-controls { display: flex; gap: 10px; }
-    .pomo-btn {
-      background: var(--surface2); border: 1px solid var(--border); border-radius: 12px;
-      padding: 0.6rem 1.5rem; font-size: 0.9rem; font-weight: 600; color: var(--text);
-      cursor: pointer; transition: all 0.2s;
-    }
+    .pomo-btn { background: var(--surface2); border: 1px solid var(--border); border-radius: 12px; padding: 0.6rem 1.5rem; font-size: 0.9rem; font-weight: 600; color: var(--text); cursor: pointer; transition: all 0.2s; }
     .pomo-btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
     .pomo-btn.primary:hover { opacity: 0.9; transform: translateY(-1px); }
     .pomo-btn:hover { background: var(--accent-light); color: var(--accent); border-color: var(--accent); }
-    .pomo-settings {
-      width: 100%; background: var(--surface2); border-radius: 12px; padding: 1rem;
-      margin-top: 1rem; display: none; gap: 10px; border: 1px solid var(--border);
-    }
+    .pomo-settings { width: 100%; background: var(--surface2); border-radius: 12px; padding: 1rem; margin-top: 1rem; display: none; gap: 10px; border: 1px solid var(--border); }
     .pomo-settings.open { display: flex; }
     .pomo-input-group { flex: 1; display: flex; flex-direction: column; gap: 5px; }
     .pomo-input-group label { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; }
-    .pomo-input {
-      background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
-      padding: 0.5rem; color: var(--text); outline: none; width: 100%; text-align: center;
-    }
+    .pomo-input { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem; color: var(--text); outline: none; width: 100%; text-align: center; }
     .pomo-input:focus { border-color: var(--accent); }
 
-    /* ── Tracker card ── */
-    .card {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: 20px; padding: 1.5rem; margin-bottom: 1rem; transition: background 0.3s;
-    }
+    /* ── Tracker card (Base) ── */
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 1.5rem; margin-bottom: 1rem; transition: background 0.3s; }
     .card-header { display: flex; align-items: center; gap: 10px; margin-bottom: 1.25rem; }
-    .color-dot {
-      width: 14px; height: 14px; border-radius: 50%;
-      flex-shrink: 0; cursor: pointer; border: 2px solid transparent; transition: transform 0.2s;
-    }
+    .color-dot { width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0; cursor: pointer; border: 2px solid transparent; transition: transform 0.2s; }
     .color-dot:hover { transform: scale(1.2); }
-    .tracker-label {
-      flex: 1; font-size: 0.9rem; font-weight: 500; background: none; border: none; color: var(--text);
-      outline: none; min-width: 0;
-    }
+    .tracker-label { flex: 1; font-size: 0.9rem; font-weight: 500; background: none; border: none; color: var(--text); outline: none; min-width: 0; }
     .tracker-label::placeholder { color: var(--muted); }
-    .delete-btn {
-      background: none; border: none; color: var(--muted); font-size: 1.1rem; cursor: pointer; 
-      padding: 2px 6px; border-radius: 6px; transition: color 0.2s, background 0.2s;
-    }
+    .delete-btn { background: none; border: none; color: var(--muted); font-size: 1.1rem; cursor: pointer; padding: 2px 6px; border-radius: 6px; transition: color 0.2s, background 0.2s; }
     .delete-btn:hover { color: #f05252; background: rgba(240,82,82,0.1); }
     .inputs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 1.25rem; }
     .field label { display: block; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 5px; }
-    .field input[type="date"] {
-      width: 100%; background: var(--surface2); border: 1px solid var(--border);
-      border-radius: 10px; padding: 0.55rem 0.7rem; font-size: 0.82rem; color: var(--text); outline: none;
-      transition: border-color 0.2s; color-scheme: dark;
-    }
+    .field input[type="date"] { width: 100%; background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 0.55rem 0.7rem; font-size: 0.82rem; color: var(--text); outline: none; transition: border-color 0.2s; color-scheme: dark; }
     [data-theme="light"] .field input[type="date"] { color-scheme: light; }
     .field input[type="date"]:focus { border-color: var(--accent); }
     
@@ -229,14 +214,10 @@
     .bar-wrap { margin-top: 1rem; background: var(--surface2); border-radius: 99px; height: 5px; overflow: hidden; width: 160px; }
     .bar-fill { height: 100%; border-radius: 99px; width: 0%; transition: width 0.6s cubic-bezier(0.4,0,0.2,1), background 0.4s; }
     
-    .status-badge {
-      margin-top: 1rem; display: inline-block; font-size: 0.75rem; padding: 4px 12px; border-radius: 99px; font-weight: 500;
-      background: var(--surface2); border: 1px solid var(--border); color: var(--muted);
-    }
+    .status-badge { margin-top: 1rem; display: inline-block; font-size: 0.75rem; padding: 4px 12px; border-radius: 99px; font-weight: 500; background: var(--surface2); border: 1px solid var(--border); color: var(--muted); }
     .status-badge.active { background: var(--accent-light); border-color: rgba(124,106,245,0.35); color: var(--accent); }
     .status-badge.done   { background: rgba(72,199,142,0.1); border-color: rgba(72,199,142,0.3); color: #48c78e; }
     .status-badge.danger { background: rgba(240,82,82,0.1);  border-color: rgba(240,82,82,0.3);  color: #f05252; }
-    
     .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 1rem; }
     .stat { background: var(--surface2); border: 1px solid var(--border); border-radius: 12px; padding: 0.65rem; text-align: center; }
     .stat-num { font-size: 1.15rem; font-weight: 700; letter-spacing: -0.03em; }
@@ -245,105 +226,59 @@
     .breakdown { margin-top: 0.5rem; }
     .breakdown-title { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 8px; }
     .months-grid { display: flex; flex-wrap: wrap; gap: 4px; }
-    .month-cell {
-      flex: 1; min-width: 28px; max-width: 40px; height: 28px; border-radius: 6px; background: var(--surface2);
-      border: 1px solid var(--border); display: flex; align-items: center; justify-content: center;
-      font-size: 0.6rem; color: var(--muted); transition: background 0.3s; cursor: default; position: relative;
-    }
+    .month-cell { flex: 1; min-width: 28px; max-width: 40px; height: 28px; border-radius: 6px; background: var(--surface2); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 0.6rem; color: var(--muted); transition: background 0.3s; cursor: default; position: relative; }
     .month-cell.filled { color: #fff; border-color: transparent; }
     .month-cell.partial { color: #fff; border-color: transparent; }
     
-    .color-popup {
-      display: none; position: absolute; z-index: 100; background: var(--surface); border: 1px solid var(--border);
-      border-radius: 12px; padding: 10px; gap: 8px; flex-wrap: wrap; width: 152px; box-shadow: 0 8px 24px rgba(0,0,0,0.3);
-    }
+    .color-popup { display: none; position: absolute; z-index: 100; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 10px; gap: 8px; flex-wrap: wrap; width: 152px; box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
     .color-popup.open { display: flex; }
-    .cp-swatch {
-      width: 28px; height: 28px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: transform 0.15s, border-color 0.15s;
-    }
+    .cp-swatch { width: 28px; height: 28px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: transform 0.15s, border-color 0.15s; }
     .cp-swatch:hover { transform: scale(1.15); }
     .cp-swatch.selected { border-color: var(--text); }
     
-    .add-btn {
-      width: 100%; padding: 0.75rem; background: var(--surface); border: 1px dashed var(--border); border-radius: 16px;
-      color: var(--muted); font-size: 0.85rem; cursor: pointer; transition: background 0.2s, color 0.2s, border-color 0.2s;
-      margin-bottom: 1rem;
-    }
+    .add-btn { width: 100%; padding: 0.75rem; background: var(--surface); border: 1px dashed var(--border); border-radius: 16px; color: var(--muted); font-size: 0.85rem; cursor: pointer; transition: background 0.2s, color 0.2s, border-color 0.2s; margin-bottom: 1rem; }
     .add-btn:hover { background: var(--accent-light); color: var(--accent); border-color: var(--accent); }
-    
     .action-row { display: flex; gap: 8px; margin-top: 0.75rem; }
-    .action-btn {
-      flex: 1; padding: 0.5rem; background: var(--surface2); border: 1px solid var(--border); border-radius: 10px;
-      color: var(--muted); font-size: 0.75rem; cursor: pointer; transition: background 0.2s, color 0.2s;
-    }
+    .action-btn { flex: 1; padding: 0.5rem; background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; color: var(--muted); font-size: 0.75rem; cursor: pointer; transition: background 0.2s, color 0.2s; }
     .action-btn:hover { background: var(--accent-light); color: var(--accent); border-color: var(--accent); }
     
     #confetti-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999; }
     
     .reminder-row { display: flex; align-items: center; gap: 8px; margin-top: 0.75rem; }
     .reminder-row label { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.07em; }
-    .reminder-select {
-      background: var(--surface2); border: 1px solid var(--border); border-radius: 8px;
-      padding: 4px 8px; font-size: 0.78rem; color: var(--text); outline: none; cursor: pointer;
-    }
-    .reminder-badge {
-      display: none; font-size: 0.72rem; padding: 3px 10px; border-radius: 99px;
-      background: rgba(240,180,30,0.12); border: 1px solid rgba(240,180,30,0.3); color: #f0b41e;
-    }
+    .reminder-select { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 4px 8px; font-size: 0.78rem; color: var(--text); outline: none; cursor: pointer; }
+    .reminder-badge { display: none; font-size: 0.72rem; padding: 3px 10px; border-radius: 99px; background: rgba(240,180,30,0.12); border: 1px solid rgba(240,180,30,0.3); color: #f0b41e; }
     .reminder-badge.show { display: inline-block; }
-    @media (max-width: 380px) { .inputs { grid-template-columns: 1fr; } .stats  { grid-template-columns: repeat(3,1fr); } }
 
     /* ════ TOPIC TRACKER ════ */
-    .topic-section {
-      background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 1.5rem; margin-bottom: 1.25rem;
-    }
+    .topic-section { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 1.5rem; margin-bottom: 1.25rem; }
     .topic-section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
     .topic-section-title { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
-    .topic-add-sub-btn {
-      background: var(--accent-light); border: 1px solid rgba(124,106,245,0.3); border-radius: 8px; padding: 4px 12px;
-      font-size: 0.75rem; color: var(--accent); cursor: pointer; font-weight: 600; transition: background 0.2s;
-    }
+    .topic-add-sub-btn { background: var(--accent-light); border: 1px solid rgba(124,106,245,0.3); border-radius: 8px; padding: 4px 12px; font-size: 0.75rem; color: var(--accent); cursor: pointer; font-weight: 600; transition: background 0.2s; }
     .topic-add-sub-btn:hover { background: var(--accent); color: #fff; }
-    .topic-daily-bar {
-      display: flex; align-items: center; gap: 10px; background: var(--surface2); border: 1px solid var(--border);
-      border-radius: 12px; padding: 0.6rem 0.9rem; margin-bottom: 1rem;
-    }
+    .topic-daily-bar { display: flex; align-items: center; gap: 10px; background: var(--surface2); border: 1px solid var(--border); border-radius: 12px; padding: 0.6rem 0.9rem; margin-bottom: 1rem; }
     .topic-daily-bar span { font-size: 0.75rem; color: var(--muted); flex: 1; }
     .topic-daily-count { font-size: 1rem; font-weight: 700; color: var(--accent); }
-    .topic-daily-goal-input {
-      width: 42px; background: var(--surface); border: 1px solid var(--border); border-radius: 7px;
-      padding: 3px 6px; font-size: 0.8rem; color: var(--text); text-align: center; outline: none;
-    }
+    .topic-daily-goal-input { width: 42px; background: var(--surface); border: 1px solid var(--border); border-radius: 7px; padding: 3px 6px; font-size: 0.8rem; color: var(--text); text-align: center; outline: none; }
     .topic-daily-goal-input:focus { border-color: var(--accent); }
     .topic-today-progress { flex: 1; height: 4px; background: var(--border); border-radius: 99px; overflow: hidden; }
     .topic-today-fill { height: 100%; border-radius: 99px; background: var(--accent); transition: width 0.4s ease; }
     
-    .subject-card {
-      background: var(--surface2); border: 1px solid var(--border); border-radius: 14px; margin-bottom: 0.75rem; overflow: hidden;
-    }
+    .subject-card { background: var(--surface2); border: 1px solid var(--border); border-radius: 14px; margin-bottom: 0.75rem; overflow: hidden; }
     .subject-header { display: flex; align-items: center; gap: 8px; padding: 0.65rem 0.9rem; cursor: pointer; user-select: none; }
     .subject-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
-    .subject-name-input {
-      flex: 1; background: none; border: none; font-size: 0.88rem; font-weight: 600; color: var(--text); outline: none; min-width: 0;
-    }
+    .subject-name-input { flex: 1; background: none; border: none; font-size: 0.88rem; font-weight: 600; color: var(--text); outline: none; min-width: 0; }
     .subject-name-input::placeholder { color: var(--muted); font-weight: 400; }
-    .subject-progress-pill {
-      font-size: 0.68rem; font-weight: 700; padding: 2px 9px; border-radius: 99px; border: 1px solid transparent; flex-shrink: 0;
-    }
+    .subject-progress-pill { font-size: 0.68rem; font-weight: 700; padding: 2px 9px; border-radius: 99px; border: 1px solid transparent; flex-shrink: 0; }
     .subject-toggle { font-size: 0.75rem; color: var(--muted); flex-shrink: 0; transition: transform 0.2s; }
     .subject-toggle.open { transform: rotate(180deg); }
-    .subject-del-btn {
-      background: none; border: none; color: var(--muted); font-size: 1rem; cursor: pointer; padding: 2px 5px; border-radius: 5px; transition: color 0.2s;
-    }
+    .subject-del-btn { background: none; border: none; color: var(--muted); font-size: 1rem; cursor: pointer; padding: 2px 5px; border-radius: 5px; transition: color 0.2s; }
     .subject-del-btn:hover { color: #f05252; }
     
     .topics-list { padding: 0 0.9rem 0.5rem; }
     .topic-item { display: flex; align-items: center; gap: 8px; padding: 6px 0; border-bottom: 1px solid var(--border); }
     .topic-item:last-child { border-bottom: none; }
-    .topic-check {
-      width: 18px; height: 18px; border-radius: 5px; flex-shrink: 0; border: 2px solid var(--border); cursor: pointer;
-      display: flex; align-items: center; justify-content: center; font-size: 0.7rem; transition: background 0.2s, border-color 0.2s; background: var(--surface);
-    }
+    .topic-check { width: 18px; height: 18px; border-radius: 5px; flex-shrink: 0; border: 2px solid var(--border); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; transition: background 0.2s, border-color 0.2s; background: var(--surface); }
     .topic-check.checked { border-color: transparent; }
     .topic-check.checked::after { content: '✓'; color: #fff; font-weight: 700; }
     .topic-name-input { flex: 1; background: none; border: none; font-size: 0.82rem; color: var(--text); outline: none; min-width: 0; }
@@ -367,25 +302,75 @@
     
     .topic-reset-notice { font-size: 0.68rem; color: var(--muted); text-align: center; padding-bottom: 0.25rem; letter-spacing: 0.02em; }
     .topic-empty { font-size: 0.8rem; color: var(--muted); text-align: center; padding: 1rem 0 0.5rem; }
-
+    
+    /* ════ FLASHCARDS ════ */
+    .fc-deck-row { display: flex; align-items: center; justify-content: space-between; background: var(--surface2); padding: 10px; border-radius: 12px; border: 1px solid var(--border); margin-bottom: 8px; cursor: pointer; }
+    .fc-deck-info h4 { font-size: 0.9rem; margin-bottom: 2px; }
+    .fc-deck-info span { font-size: 0.7rem; color: var(--muted); }
+    .fc-review-btn { background: var(--accent); color: #fff; border: none; padding: 5px 12px; border-radius: 8px; font-size: 0.75rem; font-weight: 600; cursor: pointer; }
+    .fc-del-deck { background: none; border: none; color: var(--muted); font-size: 1.1rem; cursor: pointer; padding: 0 5px; margin-left: 5px;}
+    .fc-del-deck:hover { color: var(--hard); }
+    
+    .fc-editor { display: none; background: var(--surface2); padding: 1rem; border-radius: 12px; border: 1px solid var(--border); margin-top: 10px; }
+    .fc-editor.open { display: block; }
+    .fc-input { width: 100%; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 8px; color: var(--text); font-size: 0.85rem; margin-bottom: 8px; outline: none;}
+    .fc-input:focus { border-color: var(--accent); }
+    .fc-save-btn { width: 100%; background: var(--accent); color: #fff; border: none; padding: 8px; border-radius: 8px; font-weight: 600; cursor: pointer; }
+    
+    /* The Flip Card */
+    .fc-flip-container { perspective: 1000px; width: 100%; height: 200px; margin: 20px 0; cursor: pointer; display: none; }
+    .fc-flip-inner { position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.6s; transform-style: preserve-3d; }
+    .fc-flip-container.flipped .fc-flip-inner { transform: rotateY(180deg); }
+    .fc-front, .fc-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; display: flex; align-items: center; justify-content: center; padding: 20px; background: var(--surface2); border: 2px solid var(--border); border-radius: 16px; font-size: 1.1rem; font-weight: 500; }
+    .fc-back { transform: rotateY(180deg); background: var(--surface); border-color: var(--accent); color: var(--accent); }
+    
+    .fc-review-controls { display: none; justify-content: space-between; gap: 10px; margin-top: 10px; }
+    .fc-btn { flex: 1; padding: 10px; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; font-size: 0.9rem; }
+    .fc-btn-hard { background: rgba(240,82,82,0.15); color: var(--hard); }
+    .fc-btn-easy { background: rgba(72,199,142,0.15); color: var(--easy); }
+    .fc-btn-hard:hover { background: var(--hard); color: #fff; }
+    .fc-btn-easy:hover { background: var(--easy); color: #fff; }
+    
     #import-file { display: none; }
+
+    /* Install banners & hints */
+    #install-banner { display: none; position: fixed; bottom: 1.25rem; left: 50%; transform: translateX(-50%); background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 0.85rem 1.25rem; width: calc(100% - 2rem); max-width: 420px; z-index: 999; align-items: center; gap: 12px; }
+    #install-banner.show { display: flex; }
+    .b-icon { width: 40px; height: 40px; flex-shrink: 0; background: var(--accent-light); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
+    .b-text { flex: 1; }
+    .b-text strong { display: block; font-size: 0.84rem; color: var(--text); }
+    .b-text span { font-size: 0.74rem; color: var(--muted); }
+    .b-install { background: var(--accent); color: #fff; border: none; border-radius: 8px; padding: 0.45rem 0.9rem; font-size: 0.8rem; font-weight: 600; cursor: pointer; }
+    .b-close { background: none; border: none; color: var(--muted); font-size: 1.3rem; cursor: pointer; }
+    #ios-hint { display: none; position: fixed; bottom: 1.25rem; left: 50%; transform: translateX(-50%); background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 1rem 1.25rem; width: calc(100% - 2rem); max-width: 420px; z-index: 999; font-size: 0.82rem; color: var(--muted); line-height: 1.6; text-align: center; }
+    #ios-hint.show { display: block; }
+    #ios-hint strong { color: var(--text); }
+    #ios-hint .ios-close { display: block; margin-top: 0.5rem; color: var(--accent); cursor: pointer; font-size: 0.78rem; }
   </style>
 </head>
 <body>
 
 <canvas id="confetti-canvas"></canvas>
 
+<div id="install-banner">
+  <div class="b-icon">📲</div>
+  <div class="b-text"><strong>Add to Home Screen</strong><span>Install for offline access</span></div>
+  <button class="b-install" id="install-btn">Install</button>
+  <button class="b-close" id="banner-close">×</button>
+</div>
+<div id="ios-hint">
+  Tap <strong>Share ↑</strong> in Safari, then choose <strong>"Add to Home Screen"</strong>
+  <span class="ios-close" id="close-ios">Got it</span>
+</div>
+
 <div class="page">
-  <!-- Top bar -->
   <div class="topbar">
     <h1 id="app-title">📅 Date Progress</h1>
     <div class="topbar-actions">
-      <!-- BACKUP BUTTONS -->
       <button class="icon-btn" id="export-btn" title="Backup/Export Data">💾</button>
       <button class="icon-btn" id="import-btn" title="Restore/Import Data">📂</button>
       <input type="file" id="import-file" accept=".json">
       
-      <!-- NEW: Theme Switcher -->
       <button class="icon-btn" id="theme-cycle-btn" title="Cycle Themes">🎨</button>
       
       <select class="lang-select" id="lang-select">
@@ -400,50 +385,53 @@
     </div>
   </div>
 
-  <!-- ════ TAB PANES ════ -->
-
-  <!-- TAB: STATS -->
   <div id="tab-stats" class="tab-pane active">
-    <!-- STREAK HEATMAP -->
     <div class="streak-card">
-      <div class="streak-header">🔥 70-Day Study Streak</div>
-      <div class="heatmap-scroll" id="heatmap-scroll">
-        <div class="heatmap-grid" id="heatmap-grid"></div>
+      <div class="streak-header" id="streak-head" style="cursor: pointer;">
+        <span>🔥 70-Day Study Streak</span>
+        <div class="section-toggle" id="streak-toggle">▼</div>
+      </div>
+      <div class="collapsible-body" id="streak-body">
+        <div class="heatmap-scroll" id="heatmap-scroll">
+          <div class="heatmap-grid" id="heatmap-grid"></div>
+        </div>
       </div>
     </div>
     
-    <!-- TRACKERS -->
     <div id="trackers"></div>
     <button class="add-btn" id="add-btn">＋ <span id="add-label">Add another tracker</span></button>
   </div>
 
-  <!-- TAB: TIMER -->
   <div id="tab-timer" class="tab-pane">
     <div class="pomo-card">
-      <div class="pomo-header">
+      <div class="pomo-header" id="pomo-head" style="cursor: pointer;">
         <span class="pomo-title">⏱️ Focus Timer</span>
-        <button class="pomo-settings-btn" id="pomo-settings-toggle">⚙️</button>
-      </div>
-      <div class="pomo-display" id="pomo-display">45:00</div>
-      <div class="pomo-status" id="pomo-status">Ready to Study</div>
-      <div class="pomo-controls">
-        <button class="pomo-btn primary" id="pomo-start">Start</button>
-        <button class="pomo-btn" id="pomo-reset">Reset</button>
-      </div>
-      <div class="pomo-settings" id="pomo-settings">
-        <div class="pomo-input-group">
-          <label>Work (min)</label>
-          <input type="number" id="pomo-work-in" class="pomo-input" value="45" min="1" max="120">
+        <div style="display:flex; gap:10px; align-items:center;">
+          <button class="pomo-settings-btn" id="pomo-settings-toggle" onclick="event.stopPropagation()">⚙️</button>
+          <div class="section-toggle" id="pomo-toggle">▼</div>
         </div>
-        <div class="pomo-input-group">
-          <label>Break (min)</label>
-          <input type="number" id="pomo-break-in" class="pomo-input" value="10" min="1" max="30">
+      </div>
+      <div class="collapsible-body" id="pomo-body">
+        <div class="pomo-display" id="pomo-display">45:00</div>
+        <div class="pomo-status" id="pomo-status">Ready to Study</div>
+        <div class="pomo-controls">
+          <button class="pomo-btn primary" id="pomo-start">Start</button>
+          <button class="pomo-btn" id="pomo-reset">Reset</button>
+        </div>
+        <div class="pomo-settings" id="pomo-settings">
+          <div class="pomo-input-group">
+            <label>Work (min)</label>
+            <input type="number" id="pomo-work-in" class="pomo-input" value="45" min="1" max="120">
+          </div>
+          <div class="pomo-input-group">
+            <label>Break (min)</label>
+            <input type="number" id="pomo-break-in" class="pomo-input" value="10" min="1" max="30">
+          </div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- TAB: STUDY (TOPICS) -->
   <div id="tab-topics" class="tab-pane">
     <div class="topic-section" id="topic-section">
       <div class="topic-section-header">
@@ -462,22 +450,73 @@
       </div>
       <div class="topic-reset-notice" id="topic-reset-notice"></div>
     </div>
+
+    <div class="topic-section">
+      <div class="topic-section-header">
+        <div class="topic-section-title">📖 Flashcards</div>
+        <button class="topic-add-sub-btn" id="fc-add-deck-btn">＋ New Deck</button>
+      </div>
+      
+      <div id="fc-decks-list"></div>
+      
+      <div class="add-topic-row" id="fc-new-deck-row" style="display:none; padding:0; margin-bottom:10px;">
+        <input type="text" id="fc-new-deck-in" class="add-topic-input" placeholder="Deck name (e.g. Physics)">
+        <button id="fc-save-deck-btn" class="add-topic-btn">Save</button>
+      </div>
+      
+      <div class="fc-editor" id="fc-editor">
+        <div style="font-size:0.75rem; color:var(--muted); margin-bottom:8px;" id="fc-editor-title">Add to Deck</div>
+        <input type="text" id="fc-q-in" class="fc-input" placeholder="Question (Front)">
+        <input type="text" id="fc-a-in" class="fc-input" placeholder="Answer (Back)">
+        <button class="fc-save-btn" id="fc-save-card-btn">Add Card</button>
+        <button class="fc-save-btn" id="fc-close-editor-btn" style="background:none; border:1px solid var(--border); color:var(--muted); margin-top:5px;">Done Adding</button>
+      </div>
+
+      <div class="fc-flip-container" id="fc-flip-container">
+        <div class="fc-flip-inner">
+          <div class="fc-front" id="fc-front-text">Question</div>
+          <div class="fc-back" id="fc-back-text">Answer</div>
+        </div>
+      </div>
+      <div class="fc-review-controls" id="fc-review-controls">
+        <button class="fc-btn fc-btn-hard" id="fc-btn-hard">🔴 Hard (Review Today)</button>
+        <button class="fc-btn fc-btn-easy" id="fc-btn-easy">🟢 Easy (Got It)</button>
+      </div>
+      <button class="fc-save-btn" id="fc-end-review-btn" style="display:none; margin-top:10px; background:var(--surface2); color:var(--text); border:1px solid var(--border);">Back to Decks</button>
+
+    </div>
   </div>
 
-  <!-- TAB: PLAN (TIMETABLE) -->
   <div id="tab-plan" class="tab-pane">
     <div class="tt-card">
-      <div class="tt-header">
+      <div class="tt-header" id="tt-head" style="cursor: pointer;">
         <div class="tt-title">🗓️ Daily Time Table</div>
+        <div class="section-toggle" id="tt-toggle">▼</div>
       </div>
-      <div class="tt-list" id="tt-list"></div>
-      <button class="tt-add-btn" id="tt-add-btn">+ Add Block</button>
+      <div class="collapsible-body" id="tt-body">
+        <div class="tt-list" id="tt-list"></div>
+        <button class="tt-add-btn" id="tt-add-btn">+ Add Block</button>
+      </div>
+    </div>
+
+    <div class="checklist-card">
+      <div class="tt-header" style="margin-bottom:0.5rem;">
+        <div class="tt-title">✅ Daily Checklist</div>
+        <div style="font-size:0.65rem; color:var(--muted)" id="cl-date-display"></div>
+      </div>
+      <div style="font-size:0.65rem; color:var(--muted); margin-bottom:10px; text-align:right;">Resets automatically at midnight</div>
+      
+      <div class="cl-list" id="cl-list"></div>
+      
+      <div class="add-topic-row" style="padding:0; margin-top:10px;">
+        <input type="text" id="cl-input" class="add-topic-input" placeholder="Add a new task...">
+        <button id="cl-add-btn" class="add-topic-btn">+ Add</button>
+      </div>
     </div>
   </div>
 
 </div>
 
-<!-- ════ BOTTOM NAVIGATION BAR ════ -->
 <nav class="bottom-nav">
   <button class="nav-btn active" data-tab="tab-stats">
     <span class="nav-icon">📈</span><span>Stats</span>
@@ -504,16 +543,13 @@ const tabPanes = document.querySelectorAll('.tab-pane');
 
 navBtns.forEach(btn => {
   btn.addEventListener('click', () => {
-    // Remove active from all
     navBtns.forEach(b => b.classList.remove('active'));
     tabPanes.forEach(p => p.classList.remove('active'));
     
-    // Add active to clicked
     btn.classList.add('active');
     const tabId = btn.getAttribute('data-tab');
     document.getElementById(tabId).classList.add('active');
     
-    // Auto scroll heatmap to right if viewing stats
     if(tabId === 'tab-stats') {
        const scrollContainer = document.getElementById('heatmap-scroll');
        if(scrollContainer) scrollContainer.scrollLeft = scrollContainer.scrollWidth;
@@ -522,7 +558,7 @@ navBtns.forEach(btn => {
 });
 
 // ══════════════════════════════════════════════
-//  THEME ENGINE (New Presets)
+//  THEME ENGINE
 // ══════════════════════════════════════════════
 const THEMES = ['dark', 'light', 'midnight', 'forest', 'rose'];
 let currentThemeIndex = THEMES.indexOf(localStorage.getItem('dp-theme') || 'dark');
@@ -533,7 +569,6 @@ function applyTheme() {
   document.documentElement.setAttribute('data-theme', t);
   localStorage.setItem('dp-theme', t);
   
-  // Adjust meta tag
   let metaColor = '#0f0f14';
   if(t === 'light') metaColor = '#f4f3fb';
   if(t === 'midnight') metaColor = '#0b0f19';
@@ -549,7 +584,40 @@ document.getElementById('theme-cycle-btn').addEventListener('click', () => {
 applyTheme();
 
 // ══════════════════════════════════════════════
-//  TRANSLATIONS
+//  UI COLLAPSE LOGIC
+// ══════════════════════════════════════════════
+function setupCollapsible(headId, bodyId, toggleId, storageKey, defaultOpen) {
+  const head = document.getElementById(headId);
+  const body = document.getElementById(bodyId);
+  const toggle = document.getElementById(toggleId);
+  let isOpen = JSON.parse(localStorage.getItem(storageKey));
+  if (isOpen === null) isOpen = defaultOpen;
+
+  function updateUI() {
+    if (isOpen) {
+      body.classList.add('open');
+      body.style.display = bodyId === 'pomo-body' ? 'flex' : 'block';
+      toggle.classList.add('open');
+    } else {
+      body.classList.remove('open');
+      body.style.display = 'none';
+      toggle.classList.remove('open');
+    }
+  }
+  updateUI();
+
+  head.addEventListener('click', () => {
+    isOpen = !isOpen;
+    localStorage.setItem(storageKey, JSON.stringify(isOpen));
+    updateUI();
+  });
+}
+setupCollapsible('streak-head', 'streak-body', 'streak-toggle', 'ui-streak-open', true);
+setupCollapsible('pomo-head', 'pomo-body', 'pomo-toggle', 'ui-pomo-open', true);
+setupCollapsible('tt-head', 'tt-body', 'tt-toggle', 'ui-tt-open', true);
+
+// ══════════════════════════════════════════════
+//  TRANSLATIONS & STATE
 // ══════════════════════════════════════════════
 const T = {
   en: { title:'Date Progress', start:'Start date', end:'End date', elapsed:'Elapsed', remaining:'Remaining', total:'Total', addTracker:'Add another tracker', label:'Label', pickDates:'pick dates', notStarted:'Not started yet', complete:'✓ Complete', almostDone:'Almost done', pastHalf:'Past halfway', inProgress:'In progress', waitDates:'Waiting for dates', endBeforeStart:'End must be after start', days:'d', share:'Share', screenshot:'Screenshot', weekBreak:'Monthly breakdown', reminder:'Remind at', remindNone:'Off', remindBefore7:'7 days left', remindBefore14:'14 days left', remindBefore30:'30 days left', remindActive:'⚠ Deadline soon!', themeToggle:'theme' },
@@ -598,18 +666,23 @@ document.getElementById('export-btn').addEventListener('click', () => {
     topics: localStorage.getItem('tp-data'),
     pomo: localStorage.getItem('pomo-data'), 
     streak: localStorage.getItem('streak-data'),
-    tt: localStorage.getItem('tt-data')
+    tt: localStorage.getItem('tt-data'), 
+    ui_pomo: localStorage.getItem('ui-pomo-open'),
+    ui_streak: localStorage.getItem('ui-streak-open'), 
+    ui_tt: localStorage.getItem('ui-tt-open'),
+    cl: localStorage.getItem('cl-data'),
+    fc: localStorage.getItem('fc-data')
   };
   const blob = new Blob([JSON.stringify(data)], {type: "application/json"});
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a'); 
-  a.href = url; a.download = 'date-progress-backup.json';
-  a.click(); URL.revokeObjectURL(url);
+  a.href = url; 
+  a.download = 'date-progress-backup.json';
+  a.click(); 
+  URL.revokeObjectURL(url);
 });
 
-document.getElementById('import-btn').addEventListener('click', () => {
-  document.getElementById('import-file').click();
-});
+document.getElementById('import-btn').addEventListener('click', () => { document.getElementById('import-file').click(); });
 
 document.getElementById('import-file').addEventListener('change', (e) => {
   const file = e.target.files[0]; 
@@ -625,6 +698,8 @@ document.getElementById('import-file').addEventListener('change', (e) => {
       if(data.pomo) localStorage.setItem('pomo-data', data.pomo);
       if(data.streak) localStorage.setItem('streak-data', data.streak);
       if(data.tt) localStorage.setItem('tt-data', data.tt);
+      if(data.cl) localStorage.setItem('cl-data', data.cl);
+      if(data.fc) localStorage.setItem('fc-data', data.fc);
       alert('Data restored successfully! The page will now reload.'); 
       location.reload();
     } catch(err) { alert('Invalid backup file.'); }
@@ -743,6 +818,7 @@ function renderTimeTable() {
     const row = document.createElement('div'); row.className = 'tt-row';
     const dotWrap = document.createElement('div'); dotWrap.style.position = 'relative';
     const dot = document.createElement('div'); dot.className = 'tt-color'; dot.style.background = block.color;
+    
     const popup = document.createElement('div'); popup.className = 'color-popup';
     COLORS.forEach(c => {
       const sw = document.createElement('div'); sw.className = 'cp-swatch'; sw.style.background = c;
@@ -790,54 +866,262 @@ document.getElementById('tt-add-btn').addEventListener('click', () => {
 renderTimeTable();
 
 // ══════════════════════════════════════════════
+//  DAILY CHECKLIST LOGIC
+// ══════════════════════════════════════════════
+function loadCLData() {
+  let data = JSON.parse(localStorage.getItem('cl-data')) || { date: '', tasks: [] };
+  const today = todayStr();
+  if (data.date !== today) {
+    data.date = today;
+    data.tasks.forEach(t => t.done = false); // Soft reset: uncheck all tasks instead of deleting
+    localStorage.setItem('cl-data', JSON.stringify(data));
+  }
+  return data;
+}
+
+function renderChecklist() {
+  const data = loadCLData();
+  document.getElementById('cl-date-display').textContent = new Date().toLocaleDateString(undefined, { weekday:'long', month:'short', day:'numeric' });
+  const list = document.getElementById('cl-list');
+  list.innerHTML = '';
+
+  data.tasks.forEach((task, index) => {
+    const item = document.createElement('div');
+    item.className = 'cl-item';
+
+    const chk = document.createElement('div');
+    chk.className = 'cl-check' + (task.done ? ' checked' : '');
+    
+    const inp = document.createElement('input');
+    inp.type = 'text';
+    inp.className = 'cl-text' + (task.done ? ' done' : '');
+    inp.value = task.text;
+    inp.addEventListener('input', () => { task.text = inp.value; localStorage.setItem('cl-data', JSON.stringify(data)); });
+
+    chk.addEventListener('click', () => {
+      task.done = !task.done;
+      chk.classList.toggle('checked', task.done);
+      inp.classList.toggle('done', task.done);
+      localStorage.setItem('cl-data', JSON.stringify(data));
+    });
+
+    const del = document.createElement('button');
+    del.className = 'cl-del';
+    del.innerHTML = '×';
+    del.addEventListener('click', () => {
+      data.tasks.splice(index, 1);
+      localStorage.setItem('cl-data', JSON.stringify(data));
+      renderChecklist();
+    });
+
+    item.append(chk, inp, del);
+    list.appendChild(item);
+  });
+}
+
+document.getElementById('cl-add-btn').addEventListener('click', addClTask);
+document.getElementById('cl-input').addEventListener('keydown', e => { if (e.key === 'Enter') addClTask(); });
+
+function addClTask() {
+  const inp = document.getElementById('cl-input');
+  const text = inp.value.trim();
+  if (!text) return;
+  const data = loadCLData();
+  data.tasks.push({ text: text, done: false });
+  localStorage.setItem('cl-data', JSON.stringify(data));
+  inp.value = '';
+  renderChecklist();
+}
+renderChecklist();
+
+// ══════════════════════════════════════════════
 //  HEATMAP STREAK LOGIC
 // ══════════════════════════════════════════════
+function todayStr() { const d = new Date(); return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); }
+
 function renderHeatmap() {
   const streakData = JSON.parse(localStorage.getItem('streak-data') || '{}');
   const grid = document.getElementById('heatmap-grid');
   grid.innerHTML = '';
+  
   const today = new Date();
   for(let i=69; i>=0; i--) {
-    const d = new Date(today); d.setDate(d.getDate() - i);
+    const d = new Date(today); 
+    d.setDate(d.getDate() - i);
     const dStr = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+    
     const cell = document.createElement('div');
     cell.className = 'heatmap-cell' + (streakData[dStr] ? ' done' : '');
     cell.title = dStr + (streakData[dStr] ? ' (Goal Met)' : '');
     grid.appendChild(cell);
   }
-  const scrollContainer = document.getElementById('heatmap-scroll');
-  if(scrollContainer) scrollContainer.scrollLeft = scrollContainer.scrollWidth;
 }
-// Init scroll after a short delay to ensure DOM is ready
 setTimeout(renderHeatmap, 100);
 
 // ══════════════════════════════════════════════
-//  CONFETTI
+//  FLASHCARD LOGIC
 // ══════════════════════════════════════════════
-function launchConfetti() {
-  const canvas = document.getElementById('confetti-canvas');
-  const ctx = canvas.getContext('2d');
-  canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-  const pieces = Array.from({length: 120}, () => ({
-    x: Math.random() * canvas.width, y: Math.random() * canvas.height - canvas.height,
-    w: Math.random() * 10 + 5, h: Math.random() * 6 + 3, color: COLORS[Math.floor(Math.random() * COLORS.length)],
-    rot: Math.random() * 360, rotSpd: (Math.random()-0.5)*6, spd: Math.random() * 3 + 2, drift: (Math.random()-0.5)*2
-  }));
-  let frame = 0;
-  function draw() {
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    pieces.forEach(p => {
-      ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.rot * Math.PI/180);
-      ctx.fillStyle = p.color; ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h); ctx.restore();
-      p.y += p.spd; p.x += p.drift; p.rot += p.rotSpd;
-    });
-    frame++; if (frame < 180) requestAnimationFrame(draw); else ctx.clearRect(0,0,canvas.width,canvas.height);
-  }
-  draw();
+function loadFCData() { return JSON.parse(localStorage.getItem('fc-data')) || []; }
+function saveFCData(data) { localStorage.setItem('fc-data', JSON.stringify(data)); }
+
+let currentDeckIndex = -1;
+let currentReviewQueue = [];
+
+function renderFCDecks() {
+  const data = loadFCData();
+  const list = document.getElementById('fc-decks-list');
+  list.innerHTML = '';
+  
+  data.forEach((deck, i) => {
+    // Count cards to review today
+    const now = Date.now();
+    const dueCount = deck.cards.filter(c => c.nextReview <= now).length;
+    
+    const row = document.createElement('div');
+    row.className = 'fc-deck-row';
+    
+    const info = document.createElement('div');
+    info.className = 'fc-deck-info';
+    info.innerHTML = `<h4>${deck.name}</h4><span>${deck.cards.length} cards · <b style="color:${dueCount>0?'var(--hard)':'var(--easy)'}">${dueCount} due</b></span>`;
+    
+    const actions = document.createElement('div');
+    
+    const addBtn = document.createElement('button');
+    addBtn.className = 'fc-review-btn';
+    addBtn.style.background = 'var(--surface2)';
+    addBtn.style.border = '1px solid var(--border)';
+    addBtn.style.color = 'var(--text)';
+    addBtn.style.marginRight = '5px';
+    addBtn.textContent = '+ Add';
+    addBtn.onclick = (e) => { e.stopPropagation(); openFCEditor(i); };
+
+    const revBtn = document.createElement('button');
+    revBtn.className = 'fc-review-btn';
+    revBtn.textContent = 'Review';
+    if(dueCount === 0) { revBtn.style.opacity = '0.5'; revBtn.textContent = 'Done'; }
+    revBtn.onclick = (e) => { e.stopPropagation(); startReview(i); };
+    
+    const delBtn = document.createElement('button');
+    delBtn.className = 'fc-del-deck';
+    delBtn.innerHTML = '×';
+    delBtn.onclick = (e) => { e.stopPropagation(); if(confirm('Delete deck?')) { data.splice(i,1); saveFCData(data); renderFCDecks(); } };
+
+    actions.append(addBtn, revBtn, delBtn);
+    row.append(info, actions);
+    list.appendChild(row);
+  });
 }
 
+document.getElementById('fc-add-deck-btn').onclick = () => {
+  const row = document.getElementById('fc-new-deck-row');
+  row.style.display = row.style.display === 'none' ? 'flex' : 'none';
+};
+document.getElementById('fc-save-deck-btn').onclick = () => {
+  const inp = document.getElementById('fc-new-deck-in');
+  if(!inp.value.trim()) return;
+  const data = loadFCData();
+  data.push({ name: inp.value.trim(), cards: [] });
+  saveFCData(data);
+  inp.value = '';
+  document.getElementById('fc-new-deck-row').style.display = 'none';
+  renderFCDecks();
+};
+
+function openFCEditor(deckIndex) {
+  currentDeckIndex = deckIndex;
+  const data = loadFCData();
+  document.getElementById('fc-editor-title').textContent = "Adding to: " + data[deckIndex].name;
+  document.getElementById('fc-editor').classList.add('open');
+}
+document.getElementById('fc-close-editor-btn').onclick = () => {
+  document.getElementById('fc-editor').classList.remove('open');
+  renderFCDecks();
+};
+document.getElementById('fc-save-card-btn').onclick = () => {
+  const qIn = document.getElementById('fc-q-in');
+  const aIn = document.getElementById('fc-a-in');
+  if(!qIn.value.trim() || !aIn.value.trim()) return;
+  const data = loadFCData();
+  data[currentDeckIndex].cards.push({ q: qIn.value.trim(), a: aIn.value.trim(), nextReview: 0 }); // 0 means due immediately
+  saveFCData(data);
+  qIn.value = ''; aIn.value = '';
+  qIn.focus();
+};
+
+// Review Logic
+function startReview(deckIndex) {
+  const data = loadFCData();
+  const now = Date.now();
+  currentDeckIndex = deckIndex;
+  // Get cards due
+  currentReviewQueue = data[deckIndex].cards.filter(c => c.nextReview <= now);
+  if(currentReviewQueue.length === 0) return alert('No cards due right now!');
+  
+  document.getElementById('fc-decks-list').style.display = 'none';
+  document.getElementById('fc-add-deck-btn').style.display = 'none';
+  document.getElementById('fc-flip-container').style.display = 'block';
+  document.getElementById('fc-end-review-btn').style.display = 'block';
+  
+  showNextCard();
+}
+
+function showNextCard() {
+  if(currentReviewQueue.length === 0) {
+    endReview();
+    return;
+  }
+  const card = currentReviewQueue[0];
+  document.getElementById('fc-front-text').textContent = card.q;
+  document.getElementById('fc-back-text').textContent = card.a;
+  document.getElementById('fc-flip-container').classList.remove('flipped');
+  document.getElementById('fc-review-controls').style.display = 'none';
+}
+
+document.getElementById('fc-flip-container').onclick = function() {
+  if(currentReviewQueue.length === 0) return;
+  this.classList.toggle('flipped');
+  // Show controls when flipped to back
+  if(this.classList.contains('flipped')) {
+    document.getElementById('fc-review-controls').style.display = 'flex';
+  } else {
+    document.getElementById('fc-review-controls').style.display = 'none';
+  }
+};
+
+document.getElementById('fc-btn-hard').onclick = () => {
+  // Move to back of queue
+  const card = currentReviewQueue.shift();
+  currentReviewQueue.push(card);
+  showNextCard();
+};
+
+document.getElementById('fc-btn-easy').onclick = () => {
+  const cardToUpdate = currentReviewQueue.shift();
+  // Find in main data and update nextReview to 1 day from now
+  const data = loadFCData();
+  const deck = data[currentDeckIndex];
+  const realCard = deck.cards.find(c => c.q === cardToUpdate.q && c.a === cardToUpdate.a);
+  if(realCard) {
+    realCard.nextReview = Date.now() + (86400000); // +1 Day
+  }
+  saveFCData(data);
+  showNextCard();
+};
+
+function endReview() {
+  document.getElementById('fc-decks-list').style.display = 'block';
+  document.getElementById('fc-add-deck-btn').style.display = 'block';
+  document.getElementById('fc-flip-container').style.display = 'none';
+  document.getElementById('fc-review-controls').style.display = 'none';
+  document.getElementById('fc-end-review-btn').style.display = 'none';
+  renderFCDecks();
+}
+document.getElementById('fc-end-review-btn').onclick = endReview;
+
+renderFCDecks();
+
 // ══════════════════════════════════════════════
-//  MONTHS BREAKDOWN
+//  MAIN TRACKERS & UTILS
 // ══════════════════════════════════════════════
 function buildBreakdown(container, start, end, now, pct, color) {
   container.innerHTML = '';
@@ -862,9 +1146,6 @@ function buildBreakdown(container, start, end, now, pct, color) {
   container.appendChild(grid);
 }
 
-// ══════════════════════════════════════════════
-//  SHARE & UTILS
-// ══════════════════════════════════════════════
 function shareTracker(tracker) {
   const pct = getTrackerPct(tracker);
   const text = `📅 ${tracker.label || t('title')}: ${pct}% ${t('elapsed')} — ${tracker.start} → ${tracker.end}`;
@@ -890,9 +1171,6 @@ function checkReminder(tracker) {
   const daysLeft = Math.round((end - now) / 86400000); return daysLeft >= 0 && daysLeft <= parseInt(tracker.reminder);
 }
 
-// ══════════════════════════════════════════════
-//  RENDER ONE TRACKER
-// ══════════════════════════════════════════════
 function renderTracker(tracker) {
   const card = document.createElement('div'); card.className = 'card'; card.id = 'card-' + tracker.id;
 
@@ -1029,7 +1307,6 @@ const SUB_COLORS = ['#7c6af5','#48c78e','#f05252','#f0a030','#3b9eff','#f06292',
 
 function loadTopicData() { return JSON.parse(localStorage.getItem('tp-data') || 'null') || { goal: 3, subjects: [], lastReset: '' }; }
 function saveTopicData(data) { localStorage.setItem('tp-data', JSON.stringify(data)); }
-function todayStr() { const d = new Date(); return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); }
 
 function maybeResetDaily(data) {
   const today = todayStr();
@@ -1137,22 +1414,18 @@ function hexToRgb(hex) { const r = parseInt(hex.slice(1,3),16); const g = parseI
 renderTopicTracker();
 
 // ══════════════════════════════════════════════
-//  SERVICE WORKER
+//  SERVICE WORKER & INSTALL PROMPT
 // ══════════════════════════════════════════════
 if ('serviceWorker' in navigator) {
   const swCode = `const CACHE='dp-v2';self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE).then(c=>c.addAll(['./'])));self.skipWaiting();});self.addEventListener('activate',e=>{self.clients.claim();});self.addEventListener('fetch',e=>{e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request)));});`;
   const swBlob = new Blob([swCode], { type: 'text/javascript' }); navigator.serviceWorker.register(URL.createObjectURL(swBlob));
 }
-
-// ══════════════════════════════════════════════
-//  INSTALL PROMPT
-// ══════════════════════════════════════════════
 let deferredPrompt;
 window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); deferredPrompt = e; document.getElementById('install-banner').classList.add('show'); });
 document.getElementById('install-btn').addEventListener('click', async () => { if (!deferredPrompt) return; deferredPrompt.prompt(); await deferredPrompt.userChoice; deferredPrompt = null; document.getElementById('install-banner').classList.remove('show'); });
 document.getElementById('banner-close').addEventListener('click', () => { document.getElementById('install-banner').classList.remove('show'); });
 const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
-if (isIOS && !navigator.standalone) { setTimeout(() => document.getElementById('ios-hint').classList.add('show'), 1500); }
+if (isIOS && !navigator.standalone) setTimeout(() => document.getElementById('ios-hint').classList.add('show'), 1500);
 document.getElementById('close-ios').addEventListener('click', () => { document.getElementById('ios-hint').classList.remove('show'); });
 
 applyLang();
