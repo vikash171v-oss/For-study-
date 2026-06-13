@@ -275,1162 +275,171 @@
     .subject-card { background: var(--surface2); border: 1px solid var(--border); border-radius: 14px; margin-bottom: 0.75rem; overflow: hidden; }
     .subject-header { display: flex; align-items: center; gap: 8px; padding: 0.65rem 0.9rem; cursor: pointer; user-select: none; }
     .subject-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
-    .subject-name-input { flex: 1; background: none; border: none; font-size: 0.88rem; font-weight: 600; color: var(--text); outline: none; min-width: 0; }
-    .subject-name-input::placeholder { color: var(--muted); font-weight: 400; }
-    .subject-progress-pill { font-size: 0.68rem; font-weight: 700; padding: 2px 9px; border-radius: 99px; border: 1px solid transparent; flex-shrink: 0; }
-    .subject-toggle { font-size: 0.75rem; color: var(--muted); flex-shrink: 0; transition: transform 0.2s; }
-    .subject-toggle.open { transform: rotate(180deg); }
-    .subject-del-btn { background: none; border: none; color: var(--muted); font-size: 1rem; cursor: pointer; padding: 2px 5px; border-radius: 5px; transition: color 0.2s; }
-    .subject-del-btn:hover { color: #f05252; }
     
-    .topics-list { padding: 0 0.9rem 0.5rem; }
-    .topic-item { display: flex; align-items: center; gap: 8px; padding: 6px 0; border-bottom: 1px solid var(--border); }
-    .topic-item:last-child { border-bottom: none; }
-    .topic-check { width: 18px; height: 18px; border-radius: 5px; flex-shrink: 0; border: 2px solid var(--border); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; transition: background 0.2s, border-color 0.2s; background: var(--surface); }
-    .topic-check.checked { border-color: transparent; }
-    .topic-check.checked::after { content: '✓'; color: #fff; font-weight: 700; }
-    .topic-name-input { flex: 1; background: none; border: none; font-size: 0.82rem; color: var(--text); outline: none; min-width: 0; }
-    .topic-name-input::placeholder { color: var(--muted); }
-    .topic-name-input.done { text-decoration: line-through; color: var(--muted); }
-    
-    .topic-diff { width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--border); cursor: pointer; flex-shrink: 0; transition: all 0.2s; }
-    .topic-diff.easy { background: var(--easy); border-color: var(--easy); }
-    .topic-diff.med { background: var(--med); border-color: var(--med); }
-    .topic-diff.hard { background: var(--hard); border-color: var(--hard); }
-    
-    .topic-del-btn { background: none; border: none; color: var(--muted); font-size: 0.85rem; cursor: pointer; padding: 1px 4px; border-radius: 4px; transition: color 0.2s; opacity: 0; }
-    .topic-item:hover .topic-del-btn { opacity: 1; }
-    .topic-del-btn:hover { color: #f05252; }
-    
-    .add-topic-row { display: flex; align-items: center; gap: 8px; padding: 6px 0.9rem 0.75rem; }
-    .add-topic-input { flex: 1; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 5px 10px; font-size: 0.8rem; color: var(--text); outline: none; }
-    .add-topic-input:focus { border-color: var(--accent); }
-    .add-topic-btn { background: var(--accent-light); border: 1px solid rgba(124,106,245,0.3); border-radius: 8px; padding: 5px 10px; font-size: 0.8rem; color: var(--accent); cursor: pointer; font-weight: 600; transition: background 0.2s; white-space: nowrap; }
-    .add-topic-btn:hover { background: var(--accent); color: #fff; }
-    
-    .topic-reset-notice { font-size: 0.68rem; color: var(--muted); text-align: center; padding-bottom: 0.25rem; letter-spacing: 0.02em; }
-    .topic-empty { font-size: 0.8rem; color: var(--muted); text-align: center; padding: 1rem 0 0.5rem; }
-    
-    /* ════ FLASHCARDS ════ */
-    .fc-deck-row { display: flex; align-items: center; justify-content: space-between; background: var(--surface2); padding: 10px; border-radius: 12px; border: 1px solid var(--border); margin-bottom: 8px; cursor: pointer; }
-    .fc-deck-info h4 { font-size: 0.9rem; margin-bottom: 2px; }
-    .fc-deck-info span { font-size: 0.7rem; color: var(--muted); }
-    .fc-review-btn { background: var(--accent); color: #fff; border: none; padding: 5px 12px; border-radius: 8px; font-size: 0.75rem; font-weight: 600; cursor: pointer; }
-    .fc-del-deck { background: none; border: none; color: var(--muted); font-size: 1.1rem; cursor: pointer; padding: 0 5px; margin-left: 5px;}
-    .fc-del-deck:hover { color: var(--hard); }
-    
-    .fc-editor { display: none; background: var(--surface2); padding: 1rem; border-radius: 12px; border: 1px solid var(--border); margin-top: 10px; }
-    .fc-editor.open { display: block; }
-    .fc-input { width: 100%; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 8px; color: var(--text); font-size: 0.85rem; margin-bottom: 8px; outline: none;}
-    .fc-input:focus { border-color: var(--accent); }
-    .fc-save-btn { width: 100%; background: var(--accent); color: #fff; border: none; padding: 8px; border-radius: 8px; font-weight: 600; cursor: pointer; }
-    
-    /* The Flip Card */
-    .fc-flip-container { perspective: 1000px; width: 100%; height: 200px; margin: 20px 0; cursor: pointer; display: none; }
-    .fc-flip-inner { position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.6s; transform-style: preserve-3d; }
-    .fc-flip-container.flipped .fc-flip-inner { transform: rotateY(180deg); }
-    .fc-front, .fc-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; display: flex; align-items: center; justify-content: center; padding: 20px; background: var(--surface2); border: 2px solid var(--border); border-radius: 16px; font-size: 1.1rem; font-weight: 500; }
-    .fc-back { transform: rotateY(180deg); background: var(--surface); border-color: var(--accent); color: var(--accent); }
-    
-    .fc-review-controls { display: none; justify-content: space-between; gap: 10px; margin-top: 10px; }
-    .fc-btn { flex: 1; padding: 10px; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; font-size: 0.9rem; }
-    .fc-btn-hard { background: rgba(240,82,82,0.15); color: var(--hard); }
-    .fc-btn-easy { background: rgba(72,199,142,0.15); color: var(--easy); }
-    .fc-btn-hard:hover { background: var(--hard); color: #fff; }
-    .fc-btn-easy:hover { background: var(--easy); color: #fff; }
-    
-    #import-file { display: none; }
-
-    /* Install banners & hints */
-    #install-banner { display: none; position: fixed; bottom: 1.25rem; left: 50%; transform: translateX(-50%); background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 0.85rem 1.25rem; width: calc(100% - 2rem); max-width: 420px; z-index: 999; align-items: center; gap: 12px; }
-    #install-banner.show { display: flex; }
-    .b-icon { width: 40px; height: 40px; flex-shrink: 0; background: var(--accent-light); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
-    .b-text { flex: 1; }
-    .b-text strong { display: block; font-size: 0.84rem; color: var(--text); }
-    .b-text span { font-size: 0.74rem; color: var(--muted); }
-    .b-install { background: var(--accent); color: #fff; border: none; border-radius: 8px; padding: 0.45rem 0.9rem; font-size: 0.8rem; font-weight: 600; cursor: pointer; }
-    .b-close { background: none; border: none; color: var(--muted); font-size: 1.3rem; cursor: pointer; }
-    #ios-hint { display: none; position: fixed; bottom: 1.25rem; left: 50%; transform: translateX(-50%); background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 1rem 1.25rem; width: calc(100% - 2rem); max-width: 420px; z-index: 999; font-size: 0.82rem; color: var(--muted); line-height: 1.6; text-align: center; }
-    #ios-hint.show { display: block; }
-    #ios-hint strong { color: var(--text); }
-    #ios-hint .ios-close { display: block; margin-top: 0.5rem; color: var(--accent); cursor: pointer; font-size: 0.78rem; }
+    /* Finished CSS line from the previous prompt */
+    .subject-name { flex: 1; font-size: 0.85rem; font-weight: 500; color: var(--text); }
   </style>
 </head>
 <body>
 
-<canvas id="confetti-canvas"></canvas>
-
-<div id="install-banner">
-  <div class="b-icon">📲</div>
-  <div class="b-text"><strong>Add to Home Screen</strong><span>Install for offline access</span></div>
-  <button class="b-install" id="install-btn">Install</button>
-  <button class="b-close" id="banner-close">×</button>
-</div>
-<div id="ios-hint">
-  Tap <strong>Share ↑</strong> in Safari, then choose <strong>"Add to Home Screen"</strong>
-  <span class="ios-close" id="close-ios">Got it</span>
-</div>
-
-<div class="page">
-  <div class="topbar">
-    <h1 id="app-title">📅 Date Progress</h1>
-    <div class="topbar-actions">
-      <button class="icon-btn" id="export-btn" title="Backup/Export Data">💾</button>
-      <button class="icon-btn" id="import-btn" title="Restore/Import Data">📂</button>
-      <input type="file" id="import-file" accept=".json">
-      
-      <button class="icon-btn" id="theme-cycle-btn" title="Cycle Themes">🎨</button>
-      
-      <select class="lang-select" id="lang-select">
-        <option value="en">🇬🇧 EN</option>
-        <option value="hi">🇮🇳 HI</option>
-        <option value="ar">🇸🇦 AR</option>
-        <option value="fr">🇫🇷 FR</option>
-        <option value="es">🇪🇸 ES</option>
-        <option value="zh">🇨🇳 ZH</option>
-        <option value="de">🇩🇪 DE</option>
-      </select>
-    </div>
-  </div>
-
-  <div id="tab-stats" class="tab-pane active">
-    <div class="streak-card">
-      <div class="streak-header" id="streak-head" style="cursor: pointer;">
-        <span>🔥 70-Day Study Streak</span>
-        <div class="section-toggle" id="streak-toggle">▼</div>
-      </div>
-      <div class="collapsible-body" id="streak-body">
-        <div class="heatmap-scroll" id="heatmap-scroll">
-          <div class="heatmap-grid" id="heatmap-grid"></div>
-        </div>
-      </div>
-    </div>
+  <div class="page">
     
-    <div id="trackers"></div>
-    <button class="add-btn" id="add-btn">＋ <span id="add-label">Add another tracker</span></button>
-  </div>
-
-  <div id="tab-timer" class="tab-pane">
-    <div class="pomo-card">
-      <div class="pomo-header" id="pomo-head" style="cursor: pointer;">
-        <span class="pomo-title">⏱️ Focus Timer</span>
-        <div style="display:flex; gap:10px; align-items:center;">
-          <button class="pomo-settings-btn" id="pomo-settings-toggle" onclick="event.stopPropagation()">⚙️</button>
-          <div class="section-toggle" id="pomo-toggle">▼</div>
-        </div>
+    <div class="topbar">
+      <h1>Date Progress</h1>
+      <div class="topbar-actions">
+        <button class="icon-btn" id="export-btn" title="Export Data to JSON">💾</button>
+        <label class="icon-btn" title="Import Data from JSON" style="cursor: pointer;">
+          📂
+          <input type="file" id="import-file" style="display:none" accept=".json">
+        </label>
       </div>
-      <div class="collapsible-body" id="pomo-body">
-        <div class="pomo-display" id="pomo-display">45:00</div>
-        <div class="pomo-status" id="pomo-status">Ready to Study</div>
+    </div>
+
+    <div id="tab-home" class="tab-pane active">
+      
+      <div class="checklist-card">
+        <h3 class="topic-section-title" style="margin-bottom: 10px;">Daily Checklist</h3>
+        <div class="cl-list" id="checklist">
+          </div>
+        <button class="add-btn" id="add-task-btn">+ Add Task</button>
+      </div>
+
+    </div>
+
+    <div id="tab-focus" class="tab-pane">
+      <div class="pomo-card">
+        <div class="pomo-header">
+          <span class="pomo-title">Pomodoro Timer</span>
+        </div>
+        <div class="pomo-display">25:00</div>
+        <div class="pomo-status">Focus Time</div>
         <div class="pomo-controls">
-          <button class="pomo-btn primary" id="pomo-start">Start</button>
-          <button class="pomo-btn" id="pomo-reset">Reset</button>
-        </div>
-        <div class="pomo-settings" id="pomo-settings">
-          <div class="pomo-input-group">
-            <label>Work (min)</label>
-            <input type="number" id="pomo-work-in" class="pomo-input" value="45" min="1" max="120">
-          </div>
-          <div class="pomo-input-group">
-            <label>Break (min)</label>
-            <input type="number" id="pomo-break-in" class="pomo-input" value="10" min="1" max="30">
-          </div>
+          <button class="pomo-btn primary">Start</button>
+          <button class="pomo-btn">Reset</button>
         </div>
       </div>
     </div>
+
+    <div class="bottom-nav">
+      <button class="nav-btn active" onclick="switchTab('tab-home', this)">
+        <span class="nav-icon">📋</span> Home
+      </button>
+      <button class="nav-btn" onclick="switchTab('tab-focus', this)">
+        <span class="nav-icon">⏱️</span> Focus
+      </button>
+    </div>
+
   </div>
 
-  <div id="tab-topics" class="tab-pane">
-    <div class="topic-section" id="topic-section">
-      <div class="topic-section-header">
-        <div class="topic-section-title">📚 Topic Tracker</div>
-        <button class="topic-add-sub-btn" id="topic-add-sub-btn">＋ Add Subject</button>
-      </div>
-      <div class="topic-daily-bar">
-        <span>Daily goal</span>
-        <input class="topic-daily-goal-input" id="topic-goal-input" type="number" min="1" max="30" value="3">
-        <span style="font-size:0.72rem;color:var(--muted)">topics/day</span>
-        <div class="topic-today-progress"><div class="topic-today-fill" id="topic-today-fill"></div></div>
-        <span class="topic-daily-count" id="topic-today-count">0/3</span>
-      </div>
-      <div id="subjects-container">
-        <div class="topic-empty" id="topic-empty-msg">Add a subject to start tracking topics</div>
-      </div>
-      <div class="topic-reset-notice" id="topic-reset-notice"></div>
-    </div>
-
-    <div class="topic-section">
-      <div class="topic-section-header">
-        <div class="topic-section-title">📖 Flashcards</div>
-        <button class="topic-add-sub-btn" id="fc-add-deck-btn">＋ New Deck</button>
-      </div>
+  <script>
+    // ════ TAB SWITCHING LOGIC ════
+    function switchTab(tabId, element) {
+      // Hide all tabs & remove active state from buttons
+      document.querySelectorAll('.tab-pane').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
       
-      <div id="fc-decks-list"></div>
-      
-      <div class="add-topic-row" id="fc-new-deck-row" style="display:none; padding:0; margin-bottom:10px;">
-        <input type="text" id="fc-new-deck-in" class="add-topic-input" placeholder="Deck name (e.g. Physics)">
-        <button id="fc-save-deck-btn" class="add-topic-btn">Save</button>
-      </div>
-      
-      <div class="fc-editor" id="fc-editor">
-        <div style="font-size:0.75rem; color:var(--muted); margin-bottom:8px;" id="fc-editor-title">Add to Deck</div>
-        <input type="text" id="fc-q-in" class="fc-input" placeholder="Question (Front)">
-        <input type="text" id="fc-a-in" class="fc-input" placeholder="Answer (Back)">
-        <button class="fc-save-btn" id="fc-save-card-btn">Add Card</button>
-        <button class="fc-save-btn" id="fc-close-editor-btn" style="background:none; border:1px solid var(--border); color:var(--muted); margin-top:5px;">Done Adding</button>
-      </div>
-
-      <div class="fc-flip-container" id="fc-flip-container">
-        <div class="fc-flip-inner">
-          <div class="fc-front" id="fc-front-text">Question</div>
-          <div class="fc-back" id="fc-back-text">Answer</div>
-        </div>
-      </div>
-      <div class="fc-review-controls" id="fc-review-controls">
-        <button class="fc-btn fc-btn-hard" id="fc-btn-hard">🔴 Hard (Review Today)</button>
-        <button class="fc-btn fc-btn-easy" id="fc-btn-easy">🟢 Easy (Got It)</button>
-      </div>
-      <button class="fc-save-btn" id="fc-end-review-btn" style="display:none; margin-top:10px; background:var(--surface2); color:var(--text); border:1px solid var(--border);">Back to Decks</button>
-
-    </div>
-  </div>
-
-  <div id="tab-plan" class="tab-pane">
-    <div class="tt-card">
-      <div class="tt-header" id="tt-head" style="cursor: pointer;">
-        <div class="tt-title">🗓️ Daily Time Table</div>
-        <div class="section-toggle" id="tt-toggle">▼</div>
-      </div>
-      <div class="collapsible-body" id="tt-body">
-        <div class="tt-list" id="tt-list"></div>
-        <button class="tt-add-btn" id="tt-add-btn">+ Add Block</button>
-      </div>
-    </div>
-
-    <div class="checklist-card">
-      <div class="tt-header" style="margin-bottom:0.5rem;">
-        <div class="tt-title">✅ Daily Checklist</div>
-        <div style="font-size:0.65rem; color:var(--muted)" id="cl-date-display"></div>
-      </div>
-      <div style="font-size:0.65rem; color:var(--muted); margin-bottom:10px; text-align:right;">Resets automatically at midnight</div>
-      
-      <div class="cl-list" id="cl-list"></div>
-      
-      <div class="add-topic-row" style="padding:0; margin-top:10px;">
-        <input type="text" id="cl-input" class="add-topic-input" placeholder="Add a new task...">
-        <button id="cl-add-btn" class="add-topic-btn">+ Add</button>
-      </div>
-    </div>
-  </div>
-
-</div>
-
-<nav class="bottom-nav">
-  <button class="nav-btn active" data-tab="tab-stats">
-    <span class="nav-icon">📈</span><span>Stats</span>
-  </button>
-  <button class="nav-btn" data-tab="tab-timer">
-    <span class="nav-icon">⏱️</span><span>Focus</span>
-  </button>
-  <button class="nav-btn" data-tab="tab-topics">
-    <span class="nav-icon">📚</span><span>Study</span>
-  </button>
-  <button class="nav-btn" data-tab="tab-plan">
-    <span class="nav-icon">🗓️</span><span>Plan</span>
-  </button>
-</nav>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-<script>
-
-// ══════════════════════════════════════════════
-//  BOTTOM NAVIGATION TAB LOGIC
-// ══════════════════════════════════════════════
-const navBtns = document.querySelectorAll('.nav-btn');
-const tabPanes = document.querySelectorAll('.tab-pane');
-
-navBtns.forEach(btn => {
-  btn.addEventListener('click', () => {
-    navBtns.forEach(b => b.classList.remove('active'));
-    tabPanes.forEach(p => p.classList.remove('active'));
-    
-    btn.classList.add('active');
-    const tabId = btn.getAttribute('data-tab');
-    document.getElementById(tabId).classList.add('active');
-    
-    if(tabId === 'tab-stats') {
-       const scrollContainer = document.getElementById('heatmap-scroll');
-       if(scrollContainer) scrollContainer.scrollLeft = scrollContainer.scrollWidth;
+      // Show selected tab & set button active
+      document.getElementById(tabId).classList.add('active');
+      element.classList.add('active');
     }
-  });
-});
 
-// ══════════════════════════════════════════════
-//  THEME ENGINE
-// ══════════════════════════════════════════════
-const THEMES = ['dark', 'light', 'midnight', 'forest', 'rose'];
-let currentThemeIndex = THEMES.indexOf(localStorage.getItem('dp-theme') || 'dark');
-if(currentThemeIndex === -1) currentThemeIndex = 0;
-
-function applyTheme() {
-  const t = THEMES[currentThemeIndex];
-  document.documentElement.setAttribute('data-theme', t);
-  localStorage.setItem('dp-theme', t);
-  
-  let metaColor = '#0f0f14';
-  if(t === 'light') metaColor = '#f4f3fb';
-  if(t === 'midnight') metaColor = '#0b0f19';
-  if(t === 'forest') metaColor = '#0f1712';
-  if(t === 'rose') metaColor = '#1f1316';
-  document.getElementById('theme-meta').content = metaColor;
-}
-
-document.getElementById('theme-cycle-btn').addEventListener('click', () => {
-  currentThemeIndex = (currentThemeIndex + 1) % THEMES.length;
-  applyTheme();
-});
-applyTheme();
-
-// ══════════════════════════════════════════════
-//  UI COLLAPSE LOGIC
-// ══════════════════════════════════════════════
-function setupCollapsible(headId, bodyId, toggleId, storageKey, defaultOpen) {
-  const head = document.getElementById(headId);
-  const body = document.getElementById(bodyId);
-  const toggle = document.getElementById(toggleId);
-  let isOpen = JSON.parse(localStorage.getItem(storageKey));
-  if (isOpen === null) isOpen = defaultOpen;
-
-  function updateUI() {
-    if (isOpen) {
-      body.classList.add('open');
-      body.style.display = bodyId === 'pomo-body' ? 'flex' : 'block';
-      toggle.classList.add('open');
-    } else {
-      body.classList.remove('open');
-      body.style.display = 'none';
-      toggle.classList.remove('open');
-    }
-  }
-  updateUI();
-
-  head.addEventListener('click', () => {
-    isOpen = !isOpen;
-    localStorage.setItem(storageKey, JSON.stringify(isOpen));
-    updateUI();
-  });
-}
-setupCollapsible('streak-head', 'streak-body', 'streak-toggle', 'ui-streak-open', true);
-setupCollapsible('pomo-head', 'pomo-body', 'pomo-toggle', 'ui-pomo-open', true);
-setupCollapsible('tt-head', 'tt-body', 'tt-toggle', 'ui-tt-open', true);
-
-// ══════════════════════════════════════════════
-//  TRANSLATIONS & STATE
-// ══════════════════════════════════════════════
-const T = {
-  en: { title:'Date Progress', start:'Start date', end:'End date', elapsed:'Elapsed', remaining:'Remaining', total:'Total', addTracker:'Add another tracker', label:'Label', pickDates:'pick dates', notStarted:'Not started yet', complete:'✓ Complete', almostDone:'Almost done', pastHalf:'Past halfway', inProgress:'In progress', waitDates:'Waiting for dates', endBeforeStart:'End must be after start', days:'d', share:'Share', screenshot:'Screenshot', weekBreak:'Monthly breakdown', reminder:'Remind at', remindNone:'Off', remindBefore7:'7 days left', remindBefore14:'14 days left', remindBefore30:'30 days left', remindActive:'⚠ Deadline soon!', themeToggle:'theme' },
-  hi: { title:'दिनांक प्रगति', start:'प्रारंभ तिथि', end:'समाप्ति तिथि', elapsed:'बीता', remaining:'शेष', total:'कुल', addTracker:'और ट्रैकर जोड़ें', label:'नाम', pickDates:'तिथियाँ चुनें', notStarted:'अभी शुरू नहीं', complete:'✓ पूर्ण', almostDone:'लगभग हो गया', pastHalf:'आधे से ज़्यादा', inProgress:'जारी है', waitDates:'तिथियों की प्रतीक्षा', endBeforeStart:'समाप्ति बाद में होनी चाहिए', days:'दि', share:'शेयर', screenshot:'स्क्रीनशॉट', weekBreak:'मासिक विवरण', reminder:'याद दिलाएं', remindNone:'बंद', remindBefore7:'7 दिन बचे', remindBefore14:'14 दिन बचे', remindBefore30:'30 दिन बचे', remindActive:'⚠ समय सीमा नज़दीक!', themeToggle:'थीम' },
-  ar: { title:'تتبع التاريخ', start:'تاريخ البدء', end:'تاريخ الانتهاء', elapsed:'مضى', remaining:'متبقي', total:'المجموع', addTracker:'إضافة متتبع', label:'تسمية', pickDates:'اختر تواريخ', notStarted:'لم يبدأ بعد', complete:'✓ مكتمل', almostDone:'على وشك الانتهاء', pastHalf:'تجاوز النصف', inProgress:'قيد التنفيذ', waitDates:'في انتظار التواريخ', endBeforeStart:'النهاية يجب أن تكون بعد البداية', days:'ي', share:'مشاركة', screenshot:'لقطة', weekBreak:'تفاصيل شهرية', reminder:'تذكير', remindNone:'إيقاف', remindBefore7:'7 أيام متبقية', remindBefore14:'14 يومًا', remindBefore30:'30 يومًا', remindActive:'⚠ الموعد قريب!', themeToggle:'سمة' },
-  fr: { title:'Suivi de dates', start:'Date de début', end:'Date de fin', elapsed:'Écoulé', remaining:'Restant', total:'Total', addTracker:'Ajouter un suivi', label:'Nom', pickDates:'choisir les dates', notStarted:'Pas encore commencé', complete:'✓ Terminé', almostDone:'Presque fini', pastHalf:'Passé la moitié', inProgress:'En cours', waitDates:'En attente de dates', endBeforeStart:'La fin doit être après le début', days:'j', share:'Partager', screenshot:'Capture', weekBreak:'Répartition mensuelle', reminder:'Rappel', remindNone:'Désactivé', remindBefore7:'7 jours restants', remindBefore14:'14 jours', remindBefore30:'30 jours', remindActive:'⚠ Échéance proche!', themeToggle:'thème' },
-  es: { title:'Progreso de fecha', start:'Fecha inicio', end:'Fecha fin', elapsed:'Transcurrido', remaining:'Restante', total:'Total', addTracker:'Añadir seguimiento', label:'Nombre', pickDates:'elegir fechas', notStarted:'No iniciado', complete:'✓ Completo', almostDone:'Casi terminado', pastHalf:'Pasada la mitad', inProgress:'En progreso', waitDates:'Esperando fechas', endBeforeStart:'El fin debe ser posterior al inicio', days:'d', share:'Compartir', screenshot:'Captura', weekBreak:'Desglose mensual', reminder:'Recordatorio', remindNone:'Desactivado', remindBefore7:'7 días', remindBefore14:'14 días', remindBefore30:'30 días', remindActive:'⚠ ¡Fecha límite próxima!', themeToggle:'tema' },
-  zh: { title:'日期进度', start:'开始日期', end:'结束日期', elapsed:'已过', remaining:'剩余', total:'总计', addTracker:'添加追踪器', label:'标签', pickDates:'选择日期', notStarted:'尚未开始', complete:'✓ 完成', almostDone:'即将完成', pastHalf:'过半', inProgress:'进行中', waitDates:'等待日期', endBeforeStart:'结束日期必须晚于开始日期', days:'天', share:'分享', screenshot:'截图', weekBreak:'月度分解', reminder:'提醒', remindNone:'关闭', remindBefore7:'剩余7天', remindBefore14:'剩余14天', remindBefore30:'剩余30天', remindActive:'⚠ 截止日期临近！', themeToggle:'主题' },
-  de: { title:'Datumsfortschritt', start:'Startdatum', end:'Enddatum', elapsed:'Vergangen', remaining:'Verbleibend', total:'Gesamt', addTracker:'Tracker hinzufügen', label:'Bezeichnung', pickDates:'Daten wählen', notStarted:'Noch nicht begonnen', complete:'✓ Abgeschlossen', almostDone:'Fast fertig', pastHalf:'Über die Hälfte', inProgress:'In Bearbeitung', waitDates:'Warte auf Daten', endBeforeStart:'Ende muss nach Anfang liegen', days:'T', share:'Teilen', screenshot:'Screenshot', weekBreak:'Monatliche Übersicht', reminder:'Erinnern', remindNone:'Aus', remindBefore7:'7 Tage verbleibend', remindBefore14:'14 Tage', remindBefore30:'30 Tage', remindActive:'⚠ Frist naht!', themeToggle:'Design' }
-};
-
-const COLORS = ['#7c6af5','#f05252','#48c78e','#f0a030','#3b9eff','#f06292','#26c6da','#ff7043','#ab47bc'];
-const CIRC = 2 * Math.PI * 72;
-
-let lang = localStorage.getItem('dp-lang') || 'en';
-let trackers = JSON.parse(localStorage.getItem('dp-trackers') || 'null') || [
-  { id: 1, label: '', start: '', end: '', color: '#7c6af5', reminder: 'none' }
-];
-let nextId = Math.max(...trackers.map(t => t.id)) + 1;
-let confettiFired = new Set(JSON.parse(localStorage.getItem('dp-confetti') || '[]'));
-
-function save() {
-  localStorage.setItem('dp-trackers', JSON.stringify(trackers));
-  localStorage.setItem('dp-lang', lang);
-}
-
-function t(key) { return (T[lang] || T.en)[key] || key; }
-function applyLang() {
-  document.getElementById('app-title').textContent = '📅 ' + t('title');
-  document.getElementById('add-label').textContent = t('addTracker');
-  document.getElementById('lang-select').value = lang;
-  renderAll();
-}
-document.getElementById('lang-select').addEventListener('change', e => {
-  lang = e.target.value; save(); applyLang();
-});
-
-// ══════════════════════════════════════════════
-//  BACKUP & RESTORE
-// ══════════════════════════════════════════════
-document.getElementById('export-btn').addEventListener('click', () => {
-  const data = {
-    theme: localStorage.getItem('dp-theme'), 
-    lang: localStorage.getItem('dp-lang'),
-    trackers: localStorage.getItem('dp-trackers'), 
-    topics: localStorage.getItem('tp-data'),
-    pomo: localStorage.getItem('pomo-data'), 
-    streak: localStorage.getItem('streak-data'),
-    tt: localStorage.getItem('tt-data'), 
-    ui_pomo: localStorage.getItem('ui-pomo-open'),
-    ui_streak: localStorage.getItem('ui-streak-open'), 
-    ui_tt: localStorage.getItem('ui-tt-open'),
-    cl: localStorage.getItem('cl-data'),
-    fc: localStorage.getItem('fc-data')
-  };
-  const blob = new Blob([JSON.stringify(data)], {type: "application/json"});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a'); 
-  a.href = url; 
-  a.download = 'date-progress-backup.json';
-  a.click(); 
-  URL.revokeObjectURL(url);
-});
-
-document.getElementById('import-btn').addEventListener('click', () => { document.getElementById('import-file').click(); });
-
-document.getElementById('import-file').addEventListener('change', (e) => {
-  const file = e.target.files[0]; 
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = (ev) => {
-    try {
-      const data = JSON.parse(ev.target.result);
-      if(data.theme) localStorage.setItem('dp-theme', data.theme);
-      if(data.lang) localStorage.setItem('dp-lang', data.lang);
-      if(data.trackers) localStorage.setItem('dp-trackers', data.trackers);
-      if(data.topics) localStorage.setItem('tp-data', data.topics);
-      if(data.pomo) localStorage.setItem('pomo-data', data.pomo);
-      if(data.streak) localStorage.setItem('streak-data', data.streak);
-      if(data.tt) localStorage.setItem('tt-data', data.tt);
-      if(data.cl) localStorage.setItem('cl-data', data.cl);
-      if(data.fc) localStorage.setItem('fc-data', data.fc);
-      alert('Data restored successfully! The page will now reload.'); 
-      location.reload();
-    } catch(err) { alert('Invalid backup file.'); }
-  };
-  reader.readAsText(file);
-});
-
-// ══════════════════════════════════════════════
-//  POMODORO TIMER
-// ══════════════════════════════════════════════
-let pomoData = JSON.parse(localStorage.getItem('pomo-data')) || { work: 45, break: 10 };
-let pomoTimer = null; 
-let pomoTimeLeft = pomoData.work * 60; 
-let isWorkSession = true; 
-let isPomoRunning = false;
-
-const pomoDisplay = document.getElementById('pomo-display');
-const pomoStatus = document.getElementById('pomo-status');
-const pomoBtnStart = document.getElementById('pomo-start');
-const pomoBtnReset = document.getElementById('pomo-reset');
-const pomoWorkIn = document.getElementById('pomo-work-in');
-const pomoBreakIn = document.getElementById('pomo-break-in');
-
-pomoWorkIn.value = pomoData.work; 
-pomoBreakIn.value = pomoData.break;
-
-document.getElementById('pomo-settings-toggle').addEventListener('click', () => { 
-  document.getElementById('pomo-settings').classList.toggle('open'); 
-});
-
-[pomoWorkIn, pomoBreakIn].forEach(inp => {
-  inp.addEventListener('change', () => {
-    pomoData = { work: parseInt(pomoWorkIn.value)||25, break: parseInt(pomoBreakIn.value)||5 };
-    localStorage.setItem('pomo-data', JSON.stringify(pomoData));
-    if(!isPomoRunning) resetPomo();
-  });
-});
-
-function updatePomoDisplay() {
-  const m = Math.floor(pomoTimeLeft / 60).toString().padStart(2, '0');
-  const s = (pomoTimeLeft % 60).toString().padStart(2, '0');
-  pomoDisplay.textContent = `${m}:${s}`; 
-  document.title = `${m}:${s} - Date Progress`;
-}
-
-function resetPomo() {
-  clearInterval(pomoTimer); 
-  isPomoRunning = false; 
-  isWorkSession = true;
-  pomoTimeLeft = pomoData.work * 60; 
-  pomoStatus.textContent = "Ready to Study";
-  pomoStatus.style.color = "var(--accent)"; 
-  pomoBtnStart.textContent = "Start";
-  updatePomoDisplay(); 
-  document.title = "Date Progress Tracker";
-}
-
-pomoBtnStart.addEventListener('click', () => {
-  if (isPomoRunning) { 
-    clearInterval(pomoTimer); 
-    isPomoRunning = false; 
-    pomoBtnStart.textContent = "Resume";
-  } else {
-    isPomoRunning = true; 
-    pomoBtnStart.textContent = "Pause";
-    pomoStatus.textContent = isWorkSession ? "Focusing..." : "Taking a Break!";
-    pomoTimer = setInterval(() => {
-      pomoTimeLeft--; 
-      updatePomoDisplay();
-      if (pomoTimeLeft <= 0) {
-        clearInterval(pomoTimer); 
-        isPomoRunning = false;
-        const ctx = new (window.AudioContext || window.webkitAudioContext)();
-        const osc = ctx.createOscillator(); 
-        osc.type = 'sine'; 
-        osc.frequency.setValueAtTime(440, ctx.currentTime);
-        osc.connect(ctx.destination); 
-        osc.start(); 
-        osc.stop(ctx.currentTime + 0.5);
-        
-        isWorkSession = !isWorkSession; 
-        pomoTimeLeft = (isWorkSession ? pomoData.work : pomoData.break) * 60;
-        pomoStatus.textContent = isWorkSession ? "Ready to Focus" : "Time for a Break!";
-        pomoStatus.style.color = isWorkSession ? "var(--accent)" : "#48c78e";
-        pomoBtnStart.textContent = "Start " + (isWorkSession ? "Work" : "Break"); 
-        updatePomoDisplay();
-      }
-    }, 1000);
-  }
-});
-pomoBtnReset.addEventListener('click', resetPomo); 
-updatePomoDisplay();
-
-// ══════════════════════════════════════════════
-//  TIMETABLE LOGIC
-// ══════════════════════════════════════════════
-function loadTTData() {
-  let data = JSON.parse(localStorage.getItem('tt-data'));
-  if (!data || data.length === 0) {
-    data = [
-      { id: Date.now()+1, start: "06:20", end: "07:30", label: "Wake up & Morning Routine", color: "#f0a030" },
-      { id: Date.now()+2, start: "07:45", end: "14:00", label: "School", color: "#7c6af5" },
-      { id: Date.now()+3, start: "14:30", end: "16:00", label: "Rest / Snack", color: "#3b9eff" },
-      { id: Date.now()+4, start: "16:00", end: "18:00", label: "Study Block 1", color: "#48c78e" }
-    ];
-  }
-  return data;
-}
-
-function renderTimeTable() {
-  const data = loadTTData();
-  const list = document.getElementById('tt-list');
-  list.innerHTML = '';
-  
-  data.sort((a,b) => a.start.localeCompare(b.start)).forEach((block, index) => {
-    const row = document.createElement('div'); row.className = 'tt-row';
-    const dotWrap = document.createElement('div'); dotWrap.style.position = 'relative';
-    const dot = document.createElement('div'); dot.className = 'tt-color'; dot.style.background = block.color;
+    // ════ DATA PERSISTENCE (LocalStorage) ════
     
-    const popup = document.createElement('div'); popup.className = 'color-popup';
-    COLORS.forEach(c => {
-      const sw = document.createElement('div'); sw.className = 'cp-swatch'; sw.style.background = c;
-      if(c === block.color) sw.classList.add('selected');
-      sw.addEventListener('click', (e) => {
-        e.stopPropagation(); block.color = c; localStorage.setItem('tt-data', JSON.stringify(data));
-        renderTimeTable();
+    // Load existing data or set defaults
+    let appData = JSON.parse(localStorage.getItem('dateProgressData')) || {
+      tasks: [
+        { id: 1, text: 'Drink Water', done: false },
+        { id: 2, text: 'Read for 20 mins', done: true }
+      ]
+    };
+
+    function saveData() {
+      // Save to local browser storage so it survives refresh
+      localStorage.setItem('dateProgressData', JSON.stringify(appData));
+      renderTasks();
+    }
+
+    // Render Checklist UI
+    function renderTasks() {
+      const list = document.getElementById('checklist');
+      list.innerHTML = ''; // Clear list
+      
+      appData.tasks.forEach((task, index) => {
+        const div = document.createElement('div');
+        div.className = 'cl-item';
+        div.innerHTML = `
+          <div class="cl-check ${task.done ? 'checked' : ''}" onclick="toggleTask(${index})"></div>
+          <input class="cl-text ${task.done ? 'done' : ''}" type="text" value="${task.text}" onchange="updateTask(${index}, this.value)">
+          <button class="cl-del" onclick="deleteTask(${index})">✕</button>
+        `;
+        list.appendChild(div);
       });
-      popup.appendChild(sw);
-    });
-    dot.addEventListener('click', e => { e.stopPropagation(); popup.classList.toggle('open'); });
-    document.addEventListener('click', () => popup.classList.remove('open'));
-    dotWrap.append(dot, popup);
-
-    const startIn = document.createElement('input'); startIn.type = 'time'; startIn.className = 'tt-time-input';
-    startIn.value = block.start;
-    startIn.addEventListener('change', () => { block.start = startIn.value; localStorage.setItem('tt-data', JSON.stringify(data)); renderTimeTable(); });
-
-    const span = document.createElement('span'); span.textContent = '-'; span.style.color = 'var(--muted)';
-
-    const endIn = document.createElement('input'); endIn.type = 'time'; endIn.className = 'tt-time-input';
-    endIn.value = block.end;
-    endIn.addEventListener('change', () => { block.end = endIn.value; localStorage.setItem('tt-data', JSON.stringify(data)); renderTimeTable(); });
-
-    const lblIn = document.createElement('input'); lblIn.type = 'text'; lblIn.className = 'tt-label-input';
-    lblIn.value = block.label; lblIn.placeholder = "Activity name...";
-    lblIn.addEventListener('input', () => { block.label = lblIn.value; localStorage.setItem('tt-data', JSON.stringify(data)); });
-
-    const delBtn = document.createElement('button'); delBtn.className = 'tt-del-btn'; delBtn.textContent = '×';
-    delBtn.addEventListener('click', () => {
-      data.splice(index, 1); localStorage.setItem('tt-data', JSON.stringify(data)); renderTimeTable();
-    });
-
-    row.append(dotWrap, startIn, span, endIn, lblIn, delBtn);
-    list.appendChild(row);
-  });
-}
-
-document.getElementById('tt-add-btn').addEventListener('click', () => {
-  const data = loadTTData();
-  data.push({ id: Date.now(), start: "18:00", end: "19:00", label: "", color: COLORS[data.length % COLORS.length] });
-  localStorage.setItem('tt-data', JSON.stringify(data));
-  renderTimeTable();
-});
-renderTimeTable();
-
-// ══════════════════════════════════════════════
-//  DAILY CHECKLIST LOGIC
-// ══════════════════════════════════════════════
-function loadCLData() {
-  let data = JSON.parse(localStorage.getItem('cl-data')) || { date: '', tasks: [] };
-  const today = todayStr();
-  if (data.date !== today) {
-    data.date = today;
-    data.tasks.forEach(t => t.done = false); 
-    localStorage.setItem('cl-data', JSON.stringify(data));
-  }
-  return data;
-}
-
-function renderChecklist() {
-  const data = loadCLData();
-  document.getElementById('cl-date-display').textContent = new Date().toLocaleDateString(undefined, { weekday:'long', month:'short', day:'numeric' });
-  const list = document.getElementById('cl-list');
-  list.innerHTML = '';
-
-  data.tasks.forEach((task, index) => {
-    const item = document.createElement('div');
-    item.className = 'cl-item';
-
-    const chk = document.createElement('div');
-    chk.className = 'cl-check' + (task.done ? ' checked' : '');
-    
-    const inp = document.createElement('input');
-    inp.type = 'text';
-    inp.className = 'cl-text' + (task.done ? ' done' : '');
-    inp.value = task.text;
-    inp.addEventListener('input', () => { task.text = inp.value; localStorage.setItem('cl-data', JSON.stringify(data)); });
-
-    chk.addEventListener('click', () => {
-      task.done = !task.done;
-      chk.classList.toggle('checked', task.done);
-      inp.classList.toggle('done', task.done);
-      localStorage.setItem('cl-data', JSON.stringify(data));
-    });
-
-    const del = document.createElement('button');
-    del.className = 'cl-del';
-    del.innerHTML = '×';
-    del.addEventListener('click', () => {
-      data.tasks.splice(index, 1);
-      localStorage.setItem('cl-data', JSON.stringify(data));
-      renderChecklist();
-    });
-
-    item.append(chk, inp, del);
-    list.appendChild(item);
-  });
-}
-
-document.getElementById('cl-add-btn').addEventListener('click', addClTask);
-document.getElementById('cl-input').addEventListener('keydown', e => { if (e.key === 'Enter') addClTask(); });
-
-function addClTask() {
-  const inp = document.getElementById('cl-input');
-  const text = inp.value.trim();
-  if (!text) return;
-  const data = loadCLData();
-  data.tasks.push({ text: text, done: false });
-  localStorage.setItem('cl-data', JSON.stringify(data));
-  inp.value = '';
-  renderChecklist();
-}
-renderChecklist();
-
-// ══════════════════════════════════════════════
-//  HEATMAP STREAK LOGIC
-// ══════════════════════════════════════════════
-function todayStr() { const d = new Date(); return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); }
-
-function renderHeatmap() {
-  const streakData = JSON.parse(localStorage.getItem('streak-data') || '{}');
-  const grid = document.getElementById('heatmap-grid');
-  grid.innerHTML = '';
-  
-  const today = new Date();
-  for(let i=69; i>=0; i--) {
-    const d = new Date(today); 
-    d.setDate(d.getDate() - i);
-    const dStr = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
-    
-    const cell = document.createElement('div');
-    cell.className = 'heatmap-cell' + (streakData[dStr] ? ' done' : '');
-    cell.title = dStr + (streakData[dStr] ? ' (Goal Met)' : '');
-    grid.appendChild(cell);
-  }
-}
-setTimeout(renderHeatmap, 100);
-
-// ══════════════════════════════════════════════
-//  FLASHCARD LOGIC
-// ══════════════════════════════════════════════
-function loadFCData() { return JSON.parse(localStorage.getItem('fc-data')) || []; }
-function saveFCData(data) { localStorage.setItem('fc-data', JSON.stringify(data)); }
-
-let currentDeckIndex = -1;
-let currentReviewQueue = [];
-
-function renderFCDecks() {
-  const data = loadFCData();
-  const list = document.getElementById('fc-decks-list');
-  list.innerHTML = '';
-  
-  data.forEach((deck, i) => {
-    const now = Date.now();
-    const dueCount = deck.cards.filter(c => c.nextReview <= now).length;
-    
-    const row = document.createElement('div');
-    row.className = 'fc-deck-row';
-    
-    const info = document.createElement('div');
-    info.className = 'fc-deck-info';
-    info.innerHTML = `<h4>${deck.name}</h4><span>${deck.cards.length} cards · <b style="color:${dueCount>0?'var(--hard)':'var(--easy)'}">${dueCount} due</b></span>`;
-    
-    const actions = document.createElement('div');
-    
-    const addBtn = document.createElement('button');
-    addBtn.className = 'fc-review-btn';
-    addBtn.style.background = 'var(--surface2)';
-    addBtn.style.border = '1px solid var(--border)';
-    addBtn.style.color = 'var(--text)';
-    addBtn.style.marginRight = '5px';
-    addBtn.textContent = '+ Add';
-    addBtn.onclick = (e) => { e.stopPropagation(); openFCEditor(i); };
-
-    const revBtn = document.createElement('button');
-    revBtn.className = 'fc-review-btn';
-    revBtn.textContent = 'Review';
-    if(dueCount === 0) { revBtn.style.opacity = '0.5'; revBtn.textContent = 'Done'; }
-    revBtn.onclick = (e) => { e.stopPropagation(); startReview(i); };
-    
-    const delBtn = document.createElement('button');
-    delBtn.className = 'fc-del-deck';
-    delBtn.innerHTML = '×';
-    delBtn.onclick = (e) => { e.stopPropagation(); if(confirm('Delete deck?')) { data.splice(i,1); saveFCData(data); renderFCDecks(); } };
-
-    actions.append(addBtn, revBtn, delBtn);
-    row.append(info, actions);
-    list.appendChild(row);
-  });
-}
-
-document.getElementById('fc-add-deck-btn').onclick = () => {
-  const row = document.getElementById('fc-new-deck-row');
-  row.style.display = row.style.display === 'none' ? 'flex' : 'none';
-};
-document.getElementById('fc-save-deck-btn').onclick = () => {
-  const inp = document.getElementById('fc-new-deck-in');
-  if(!inp.value.trim()) return;
-  const data = loadFCData();
-  data.push({ name: inp.value.trim(), cards: [] });
-  saveFCData(data);
-  inp.value = '';
-  document.getElementById('fc-new-deck-row').style.display = 'none';
-  renderFCDecks();
-};
-
-function openFCEditor(deckIndex) {
-  currentDeckIndex = deckIndex;
-  const data = loadFCData();
-  document.getElementById('fc-editor-title').textContent = "Adding to: " + data[deckIndex].name;
-  document.getElementById('fc-editor').classList.add('open');
-}
-document.getElementById('fc-close-editor-btn').onclick = () => {
-  document.getElementById('fc-editor').classList.remove('open');
-  renderFCDecks();
-};
-document.getElementById('fc-save-card-btn').onclick = () => {
-  const qIn = document.getElementById('fc-q-in');
-  const aIn = document.getElementById('fc-a-in');
-  if(!qIn.value.trim() || !aIn.value.trim()) return;
-  const data = loadFCData();
-  data[currentDeckIndex].cards.push({ q: qIn.value.trim(), a: aIn.value.trim(), nextReview: 0 }); 
-  saveFCData(data);
-  qIn.value = ''; aIn.value = '';
-  qIn.focus();
-};
-
-function startReview(deckIndex) {
-  const data = loadFCData();
-  const now = Date.now();
-  currentDeckIndex = deckIndex;
-  currentReviewQueue = data[deckIndex].cards.filter(c => c.nextReview <= now);
-  if(currentReviewQueue.length === 0) return alert('No cards due right now!');
-  
-  document.getElementById('fc-decks-list').style.display = 'none';
-  document.getElementById('fc-add-deck-btn').style.display = 'none';
-  document.getElementById('fc-flip-container').style.display = 'block';
-  document.getElementById('fc-end-review-btn').style.display = 'block';
-  
-  showNextCard();
-}
-
-function showNextCard() {
-  if(currentReviewQueue.length === 0) {
-    endReview();
-    return;
-  }
-  const card = currentReviewQueue[0];
-  document.getElementById('fc-front-text').textContent = card.q;
-  document.getElementById('fc-back-text').textContent = card.a;
-  document.getElementById('fc-flip-container').classList.remove('flipped');
-  document.getElementById('fc-review-controls').style.display = 'none';
-}
-
-document.getElementById('fc-flip-container').onclick = function() {
-  if(currentReviewQueue.length === 0) return;
-  this.classList.toggle('flipped');
-  if(this.classList.contains('flipped')) {
-    document.getElementById('fc-review-controls').style.display = 'flex';
-  } else {
-    document.getElementById('fc-review-controls').style.display = 'none';
-  }
-};
-
-document.getElementById('fc-btn-hard').onclick = () => {
-  const card = currentReviewQueue.shift();
-  currentReviewQueue.push(card);
-  showNextCard();
-};
-
-document.getElementById('fc-btn-easy').onclick = () => {
-  const cardToUpdate = currentReviewQueue.shift();
-  const data = loadFCData();
-  const deck = data[currentDeckIndex];
-  const realCard = deck.cards.find(c => c.q === cardToUpdate.q && c.a === cardToUpdate.a);
-  if(realCard) {
-    realCard.nextReview = Date.now() + (86400000); 
-  }
-  saveFCData(data);
-  showNextCard();
-};
-
-function endReview() {
-  document.getElementById('fc-decks-list').style.display = 'block';
-  document.getElementById('fc-add-deck-btn').style.display = 'block';
-  document.getElementById('fc-flip-container').style.display = 'none';
-  document.getElementById('fc-review-controls').style.display = 'none';
-  document.getElementById('fc-end-review-btn').style.display = 'none';
-  renderFCDecks();
-}
-document.getElementById('fc-end-review-btn').onclick = endReview;
-
-renderFCDecks();
-
-// ══════════════════════════════════════════════
-//  MAIN TRACKERS & UTILS
-// ══════════════════════════════════════════════
-function buildBreakdown(container, start, end, now, pct, color) {
-  container.innerHTML = '';
-  if (!start || !end || end <= start) return;
-  const total = Math.round((end - start) / 86400000); if (total < 7) return;
-  const title = document.createElement('div'); title.className = 'breakdown-title'; title.textContent = t('weekBreak'); container.appendChild(title);
-  const grid = document.createElement('div'); grid.className = 'months-grid';
-  const segments = Math.min(12, Math.ceil(total / 30)); const segSize = total / segments;
-  for (let i = 0; i < segments; i++) {
-    const segStart = new Date(start.getTime() + i * segSize * 86400000); const segEnd   = new Date(start.getTime() + (i+1) * segSize * 86400000);
-    const cell = document.createElement('div'); cell.className = 'month-cell';
-    const mn = segStart.toLocaleString(lang === 'en' ? 'en' : lang, {month:'short'});
-    cell.textContent = mn; cell.title = segStart.toLocaleDateString() + ' – ' + segEnd.toLocaleDateString();
-    if (now >= segEnd) { cell.classList.add('filled'); cell.style.background = color; } 
-    else if (now >= segStart) {
-      const segPct = (now - segStart) / (segEnd - segStart); cell.classList.add('partial');
-      cell.style.background = `linear-gradient(90deg, ${color} ${Math.round(segPct*100)}%, var(--surface2) ${Math.round(segPct*100)}%)`;
-      cell.style.color = segPct > 0.4 ? '#fff' : 'var(--muted)';
     }
-    grid.appendChild(cell);
-  }
-  container.appendChild(grid);
-}
 
-function shareTracker(tracker) {
-  const pct = getTrackerPct(tracker);
-  const text = `📅 ${tracker.label || t('title')}: ${pct}% ${t('elapsed')} — ${tracker.start} → ${tracker.end}`;
-  if (navigator.share) navigator.share({ title: t('title'), text }); else navigator.clipboard.writeText(text).then(() => alert('Copied to clipboard!'));
-}
+    function toggleTask(index) {
+      appData.tasks[index].done = !appData.tasks[index].done;
+      saveData();
+    }
 
-async function screenshotTracker(cardEl) {
-  if (typeof html2canvas === 'undefined') { alert('Screenshot library not loaded.'); return; }
-  const canvas = await html2canvas(cardEl, { backgroundColor: null, scale: 2 });
-  const link = document.createElement('a'); link.download = 'date-progress.png'; link.href = canvas.toDataURL(); link.click();
-}
+    function updateTask(index, newText) {
+      appData.tasks[index].text = newText;
+      saveData();
+    }
 
-function getTrackerPct(tracker) {
-  if (!tracker.start || !tracker.end) return 0;
-  const s = new Date(tracker.start), e = new Date(tracker.end); if (e <= s) return 0;
-  const now = new Date(); now.setHours(0,0,0,0); const total = Math.round((e - s) / 86400000);
-  const elapsed = Math.max(0, Math.min(total, Math.round((now - s) / 86400000))); return Math.round((elapsed / total) * 100);
-}
+    function deleteTask(index) {
+      appData.tasks.splice(index, 1);
+      saveData();
+    }
 
-function checkReminder(tracker) {
-  if (!tracker.end || tracker.reminder === 'none') return false;
-  const now = new Date(); now.setHours(0,0,0,0); const end = new Date(tracker.end);
-  const daysLeft = Math.round((end - now) / 86400000); return daysLeft >= 0 && daysLeft <= parseInt(tracker.reminder);
-}
-
-function renderTracker(tracker) {
-  const card = document.createElement('div'); card.className = 'card'; card.id = 'card-' + tracker.id;
-
-  const hdr = document.createElement('div'); hdr.className = 'card-header';
-  const dotWrap = document.createElement('div'); dotWrap.style.position = 'relative';
-  const dot = document.createElement('div'); dot.className = 'color-dot'; dot.style.background = tracker.color; dot.title = 'Pick color';
-  const popup = document.createElement('div'); popup.className = 'color-popup';
-  COLORS.forEach(c => {
-    const sw = document.createElement('div'); sw.className = 'cp-swatch' + (c === tracker.color ? ' selected' : ''); sw.style.background = c;
-    sw.addEventListener('click', () => {
-      tracker.color = c; dot.style.background = c; popup.querySelectorAll('.cp-swatch').forEach(s => s.classList.remove('selected'));
-      sw.classList.add('selected'); popup.classList.remove('open'); save(); updateTrackerUI(tracker);
+    // Event listener for Add Task button
+    document.getElementById('add-task-btn').addEventListener('click', () => {
+      appData.tasks.push({ id: Date.now(), text: '', done: false });
+      saveData();
     });
-    popup.appendChild(sw);
-  });
-  dot.addEventListener('click', e => { e.stopPropagation(); popup.classList.toggle('open'); });
-  document.addEventListener('click', () => popup.classList.remove('open'));
-  dotWrap.appendChild(dot); dotWrap.appendChild(popup);
 
-  const labelInput = document.createElement('input'); labelInput.className = 'tracker-label'; labelInput.type = 'text'; labelInput.placeholder = t('label') + '…'; labelInput.value = tracker.label;
-  labelInput.addEventListener('input', () => { tracker.label = labelInput.value; save(); });
+    // ════ EXPORT / IMPORT LOGIC ════
 
-  const delBtn = document.createElement('button'); delBtn.className = 'delete-btn'; delBtn.textContent = '×'; delBtn.title = 'Delete';
-  delBtn.addEventListener('click', () => { trackers = trackers.filter(t => t.id !== tracker.id); save(); renderAll(); });
-
-  hdr.appendChild(dotWrap); hdr.appendChild(labelInput); hdr.appendChild(delBtn); card.appendChild(hdr);
-
-  const inputs = document.createElement('div'); inputs.className = 'inputs';
-  ['start','end'].forEach(key => {
-    const f = document.createElement('div'); f.className = 'field'; const lbl = document.createElement('label'); lbl.textContent = t(key);
-    const inp = document.createElement('input'); inp.type = 'date'; inp.value = tracker[key];
-    inp.addEventListener('change', () => { tracker[key] = inp.value; save(); updateTrackerUI(tracker); });
-    f.appendChild(lbl); f.appendChild(inp); inputs.appendChild(f);
-  });
-  card.appendChild(inputs);
-
-  const ringSection = document.createElement('div'); ringSection.className = 'ring-section';
-  const ringWrap = document.createElement('div'); ringWrap.className = 'ring-wrap';
-  ringWrap.innerHTML = `<svg width="160" height="160" viewBox="0 0 160 160"><circle cx="80" cy="80" r="64" fill="none" stroke="var(--border)" stroke-width="13"/><circle class="arc" cx="80" cy="80" r="64" fill="none" stroke="${tracker.color}" stroke-width="13" stroke-linecap="round" stroke-dasharray="${CIRC}" stroke-dashoffset="${CIRC}" style="transition:stroke-dashoffset 0.6s cubic-bezier(0.4,0,0.2,1),stroke 0.4s;"/></svg><div class="ring-center"><div class="ring-pct">—</div><div class="ring-lbl">${t('pickDates')}</div></div>`;
-  ringSection.appendChild(ringWrap);
-
-  const barWrap = document.createElement('div'); barWrap.className = 'bar-wrap';
-  const barFill = document.createElement('div'); barFill.className = 'bar-fill'; barFill.style.background = tracker.color;
-  barWrap.appendChild(barFill); ringSection.appendChild(barWrap);
-
-  const badge = document.createElement('div'); badge.className = 'status-badge'; badge.textContent = t('waitDates');
-  ringSection.appendChild(badge); card.appendChild(ringSection);
-
-  const stats = document.createElement('div'); stats.className = 'stats';
-  ['elapsed','remaining','total'].forEach(key => {
-    const s = document.createElement('div'); s.className = 'stat'; s.innerHTML = `<div class="stat-num">—</div><div class="stat-name">${t(key)}</div>`; stats.appendChild(s);
-  });
-  card.appendChild(stats);
-
-  const breakdown = document.createElement('div'); breakdown.className = 'breakdown'; card.appendChild(breakdown);
-
-  const remRow = document.createElement('div'); remRow.className = 'reminder-row';
-  const remLabel = document.createElement('label'); remLabel.textContent = t('reminder') + ':';
-  const remSelect = document.createElement('select'); remSelect.className = 'reminder-select';
-  [['none', t('remindNone')],['7',t('remindBefore7')],['14',t('remindBefore14')],['30',t('remindBefore30')]].forEach(([v,lbl]) => {
-    const opt = document.createElement('option'); opt.value = v; opt.textContent = lbl; if (v === tracker.reminder) opt.selected = true; remSelect.appendChild(opt);
-  });
-  remSelect.addEventListener('change', () => { tracker.reminder = remSelect.value; save(); updateTrackerUI(tracker); });
-  const remBadge = document.createElement('span'); remBadge.className = 'reminder-badge'; remBadge.textContent = t('remindActive');
-  remRow.appendChild(remLabel); remRow.appendChild(remSelect); remRow.appendChild(remBadge); card.appendChild(remRow);
-
-  const actionRow = document.createElement('div'); actionRow.className = 'action-row';
-  const shareBtn = document.createElement('button'); shareBtn.className = 'action-btn'; shareBtn.textContent = '↗ ' + t('share'); shareBtn.addEventListener('click', () => shareTracker(tracker));
-  const ssBtn = document.createElement('button'); ssBtn.className = 'action-btn'; ssBtn.textContent = '📸 ' + t('screenshot'); ssBtn.addEventListener('click', () => screenshotTracker(card));
-  actionRow.appendChild(shareBtn); actionRow.appendChild(ssBtn); card.appendChild(actionRow);
-
-  return card;
-}
-
-function updateTrackerUI(tracker) {
-  const card = document.getElementById('card-' + tracker.id); if (!card) return;
-  const arc      = card.querySelector('.arc'); const pctEl    = card.querySelector('.ring-pct'); const lblEl    = card.querySelector('.ring-lbl');
-  const badge    = card.querySelector('.status-badge'); const barFill  = card.querySelector('.bar-fill'); const statNums = card.querySelectorAll('.stat-num');
-  const breakdown= card.querySelector('.breakdown'); const remBadge = card.querySelector('.reminder-badge');
-
-  arc.setAttribute('stroke', tracker.color); barFill.style.background = tracker.color;
-
-  if (!tracker.start || !tracker.end) {
-    arc.setAttribute('stroke-dashoffset', CIRC); pctEl.textContent = '—'; lblEl.textContent = t('pickDates');
-    badge.textContent = t('waitDates'); badge.className = 'status-badge'; barFill.style.width = '0%';
-    statNums.forEach(s => s.textContent = '—'); breakdown.innerHTML = ''; remBadge.classList.remove('show'); return;
-  }
-
-  const start = new Date(tracker.start), end = new Date(tracker.end), now = new Date(); now.setHours(0,0,0,0);
-
-  if (end <= start) {
-    arc.setAttribute('stroke-dashoffset', CIRC * 0.98); pctEl.textContent = '!'; lblEl.textContent = t('endBeforeStart');
-    badge.textContent = t('endBeforeStart'); badge.className = 'status-badge danger'; barFill.style.width = '0%';
-    statNums.forEach(s => s.textContent = '—'); breakdown.innerHTML = ''; remBadge.classList.remove('show'); return;
-  }
-
-  const total   = Math.round((end - start) / 86400000);
-  const elapsed = Math.max(0, Math.min(total, Math.round((now - start) / 86400000)));
-  const left    = Math.max(0, total - elapsed); const pct     = Math.round((elapsed / total) * 100);
-
-  arc.setAttribute('stroke-dashoffset', (CIRC - (pct/100)*CIRC).toFixed(2)); barFill.style.width = pct + '%'; pctEl.textContent = pct + '%';
-
-  let badgeClass, badgeText, subText;
-  if (pct === 0)       { badgeClass='done';   badgeText=t('notStarted');  subText=t('notStarted'); }
-  else if (pct >= 100) { badgeClass='done';   badgeText=t('complete');    subText=t('complete');
-    if (!confettiFired.has(tracker.id)) { launchConfetti(); confettiFired.add(tracker.id); localStorage.setItem('dp-confetti', JSON.stringify([...confettiFired])); }
-  }
-  else if (pct >= 80)  { badgeClass='danger'; badgeText=pct+'% '+t('elapsed'); subText=t('almostDone'); }
-  else if (pct >= 50)  { badgeClass='active'; badgeText=pct+'% '+t('elapsed'); subText=t('pastHalf'); }
-  else                 { badgeClass='active'; badgeText=pct+'% '+t('elapsed'); subText=t('inProgress'); }
-
-  badge.textContent = badgeText; badge.className = 'status-badge ' + badgeClass; lblEl.textContent = subText;
-  statNums[0].textContent = elapsed.toLocaleString() + t('days'); statNums[1].textContent = left.toLocaleString() + t('days'); statNums[2].textContent = total.toLocaleString() + t('days');
-  buildBreakdown(breakdown, start, end, now, pct, tracker.color);
-  if (checkReminder(tracker)) remBadge.classList.add('show'); else remBadge.classList.remove('show');
-}
-
-function renderAll() {
-  const container = document.getElementById('trackers'); container.innerHTML = '';
-  trackers.forEach(tracker => { const card = renderTracker(tracker); container.appendChild(card); updateTrackerUI(tracker); });
-  document.getElementById('add-label').textContent = t('addTracker');
-}
-
-document.getElementById('add-btn').addEventListener('click', () => {
-  const colorIndex = trackers.length % COLORS.length;
-  trackers.push({ id: nextId++, label: '', start: '', end: '', color: COLORS[colorIndex], reminder: 'none' });
-  save(); renderAll(); document.getElementById('trackers').lastElementChild.scrollIntoView({ behavior: 'smooth' });
-});
-
-// ══════════════════════════════════════════════
-//  TOPIC TRACKER
-// ══════════════════════════════════════════════
-const SUB_COLORS = ['#7c6af5','#48c78e','#f05252','#f0a030','#3b9eff','#f06292','#26c6da','#ff7043','#ab47bc'];
-
-function loadTopicData() { return JSON.parse(localStorage.getItem('tp-data') || 'null') || { goal: 3, subjects: [], lastReset: '' }; }
-function saveTopicData(data) { localStorage.setItem('tp-data', JSON.stringify(data)); }
-
-function maybeResetDaily(data) {
-  const today = todayStr();
-  if (data.lastReset !== today) { data.subjects.forEach(sub => { sub.topics.forEach(tp => { tp.checked = false; }); }); data.lastReset = today; saveTopicData(data); }
-}
-
-function countTodayDone(data) { let n = 0; data.subjects.forEach(sub => sub.topics.forEach(tp => { if (tp.checked) n++; })); return n; }
-
-function renderTopicTracker() {
-  const data = loadTopicData(); maybeResetDaily(data);
-  const container = document.getElementById('subjects-container'); const emptyMsg  = document.getElementById('topic-empty-msg');
-  const goalInput = document.getElementById('topic-goal-input'); const fillEl    = document.getElementById('topic-today-fill');
-  const countEl   = document.getElementById('topic-today-count'); const resetNote = document.getElementById('topic-reset-notice');
-
-  goalInput.value = data.goal;
-  const tomorrow = new Date(); tomorrow.setDate(tomorrow.getDate() + 1);
-  const tStr = tomorrow.toLocaleDateString(undefined, { weekday:'short', month:'short', day:'numeric' });
-  resetNote.textContent = '✦ Checkmarks reset automatically each day · next reset ' + tStr;
-
-  function updateGoalBar() {
-    const done = countTodayDone(data); const goal = data.goal; const pct  = Math.min(100, Math.round((done / goal) * 100));
-    fillEl.style.width = pct + '%'; fillEl.style.background = pct >= 100 ? '#48c78e' : 'var(--accent)';
-    countEl.textContent = done + '/' + goal; countEl.style.color = pct >= 100 ? '#48c78e' : 'var(--accent)';
-    
-    const today = todayStr();
-    let streakData = JSON.parse(localStorage.getItem('streak-data') || '{}');
-    if (done >= goal && done > 0) { streakData[today] = true; } else { streakData[today] = false; }
-    localStorage.setItem('streak-data', JSON.stringify(streakData));
-    renderHeatmap(); 
-  }
-
-  function rebuildSubjects() {
-    Array.from(container.children).forEach(el => { if (el.id !== 'topic-empty-msg') el.remove(); });
-    if (data.subjects.length === 0) { emptyMsg.style.display = ''; } else { emptyMsg.style.display = 'none'; }
-
-    data.subjects.forEach((sub, si) => {
-      const color = SUB_COLORS[si % SUB_COLORS.length]; sub.color = color;
-      const card = document.createElement('div'); card.className = 'subject-card';
-      const hdr = document.createElement('div'); hdr.className = 'subject-header';
-      const dot = document.createElement('div'); dot.className = 'subject-dot'; dot.style.background = color;
-
-      const nameInput = document.createElement('input'); nameInput.className = 'subject-name-input'; nameInput.type = 'text'; nameInput.placeholder = 'Subject name…'; nameInput.value = sub.name;
-      nameInput.addEventListener('input', () => { sub.name = nameInput.value; saveTopicData(data); }); nameInput.addEventListener('click', e => e.stopPropagation());
-
-      const done  = sub.topics.filter(tp => tp.checked).length; const total = sub.topics.length;
-      const pill  = document.createElement('div'); pill.className = 'subject-progress-pill'; pill.textContent = done + '/' + total + ' done';
-      const pillPct = total > 0 ? done/total : 0;
-      pill.style.background = pillPct === 1 ? 'rgba(72,199,142,0.15)' : `rgba(${hexToRgb(color)},0.12)`; pill.style.borderColor = pillPct === 1 ? 'rgba(72,199,142,0.4)' : `rgba(${hexToRgb(color)},0.35)`; pill.style.color = pillPct === 1 ? '#48c78e' : color;
-
-      const toggle = document.createElement('div'); toggle.className = 'subject-toggle'; toggle.textContent = '▼';
-      const delBtn = document.createElement('button'); delBtn.className = 'subject-del-btn'; delBtn.textContent = '×'; delBtn.title = 'Delete subject';
-      delBtn.addEventListener('click', e => { e.stopPropagation(); if (confirm('Delete "' + (sub.name || 'this subject') + '" and all its topics?')) { data.subjects.splice(si, 1); saveTopicData(data); rebuildSubjects(); updateGoalBar(); } });
-
-      hdr.appendChild(dot); hdr.appendChild(nameInput); hdr.appendChild(pill); hdr.appendChild(toggle); hdr.appendChild(delBtn);
-
-      const body = document.createElement('div'); body.style.display = sub.open !== false ? '' : 'none'; if (sub.open !== false) toggle.classList.add('open');
-      hdr.addEventListener('click', () => { const isOpen = body.style.display !== 'none'; body.style.display = isOpen ? 'none' : ''; toggle.classList.toggle('open', !isOpen); sub.open = !isOpen; saveTopicData(data); });
-
-      const list = document.createElement('div'); list.className = 'topics-list';
-      function buildTopicItem(tp, ti) {
-        const row = document.createElement('div'); row.className = 'topic-item';
-        const chk = document.createElement('div'); chk.className = 'topic-check' + (tp.checked ? ' checked' : ''); chk.style.background = tp.checked ? color : ''; chk.style.borderColor = tp.checked ? color : '';
-        chk.addEventListener('click', () => {
-          tp.checked = !tp.checked; chk.classList.toggle('checked', tp.checked); chk.style.background = tp.checked ? color : ''; chk.style.borderColor = tp.checked ? color : ''; tpInput.classList.toggle('done', tp.checked);
-          saveTopicData(data); const newDone = sub.topics.filter(x => x.checked).length; const newTotal = sub.topics.length; pill.textContent = newDone + '/' + newTotal + ' done';
-          const np = newTotal > 0 ? newDone/newTotal : 0; pill.style.background = np === 1 ? 'rgba(72,199,142,0.15)' : `rgba(${hexToRgb(color)},0.12)`; pill.style.borderColor = np === 1 ? 'rgba(72,199,142,0.4)' : `rgba(${hexToRgb(color)},0.35)`; pill.style.color = np === 1 ? '#48c78e' : color;
-          updateGoalBar();
-        });
-
-        const tpInput = document.createElement('input'); tpInput.className = 'topic-name-input' + (tp.checked ? ' done' : ''); tpInput.type = 'text'; tpInput.placeholder = 'Topic name…'; tpInput.value = tp.name;
-        tpInput.addEventListener('input', () => { tp.name = tpInput.value; saveTopicData(data); });
-
-        const diffCycler = document.createElement('div'); diffCycler.className = 'topic-diff ' + (tp.diff || ''); diffCycler.title = "Difficulty: " + (tp.diff || "None");
-        diffCycler.addEventListener('click', () => { const cycle = { '': 'easy', 'easy': 'med', 'med': 'hard', 'hard': '' }; tp.diff = cycle[tp.diff || '']; diffCycler.className = 'topic-diff ' + tp.diff; saveTopicData(data); });
-
-        const tpDel = document.createElement('button'); tpDel.className = 'topic-del-btn'; tpDel.textContent = '×'; tpDel.title = 'Remove topic';
-        tpDel.addEventListener('click', () => { sub.topics.splice(ti, 1); saveTopicData(data); rebuildSubjects(); updateGoalBar(); });
-
-        row.appendChild(chk); row.appendChild(tpInput); row.appendChild(diffCycler); row.appendChild(tpDel); return row;
-      }
-      sub.topics.forEach((tp, ti) => list.appendChild(buildTopicItem(tp, ti)));
-
-      const addRow = document.createElement('div'); addRow.className = 'add-topic-row';
-      const addInput = document.createElement('input'); addInput.className = 'add-topic-input'; addInput.type = 'text'; addInput.placeholder = 'New topic…';
-      const addBtn = document.createElement('button'); addBtn.className = 'add-topic-btn'; addBtn.textContent = '+ Add';
-
-      function doAddTopic() {
-        const name = addInput.value.trim(); if (!name) { addInput.focus(); return; }
-        sub.topics.push({ name, checked: false, diff: '' }); saveTopicData(data); rebuildSubjects(); updateGoalBar();
-        setTimeout(() => { const cards = document.querySelectorAll('.subject-card'); const thisCard = cards[si]; if (thisCard) { const b = thisCard.querySelector('.topics-list')?.parentElement; if (b) b.style.display = ''; } }, 10);
-      }
-      addBtn.addEventListener('click', doAddTopic); addInput.addEventListener('keydown', e => { if (e.key === 'Enter') doAddTopic(); });
-
-      addRow.appendChild(addInput); addRow.appendChild(addBtn); body.appendChild(list); body.appendChild(addRow); card.appendChild(hdr); card.appendChild(body); container.appendChild(card);
+    // Export Data as JSON file
+    document.getElementById('export-btn').addEventListener('click', () => {
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appData, null, 2));
+      const downloadAnchorElement = document.createElement('a');
+      downloadAnchorElement.setAttribute("href", dataStr);
+      downloadAnchorElement.setAttribute("download", "date-progress-backup.json");
+      document.body.appendChild(downloadAnchorElement); // Required for Firefox
+      downloadAnchorElement.click();
+      downloadAnchorElement.remove();
     });
-    updateGoalBar();
-  }
 
-  goalInput.addEventListener('change', () => { const v = Math.max(1, parseInt(goalInput.value) || 1); data.goal = v; goalInput.value = v; saveTopicData(data); updateGoalBar(); });
-  document.getElementById('topic-add-sub-btn').onclick = () => { data.subjects.push({ name: '', topics: [], open: true }); saveTopicData(data); rebuildSubjects(); setTimeout(() => { const cards = container.querySelectorAll('.subject-card'); const last = cards[cards.length - 1]; if (last) last.querySelector('.subject-name-input')?.focus(); }, 30); };
-  rebuildSubjects();
-}
+    // Import Data from JSON file
+    document.getElementById('import-file').addEventListener('change', (event) => {
+      const file = event.target.files[0];
+      if (!file) return;
 
-function hexToRgb(hex) { const r = parseInt(hex.slice(1,3),16); const g = parseInt(hex.slice(3,5),16); const b = parseInt(hex.slice(5,7),16); return r+','+g+','+b; }
-renderTopicTracker();
+      const fileReader = new FileReader();
+      fileReader.onload = (e) => {
+        try {
+          const importedData = JSON.parse(e.target.result);
+          
+          // Basic validation to make sure it's our app data
+          if(importedData && importedData.tasks) {
+            appData = importedData;
+            saveData();
+            alert('Your data has been successfully imported!');
+          } else {
+            alert('Invalid file format. Ensure it is a backup from Date Progress Tracker.');
+          }
+        } catch (err) {
+          alert('Error reading the file. Please upload a valid JSON backup.');
+        }
+      };
+      fileReader.readAsText(file);
+      
+      // Reset input so you can import the same file twice if needed
+      event.target.value = ""; 
+    });
 
-// ══════════════════════════════════════════════
-//  SERVICE WORKER & INSTALL PROMPT
-// ══════════════════════════════════════════════
-if ('serviceWorker' in navigator) {
-  const swCode = `const CACHE='dp-v2';self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE).then(c=>c.addAll(['./'])));self.skipWaiting();});self.addEventListener('activate',e=>{self.clients.claim();});self.addEventListener('fetch',e=>{e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request)));});`;
-  const swBlob = new Blob([swCode], { type: 'text/javascript' }); navigator.serviceWorker.register(URL.createObjectURL(swBlob));
-}
-let deferredPrompt;
-window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); deferredPrompt = e; document.getElementById('install-banner').classList.add('show'); });
-document.getElementById('install-btn').addEventListener('click', async () => { if (!deferredPrompt) return; deferredPrompt.prompt(); await deferredPrompt.userChoice; deferredPrompt = null; document.getElementById('install-banner').classList.remove('show'); });
-document.getElementById('banner-close').addEventListener('click', () => { document.getElementById('install-banner').classList.remove('show'); });
-const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
-if (isIOS && !navigator.standalone) setTimeout(() => document.getElementById('ios-hint').classList.add('show'), 1500);
-document.getElementById('close-ios').addEventListener('click', () => { document.getElementById('ios-hint').classList.remove('show'); });
-
-applyLang();
-</script>
+    // Initial render on page load
+    renderTasks();
+  </script>
 </body>
 </html>
