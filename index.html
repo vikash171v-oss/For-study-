@@ -111,56 +111,28 @@
     #pomo-body.open { display: flex; flex-direction: column; align-items: center; }
 
     /* ════ STREAK HEATMAP ════ */
-    .streak-card {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: 20px; padding: 1.25rem; margin-bottom: 1.25rem;
-    }
-    .streak-header {
-      display: flex; justify-content: space-between; align-items: center;
-      font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted);
-    }
+    .streak-card { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 1.25rem; margin-bottom: 1.25rem; }
+    .streak-header { display: flex; justify-content: space-between; align-items: center; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
     .heatmap-scroll { overflow-x: auto; padding-bottom: 5px; scrollbar-width: none; width: 100%; }
     .heatmap-scroll::-webkit-scrollbar { display: none; }
     .heatmap-grid { display: grid; grid-template-rows: repeat(7, 1fr); grid-auto-flow: column; gap: 4px; }
-    .heatmap-cell {
-      width: 12px; height: 12px; border-radius: 3px; background: var(--surface2);
-      border: 1px solid var(--border); transition: background 0.3s;
-    }
+    .heatmap-cell { width: 12px; height: 12px; border-radius: 3px; background: var(--surface2); border: 1px solid var(--border); transition: background 0.3s; }
     .heatmap-cell.done { background: var(--easy); border-color: var(--easy); box-shadow: 0 0 5px rgba(72,199,142,0.3); }
 
     /* ════ TIMETABLE ════ */
-    .tt-card {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: 20px; padding: 1.25rem; margin-bottom: 1.25rem;
-    }
+    .tt-card { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 1.25rem; margin-bottom: 1.25rem; }
     .tt-header { display: flex; justify-content: space-between; align-items: center; }
     .tt-title { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
     .tt-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px; width: 100%; }
-    .tt-row {
-      display: flex; align-items: center; gap: 8px; background: var(--surface2);
-      padding: 0.5rem; border-radius: 12px; border: 1px solid var(--border);
-    }
-    .tt-color {
-      width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0;
-      cursor: pointer; border: 2px solid transparent;
-    }
-    .tt-time-input {
-      background: var(--surface); border: 1px solid var(--border); border-radius: 6px;
-      padding: 4px; font-size: 0.75rem; color: var(--text); outline: none; color-scheme: dark;
-    }
+    .tt-row { display: flex; align-items: center; gap: 8px; background: var(--surface2); padding: 0.5rem; border-radius: 12px; border: 1px solid var(--border); }
+    .tt-color { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; cursor: pointer; border: 2px solid transparent; }
+    .tt-time-input { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 4px; font-size: 0.75rem; color: var(--text); outline: none; color-scheme: dark; }
     [data-theme="light"] .tt-time-input { color-scheme: light; }
-    .tt-label-input {
-      flex: 1; background: none; border: none; font-size: 0.8rem;
-      color: var(--text); outline: none; min-width: 0;
-    }
+    .tt-label-input { flex: 1; background: none; border: none; font-size: 0.8rem; color: var(--text); outline: none; min-width: 0; }
     .tt-label-input::placeholder { color: var(--muted); }
     .tt-del-btn { background: none; border: none; color: var(--muted); font-size: 1rem; cursor: pointer; padding: 0 4px; }
     .tt-del-btn:hover { color: var(--hard); }
-    .tt-add-btn {
-      width: 100%; background: var(--accent-light); border: 1px dashed rgba(124,106,245,0.4);
-      border-radius: 10px; padding: 0.6rem; font-size: 0.8rem; color: var(--accent);
-      cursor: pointer; font-weight: 600; transition: all 0.2s;
-    }
+    .tt-add-btn { width: 100%; background: var(--accent-light); border: 1px dashed rgba(124,106,245,0.4); border-radius: 10px; padding: 0.6rem; font-size: 0.8rem; color: var(--accent); cursor: pointer; font-weight: 600; transition: all 0.2s; }
     .tt-add-btn:hover { background: var(--accent); color: #fff; border-style: solid; }
 
     /* ════ DAILY CHECKLIST ════ */
@@ -177,9 +149,7 @@
     .cl-del:hover { color: var(--hard); opacity: 1; }
 
     /* ════ POMODORO TIMER ════ */
-    .pomo-card {
-      background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 1.25rem; margin-bottom: 1.25rem; display: flex; flex-direction: column; align-items: center;
-    }
+    .pomo-card { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 1.25rem; margin-bottom: 1.25rem; display: flex; flex-direction: column; align-items: center; }
     .pomo-header { width: 100%; display: flex; justify-content: space-between; align-items: center; }
     .pomo-title { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
     .pomo-settings-btn { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 1rem; }
@@ -302,10 +272,6 @@
     .topic-item:hover .topic-del-btn { opacity: 1; }
     .topic-del-btn:hover { color: #f05252; }
     
-    .topic-to-card-btn { background: none; border: none; color: var(--muted); font-size: 0.85rem; cursor: pointer; padding: 1px 4px; border-radius: 4px; transition: color 0.2s; opacity: 0; }
-    .topic-item:hover .topic-to-card-btn { opacity: 1; }
-    .topic-to-card-btn:hover { color: var(--accent); }
-    
     .add-topic-row { display: flex; align-items: center; gap: 8px; padding: 6px 0.9rem 0.75rem; }
     .add-topic-input { flex: 1; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 5px 10px; font-size: 0.8rem; color: var(--text); outline: none; }
     .add-topic-input:focus { border-color: var(--accent); }
@@ -364,13 +330,6 @@
     #ios-hint strong { color: var(--text); }
     #ios-hint .ios-close { display: block; margin-top: 0.5rem; color: var(--accent); cursor: pointer; font-size: 0.78rem; }
     #ios-hint button { background: var(--accent); color: #fff; border: none; border-radius: 8px; padding: 0.4rem 0.9rem; margin-top: 0.5rem; font-size: 0.78rem; cursor: pointer; }
-
-    /* ════ TAG / CATEGORY UI ════ */
-    .tag-chip { display: inline-flex; align-items: center; gap: 4px; font-size: 0.65rem; padding: 2px 8px; border-radius: 99px; background: var(--surface2); border: 1px solid var(--border); color: var(--muted); cursor: pointer; user-select: none; }
-    .tag-chip.active { background: var(--accent-light); border-color: var(--accent); color: var(--accent); }
-    .tag-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 0.5rem; align-items: center; }
-    .tag-add-input { background: var(--surface2); border: 1px solid var(--border); border-radius: 99px; padding: 2px 10px; font-size: 0.7rem; color: var(--text); outline: none; width: 80px; }
-    .tag-add-input:focus { border-color: var(--accent); }
 
     /* ════ DASHBOARD / CHARTS ════ */
     .dash-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 1.25rem; }
@@ -517,7 +476,6 @@
     .modal-btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
     .modal-btn:hover { opacity: 0.9; }
 
-    /* Small responsive tweaks */
     @media (max-width: 360px) {
       .dash-grid, .log-grid, .review-stat-grid { grid-template-columns: 1fr; }
       .share-card-row { grid-template-columns: 1fr 1fr 1fr; }
@@ -554,9 +512,7 @@
       <button class="icon-btn" id="export-btn" title="Backup/Export Data">💾</button>
       <button class="icon-btn" id="import-btn" title="Restore/Import Data">📂</button>
       <input type="file" id="import-file" accept=".json">
-      
       <button class="icon-btn" id="theme-cycle-btn" title="Cycle Themes">🎨</button>
-      
       <select class="lang-select" id="lang-select">
         <option value="en">🇬🇧 EN</option>
         <option value="hi">🇮🇳 HI</option>
@@ -801,9 +757,7 @@
         <div style="font-size:0.65rem; color:var(--muted)" id="cl-date-display"></div>
       </div>
       <div style="font-size:0.65rem; color:var(--muted); margin-bottom:10px; text-align:right;">Resets automatically at midnight</div>
-      
       <div class="cl-list" id="cl-list"></div>
-      
       <div class="add-topic-row" style="padding:0; margin-top:10px;">
         <input type="text" id="cl-input" class="add-topic-input" placeholder="Add a new task...">
         <button id="cl-add-btn" class="add-topic-btn">+ Add</button>
@@ -840,10 +794,21 @@
       
       <div style="margin-bottom: 15px;">
         <input type="password" id="ai-api-key" class="search-input" style="padding-left: 0.9rem;" placeholder="Paste your free Gemini API Key here...">
-        <div style="font-size: 0.65rem; color: var(--muted); margin-top: 6px;">Get a free API key from Google AI Studio. It stays securely in your browser's local storage.</div>
+        <div style="font-size: 0.65rem; color: var(--muted); margin-top: 6px;">Get a free API key from Google AI Studio.</div>
+      </div>
+      
+      <div style="font-size: 0.75rem; color: var(--muted); margin-bottom: 6px;">This is perfect for snapping a quick photo of your textbook index or your Physics and Chemistry syllabus printouts.</div>
+      
+      <div style="display:flex; gap:10px; margin-bottom: 10px; align-items:center;">
+        <label class="fc-save-btn" style="flex:1; text-align:center; cursor:pointer; background:var(--surface2); border:1px dashed var(--accent); color:var(--accent); padding:10px;">
+          📷 Upload Photo or PDF
+          <input type="file" id="ai-file-input" accept="image/*,application/pdf" style="display:none;">
+        </label>
+        <div id="ai-file-name" style="flex:1; font-size:0.75rem; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">No file chosen</div>
+        <button class="search-clear show" id="ai-file-clear" style="position:relative; right:0; transform:none; display:none;" title="Remove file">×</button>
       </div>
 
-      <textarea id="ai-syllabus-input" class="search-input" placeholder="Paste your school or college syllabus text here..." style="min-height: 180px; resize: vertical; padding-left: 0.9rem; margin-bottom: 10px;"></textarea>
+      <textarea id="ai-syllabus-input" class="search-input" placeholder="...Or just paste your syllabus text here" style="min-height: 120px; resize: vertical; padding-left: 0.9rem; margin-bottom: 10px;"></textarea>
       
       <button id="ai-analyze-btn" class="fc-save-btn" style="padding: 10px;">Analyze Syllabus</button>
       
@@ -952,7 +917,6 @@ function applyTheme() {
   const t = THEMES[currentThemeIndex];
   document.documentElement.setAttribute('data-theme', t);
   localStorage.setItem('dp-theme', t);
-  
   let metaColor = '#0f0f14';
   if(t === 'light') metaColor = '#f4f3fb';
   if(t === 'midnight') metaColor = '#0b0f19';
@@ -1004,13 +968,7 @@ setupCollapsible('tt-head', 'tt-body', 'tt-toggle', 'ui-tt-open', true);
 //  TRANSLATIONS & STATE
 // ══════════════════════════════════════════════
 const T = {
-  en: { title:'Date Progress', start:'Start date', end:'End date', elapsed:'Elapsed', remaining:'Remaining', total:'Total', addTracker:'Add another tracker', label:'Label', pickDates:'pick dates', notStarted:'Not started yet', complete:'✓ Complete', almostDone:'Almost done', pastHalf:'Past halfway', inProgress:'In progress', waitDates:'Waiting for dates', endBeforeStart:'End must be after start', days:'d', share:'Share', screenshot:'Screenshot', weekBreak:'Monthly breakdown', reminder:'Remind at', remindNone:'Off', remindBefore7:'7 days left', remindBefore14:'14 days left', remindBefore30:'30 days left', remindActive:'⚠ Deadline soon!', themeToggle:'theme' },
-  hi: { title:'दिनांक प्रगति', start:'प्रारंभ तिथि', end:'समाप्ति तिथि', elapsed:'बीता', remaining:'शेष', total:'कुल', addTracker:'और ट्रैकर जोड़ें', label:'नाम', pickDates:'तिथियाँ चुनें', notStarted:'अभी शुरू नहीं', complete:'✓ पूर्ण', almostDone:'लगभग हो गया', pastHalf:'आधे से ज़्यादा', inProgress:'जारी है', waitDates:'तिथियों की प्रतीक्षा', endBeforeStart:'समाप्ति बाद में होनी चाहिए', days:'दि', share:'शेयर', screenshot:'स्क्रीनशॉट', weekBreak:'मासिक विवरण', reminder:'याद दिलाएं', remindNone:'बंद', remindBefore7:'7 दिन बचे', remindBefore14:'14 दिन बचे', remindBefore30:'30 दिन बचे', remindActive:'⚠ समय सीमा नज़दीक!', themeToggle:'थीम' },
-  ar: { title:'تتبع التاريخ', start:'تاريخ البدء', end:'تاريخ الانتهاء', elapsed:'مضى', remaining:'متبقي', total:'المجموع', addTracker:'إضافة متتبع', label:'تسمية', pickDates:'اختر تواريخ', notStarted:'لم يبدأ بعد', complete:'✓ مكتمل', almostDone:'على وشك الانتهاء', pastHalf:'تجاوز النصف', inProgress:'قيد التنفيذ', waitDates:'في انتظار التواريخ', endBeforeStart:'النهاية يجب أن تكون بعد البداية', days:'ي', share:'مشاركة', screenshot:'لقطة', weekBreak:'تفاصيل شهرية', reminder:'تذكير', remindNone:'إيقاف', remindBefore7:'7 أيام متبقية', remindBefore14:'14 يومًا', remindBefore30:'30 يومًا', remindActive:'⚠ الموعد قريب!', themeToggle:'سمة' },
-  fr: { title:'Suivi de dates', start:'Date de début', end:'Date de fin', elapsed:'Écoulé', remaining:'Restant', total:'Total', addTracker:'Ajouter un suivi', label:'Nom', pickDates:'choisir les dates', notStarted:'Pas encore commencé', complete:'✓ Terminé', almostDone:'Presque fini', pastHalf:'Passé la moitié', inProgress:'En cours', waitDates:'En attente de dates', endBeforeStart:'La fin doit être après le début', days:'j', share:'Partager', screenshot:'Capture', weekBreak:'Répartition mensuelle', reminder:'Rappel', remindNone:'Désactivé', remindBefore7:'7 jours restants', remindBefore14:'14 jours', remindBefore30:'30 jours', remindActive:'⚠ Échéance proche!', themeToggle:'thème' },
-  es: { title:'Progreso de fecha', start:'Fecha inicio', end:'Fecha fin', elapsed:'Transcurrido', remaining:'Restante', total:'Total', addTracker:'Añadir seguimiento', label:'Nombre', pickDates:'elegir fechas', notStarted:'No iniciado', complete:'✓ Completo', almostDone:'Casi terminado', pastHalf:'Pasada la mitad', inProgress:'En progreso', waitDates:'Esperando fechas', endBeforeStart:'El fin debe ser posterior al inicio', days:'d', share:'Compartir', screenshot:'Captura', weekBreak:'Desglose mensual', reminder:'Recordatorio', remindNone:'Desactivado', remindBefore7:'7 días', remindBefore14:'14 días', remindBefore30:'30 días', remindActive:'⚠ ¡Fecha límite próxima!', themeToggle:'tema' },
-  zh: { title:'日期进度', start:'开始日期', end:'结束日期', elapsed:'已过', remaining:'剩余', total:'总计', addTracker:'添加追踪器', label:'标签', pickDates:'选择日期', notStarted:'尚未开始', complete:'✓ 完成', almostDone:'即将完成', pastHalf:'过半', inProgress:'进行中', waitDates:'等待日期', endBeforeStart:'结束日期必须晚于开始日期', days:'天', share:'分享', screenshot:'截图', weekBreak:'月度分解', reminder:'提醒', remindNone:'关闭', remindBefore7:'剩余7天', remindBefore14:'剩余14天', remindBefore30:'剩余30天', remindActive:'⚠ 截止日期临近！', themeToggle:'主题' },
-  de: { title:'Datumsfortschritt', start:'Startdatum', end:'Enddatum', elapsed:'Vergangen', remaining:'Verbleibend', total:'Gesamt', addTracker:'Tracker hinzufügen', label:'Bezeichnung', pickDates:'Daten wählen', notStarted:'Noch nicht begonnen', complete:'✓ Abgeschlossen', almostDone:'Fast fertig', pastHalf:'Über die Hälfte', inProgress:'In Bearbeitung', waitDates:'Warte auf Daten', endBeforeStart:'Ende muss nach Anfang liegen', days:'T', share:'Teilen', screenshot:'Screenshot', weekBreak:'Monatliche Übersicht', reminder:'Erinnern', remindNone:'Aus', remindBefore7:'7 Tage verbleibend', remindBefore14:'14 Tage', remindBefore30:'30 Tage', remindActive:'⚠ Frist naht!', themeToggle:'Design' }
+  en: { title:'Date Progress', start:'Start date', end:'End date', elapsed:'Elapsed', remaining:'Remaining', total:'Total', addTracker:'Add another tracker', label:'Label', pickDates:'pick dates', notStarted:'Not started yet', complete:'✓ Complete', almostDone:'Almost done', pastHalf:'Past halfway', inProgress:'In progress', waitDates:'Waiting for dates', endBeforeStart:'End must be after start', days:'d', share:'Share', screenshot:'Screenshot', weekBreak:'Monthly breakdown', reminder:'Remind at', remindNone:'Off', remindBefore7:'7 days left', remindBefore14:'14 days left', remindBefore30:'30 days left', remindActive:'⚠ Deadline soon!', themeToggle:'theme' }
 };
 
 const COLORS = ['#7c6af5','#f05252','#48c78e','#f0a030','#3b9eff','#f06292','#26c6da','#ff7043','#ab47bc'];
@@ -1025,12 +983,12 @@ let nextId = Math.max(...trackers.map(t => t.id)) + 1;
 let confettiFired = new Set(JSON.parse(localStorage.getItem('dp-confetti') || '[]'));
 
 let pomoData = JSON.parse(localStorage.getItem('pomo-data')) || { work: 45, break: 10, quietStart: '23:00', quietEnd: '07:00' };
-let focusLog = JSON.parse(localStorage.getItem('focus-log') || '{}'); // date -> minutes
+let focusLog = JSON.parse(localStorage.getItem('focus-log') || '{}'); 
 
 let habits = JSON.parse(localStorage.getItem('habits-data') || 'null') || [];
 let quickLog = JSON.parse(localStorage.getItem('quick-log') || 'null') || { water: {}, sleep: {}, mood: {} };
 
-let calCursor = new Date(); // currently-viewed month
+let calCursor = new Date(); 
 
 let currentDeckIndex = -1;
 let currentReviewQueue = [];
@@ -1059,37 +1017,20 @@ $('#lang-select').addEventListener('change', e => {
 // ══════════════════════════════════════════════
 $('#export-btn').addEventListener('click', () => {
   const data = {
-    theme: localStorage.getItem('dp-theme'), 
-    lang: localStorage.getItem('dp-lang'),
-    trackers: localStorage.getItem('dp-trackers'), 
-    topics: localStorage.getItem('tp-data'),
-    pomo: localStorage.getItem('pomo-data'), 
-    streak: localStorage.getItem('streak-data'),
-    tt: localStorage.getItem('tt-data'), 
-    ui_pomo: localStorage.getItem('ui-pomo-open'),
-    ui_streak: localStorage.getItem('ui-streak-open'), 
-    ui_tt: localStorage.getItem('ui-tt-open'),
-    cl: localStorage.getItem('cl-data'),
-    fc: localStorage.getItem('fc-data'),
-    habits: localStorage.getItem('habits-data'),
-    quicklog: localStorage.getItem('quick-log'),
-    focuslog: localStorage.getItem('focus-log')
+    theme: localStorage.getItem('dp-theme'), lang: localStorage.getItem('dp-lang'),
+    trackers: localStorage.getItem('dp-trackers'), topics: localStorage.getItem('tp-data'),
+    pomo: localStorage.getItem('pomo-data'), streak: localStorage.getItem('streak-data'),
+    tt: localStorage.getItem('tt-data'), cl: localStorage.getItem('cl-data'), fc: localStorage.getItem('fc-data'),
+    habits: localStorage.getItem('habits-data'), quicklog: localStorage.getItem('quick-log'), focuslog: localStorage.getItem('focus-log')
   };
   const blob = new Blob([JSON.stringify(data)], {type: "application/json"});
   const url = URL.createObjectURL(blob);
-  const a = document.createElement('a'); 
-  a.href = url; 
-  a.download = 'date-progress-backup.json';
-  a.click(); 
-  URL.revokeObjectURL(url);
-  toast('Backup downloaded');
+  const a = document.createElement('a'); a.href = url; a.download = 'date-progress-backup.json';
+  a.click(); URL.revokeObjectURL(url); toast('Backup downloaded');
 });
-
 $('#import-btn').addEventListener('click', () => { $('#import-file').click(); });
-
 $('#import-file').addEventListener('change', (e) => {
-  const file = e.target.files[0]; 
-  if (!file) return;
+  const file = e.target.files[0]; if (!file) return;
   const reader = new FileReader();
   reader.onload = (ev) => {
     try {
@@ -1106,8 +1047,7 @@ $('#import-file').addEventListener('change', (e) => {
       if(data.habits) localStorage.setItem('habits-data', data.habits);
       if(data.quicklog) localStorage.setItem('quick-log', data.quicklog);
       if(data.focuslog) localStorage.setItem('focus-log', data.focuslog);
-      alert('Data restored successfully! The page will now reload.'); 
-      location.reload();
+      alert('Data restored successfully! The page will now reload.'); location.reload();
     } catch(err) { alert('Invalid backup file.'); }
   };
   reader.readAsText(file);
@@ -1116,51 +1056,35 @@ $('#import-file').addEventListener('change', (e) => {
 // ══════════════════════════════════════════════
 //  POMODORO TIMER (with quiet hours)
 // ══════════════════════════════════════════════
-let pomoTimer = null; 
 let pomoTimeLeft = pomoData.work * 60; 
 let isWorkSession = true; 
 let isPomoRunning = false;
 let sessionStartTs = null;
-let sessionMinsLogged = 0;
 
 const pomoDisplay = $('#pomo-display');
 const pomoStatus = $('#pomo-status');
 const pomoBtnStart = $('#pomo-start');
 const pomoBtnReset = $('#pomo-reset');
-const pomoWorkIn = $('#pomo-work-in');
-const pomoBreakIn = $('#pomo-break-in');
-const pomoQuietStart = $('#pomo-quiet-start');
-const pomoQuietEnd = $('#pomo-quiet-end');
 
-pomoWorkIn.value = pomoData.work; 
-pomoBreakIn.value = pomoData.break;
-pomoQuietStart.value = pomoData.quietStart || '23:00';
-pomoQuietEnd.value = pomoData.quietEnd || '07:00';
+$('#pomo-work-in').value = pomoData.work; $('#pomo-break-in').value = pomoData.break;
+$('#pomo-quiet-start').value = pomoData.quietStart || '23:00'; $('#pomo-quiet-end').value = pomoData.quietEnd || '07:00';
 
-$('#pomo-settings-toggle').addEventListener('click', () => { 
-  $('#pomo-settings').classList.toggle('open'); 
-});
+$('#pomo-settings-toggle').addEventListener('click', () => { $('#pomo-settings').classList.toggle('open'); });
 
 function savePomoSettings() {
   pomoData = {
-    work: parseInt(pomoWorkIn.value)||25,
-    break: parseInt(pomoBreakIn.value)||5,
-    quietStart: pomoQuietStart.value || '23:00',
-    quietEnd: pomoQuietEnd.value || '07:00'
+    work: parseInt($('#pomo-work-in').value)||25, break: parseInt($('#pomo-break-in').value)||5,
+    quietStart: $('#pomo-quiet-start').value || '23:00', quietEnd: $('#pomo-quiet-end').value || '07:00'
   };
   localStorage.setItem('pomo-data', JSON.stringify(pomoData));
 }
-[pomoWorkIn, pomoBreakIn, pomoQuietStart, pomoQuietEnd].forEach(inp => {
-  inp.addEventListener('change', () => {
-    savePomoSettings();
-    if(!isPomoRunning) resetPomo();
-  });
+[$('#pomo-work-in'), $('#pomo-break-in'), $('#pomo-quiet-start'), $('#pomo-quiet-end')].forEach(inp => {
+  inp.addEventListener('change', () => { savePomoSettings(); if(!isPomoRunning) resetPomo(); });
 });
 
 function isInQuietHours() {
   if (!pomoData.quietStart || !pomoData.quietEnd) return false;
-  const now = new Date();
-  const cur = now.getHours() * 60 + now.getMinutes();
+  const now = new Date(); const cur = now.getHours() * 60 + now.getMinutes();
   const [sh, sm] = (pomoData.quietStart || '23:00').split(':').map(Number);
   const [eh, em] = (pomoData.quietEnd || '07:00').split(':').map(Number);
   const start = sh * 60 + sm, end = eh * 60 + em;
@@ -1171,78 +1095,44 @@ function isInQuietHours() {
 function updatePomoDisplay() {
   const m = Math.floor(pomoTimeLeft / 60).toString().padStart(2, '0');
   const s = (pomoTimeLeft % 60).toString().padStart(2, '0');
-  pomoDisplay.textContent = `${m}:${s}`; 
-  document.title = `${m}:${s} - Date Progress`;
+  pomoDisplay.textContent = `${m}:${s}`; document.title = `${m}:${s} - Date Progress`;
 }
 
 function logFocusMinutes(mins) {
-  const d = todayStr();
-  focusLog[d] = (focusLog[d] || 0) + mins;
-  save();
+  const d = todayStr(); focusLog[d] = (focusLog[d] || 0) + mins; save();
 }
 
 function resetPomo() {
-  clearInterval(pomoTimer); 
-  isPomoRunning = false; 
-  isWorkSession = true;
-  pomoTimeLeft = pomoData.work * 60; 
-  pomoStatus.textContent = "Ready to Study";
-  pomoStatus.style.color = "var(--accent)"; 
-  pomoBtnStart.textContent = "Start";
-  updatePomoDisplay(); 
-  document.title = "Date Progress Tracker";
-  if (sessionStartTs) { 
-    const elapsedMs = Date.now() - sessionStartTs;
-    const mins = Math.floor(elapsedMs / 60000);
-    if (mins > 0) logFocusMinutes(mins);
-    sessionStartTs = null;
-  }
+  clearInterval(pomoTimer); isPomoRunning = false; isWorkSession = true;
+  pomoTimeLeft = pomoData.work * 60; pomoStatus.textContent = "Ready to Study";
+  pomoStatus.style.color = "var(--accent)"; pomoBtnStart.textContent = "Start";
+  updatePomoDisplay(); document.title = "Date Progress Tracker";
+  if (sessionStartTs) { logFocusMinutes(Math.floor((Date.now() - sessionStartTs) / 60000)); sessionStartTs = null; }
 }
 
 pomoBtnStart.addEventListener('click', () => {
   if (isPomoRunning) { 
-    clearInterval(pomoTimer); 
-    isPomoRunning = false; 
-    pomoBtnStart.textContent = "Resume";
-    if (sessionStartTs) {
-      const elapsedMs = Date.now() - sessionStartTs;
-      const mins = Math.max(1, Math.floor(elapsedMs / 60000));
-      logFocusMinutes(mins);
-      sessionStartTs = null;
-    }
+    clearInterval(pomoTimer); isPomoRunning = false; pomoBtnStart.textContent = "Resume";
+    if (sessionStartTs) { logFocusMinutes(Math.max(1, Math.floor((Date.now() - sessionStartTs) / 60000))); sessionStartTs = null; }
   } else {
-    if (isInQuietHours()) {
-      toast('🌙 Quiet hours — auto-pausing', 2500);
-      return;
-    }
-    isPomoRunning = true; 
-    pomoBtnStart.textContent = "Pause";
+    if (isInQuietHours()) { toast('🌙 Quiet hours — auto-pausing', 2500); return; }
+    isPomoRunning = true; pomoBtnStart.textContent = "Pause";
     pomoStatus.textContent = isWorkSession ? "Focusing..." : "Taking a Break!";
     sessionStartTs = Date.now();
     pomoTimer = setInterval(() => {
       if (isInQuietHours() && isWorkSession) {
-        clearInterval(pomoTimer);
-        isPomoRunning = false;
-        pomoBtnStart.textContent = "Start";
-        pomoStatus.textContent = "🌙 Paused (quiet hours)";
-        pomoStatus.style.color = "var(--muted)";
+        clearInterval(pomoTimer); isPomoRunning = false; pomoBtnStart.textContent = "Start";
+        pomoStatus.textContent = "🌙 Paused (quiet hours)"; pomoStatus.style.color = "var(--muted)";
         if (sessionStartTs) { logFocusMinutes(Math.max(1, Math.floor((Date.now() - sessionStartTs)/60000))); sessionStartTs = null; }
-        toast('🌙 Quiet hours started', 2500);
-        return;
+        return toast('🌙 Quiet hours started', 2500);
       }
-      pomoTimeLeft--; 
-      updatePomoDisplay();
+      pomoTimeLeft--; updatePomoDisplay();
       if (pomoTimeLeft <= 0) {
-        clearInterval(pomoTimer); 
-        isPomoRunning = false;
+        clearInterval(pomoTimer); isPomoRunning = false;
         if (sessionStartTs) { logFocusMinutes(Math.max(1, Math.floor((Date.now() - sessionStartTs)/60000))); sessionStartTs = null; }
-        const ctx = new (window.AudioContext || window.webkitAudioContext)();
-        const osc = ctx.createOscillator(); 
-        osc.type = 'sine'; 
-        osc.frequency.setValueAtTime(440, ctx.currentTime);
-        osc.connect(ctx.destination); 
-        osc.start(); 
-        osc.stop(ctx.currentTime + 0.5);
+        const ctx = new (window.AudioContext || window.webkitAudioContext)(); const osc = ctx.createOscillator(); 
+        osc.type = 'sine'; osc.frequency.setValueAtTime(440, ctx.currentTime);
+        osc.connect(ctx.destination); osc.start(); osc.stop(ctx.currentTime + 0.5);
         sendNotification('Focus session complete!', { body: isWorkSession ? 'Time for a break 🎉' : 'Back to work 💪', icon: '⏱️' });
         isWorkSession = !isWorkSession; 
         pomoTimeLeft = (isWorkSession ? pomoData.work : pomoData.break) * 60;
@@ -1262,22 +1152,12 @@ updatePomoDisplay();
 // ══════════════════════════════════════════════
 function loadTTData() {
   let data = JSON.parse(localStorage.getItem('tt-data'));
-  if (!data || data.length === 0) {
-    data = [
-      { id: Date.now()+1, start: "06:20", end: "07:30", label: "Wake up & Morning Routine", color: "#f0a030" },
-      { id: Date.now()+2, start: "07:45", end: "14:00", label: "School", color: "#7c6af5" },
-      { id: Date.now()+3, start: "14:30", end: "16:00", label: "Rest / Snack", color: "#3b9eff" },
-      { id: Date.now()+4, start: "16:00", end: "18:00", label: "Study Block 1", color: "#48c78e" }
-    ];
-  }
+  if (!data || data.length === 0) data = [ { id: Date.now()+1, start: "06:20", end: "07:30", label: "Wake up & Morning Routine", color: "#f0a030" } ];
   return data;
 }
 
 function renderTimeTable() {
-  const data = loadTTData();
-  const list = $('#tt-list');
-  list.innerHTML = '';
-  
+  const data = loadTTData(); const list = $('#tt-list'); list.innerHTML = '';
   data.sort((a,b) => a.start.localeCompare(b.start)).forEach((block, index) => {
     const row = document.createElement('div'); row.className = 'tt-row';
     const dotWrap = document.createElement('div'); dotWrap.style.position = 'relative';
@@ -1288,8 +1168,7 @@ function renderTimeTable() {
       const sw = document.createElement('div'); sw.className = 'cp-swatch'; sw.style.background = c;
       if(c === block.color) sw.classList.add('selected');
       sw.addEventListener('click', (e) => {
-        e.stopPropagation(); block.color = c; localStorage.setItem('tt-data', JSON.stringify(data));
-        renderTimeTable();
+        e.stopPropagation(); block.color = c; localStorage.setItem('tt-data', JSON.stringify(data)); renderTimeTable();
       });
       popup.appendChild(sw);
     });
@@ -1297,35 +1176,21 @@ function renderTimeTable() {
     document.addEventListener('click', () => popup.classList.remove('open'));
     dotWrap.append(dot, popup);
 
-    const startIn = document.createElement('input'); startIn.type = 'time'; startIn.className = 'tt-time-input';
-    startIn.value = block.start;
+    const startIn = document.createElement('input'); startIn.type = 'time'; startIn.className = 'tt-time-input'; startIn.value = block.start;
     startIn.addEventListener('change', () => { block.start = startIn.value; localStorage.setItem('tt-data', JSON.stringify(data)); renderTimeTable(); });
-
     const span = document.createElement('span'); span.textContent = '-'; span.style.color = 'var(--muted)';
-
-    const endIn = document.createElement('input'); endIn.type = 'time'; endIn.className = 'tt-time-input';
-    endIn.value = block.end;
+    const endIn = document.createElement('input'); endIn.type = 'time'; endIn.className = 'tt-time-input'; endIn.value = block.end;
     endIn.addEventListener('change', () => { block.end = endIn.value; localStorage.setItem('tt-data', JSON.stringify(data)); renderTimeTable(); });
-
-    const lblIn = document.createElement('input'); lblIn.type = 'text'; lblIn.className = 'tt-label-input';
-    lblIn.value = block.label; lblIn.placeholder = "Activity name...";
+    const lblIn = document.createElement('input'); lblIn.type = 'text'; lblIn.className = 'tt-label-input'; lblIn.value = block.label; lblIn.placeholder = "Activity name...";
     lblIn.addEventListener('input', () => { block.label = lblIn.value; localStorage.setItem('tt-data', JSON.stringify(data)); });
-
     const delBtn = document.createElement('button'); delBtn.className = 'tt-del-btn'; delBtn.textContent = '×';
-    delBtn.addEventListener('click', () => {
-      data.splice(index, 1); localStorage.setItem('tt-data', JSON.stringify(data)); renderTimeTable();
-    });
-
-    row.append(dotWrap, startIn, span, endIn, lblIn, delBtn);
-    list.appendChild(row);
+    delBtn.addEventListener('click', () => { data.splice(index, 1); localStorage.setItem('tt-data', JSON.stringify(data)); renderTimeTable(); });
+    row.append(dotWrap, startIn, span, endIn, lblIn, delBtn); list.appendChild(row);
   });
 }
-
 $('#tt-add-btn').addEventListener('click', () => {
-  const data = loadTTData();
-  data.push({ id: Date.now(), start: "18:00", end: "19:00", label: "", color: COLORS[data.length % COLORS.length] });
-  localStorage.setItem('tt-data', JSON.stringify(data));
-  renderTimeTable();
+  const data = loadTTData(); data.push({ id: Date.now(), start: "18:00", end: "19:00", label: "", color: COLORS[data.length % COLORS.length] });
+  localStorage.setItem('tt-data', JSON.stringify(data)); renderTimeTable();
 });
 renderTimeTable();
 
@@ -1335,51 +1200,25 @@ renderTimeTable();
 function loadCLData() {
   let data = JSON.parse(localStorage.getItem('cl-data')) || { date: '', tasks: [] };
   const today = todayStr();
-  if (data.date !== today) {
-    data.date = today;
-    data.tasks.forEach(t => t.done = false); 
-    localStorage.setItem('cl-data', JSON.stringify(data));
-  }
+  if (data.date !== today) { data.date = today; data.tasks.forEach(t => t.done = false); localStorage.setItem('cl-data', JSON.stringify(data)); }
   return data;
 }
 
 function renderChecklist() {
-  const data = loadCLData();
-  $('#cl-date-display').textContent = new Date().toLocaleDateString(undefined, { weekday:'long', month:'short', day:'numeric' });
-  const list = $('#cl-list');
-  list.innerHTML = '';
-
+  const data = loadCLData(); $('#cl-date-display').textContent = new Date().toLocaleDateString(undefined, { weekday:'long', month:'short', day:'numeric' });
+  const list = $('#cl-list'); list.innerHTML = '';
   data.tasks.forEach((task, index) => {
-    const item = document.createElement('div');
-    item.className = 'cl-item';
-
-    const chk = document.createElement('div');
-    chk.className = 'cl-check' + (task.done ? ' checked' : '');
-    
-    const inp = document.createElement('input');
-    inp.type = 'text';
-    inp.className = 'cl-text' + (task.done ? ' done' : '');
-    inp.value = task.text;
+    const item = document.createElement('div'); item.className = 'cl-item';
+    const chk = document.createElement('div'); chk.className = 'cl-check' + (task.done ? ' checked' : '');
+    const inp = document.createElement('input'); inp.type = 'text'; inp.className = 'cl-text' + (task.done ? ' done' : ''); inp.value = task.text;
     inp.addEventListener('input', () => { task.text = inp.value; localStorage.setItem('cl-data', JSON.stringify(data)); });
-
     chk.addEventListener('click', () => {
-      task.done = !task.done;
-      chk.classList.toggle('checked', task.done);
-      inp.classList.toggle('done', task.done);
+      task.done = !task.done; chk.classList.toggle('checked', task.done); inp.classList.toggle('done', task.done);
       localStorage.setItem('cl-data', JSON.stringify(data));
     });
-
-    const del = document.createElement('button');
-    del.className = 'cl-del';
-    del.innerHTML = '×';
-    del.addEventListener('click', () => {
-      data.tasks.splice(index, 1);
-      localStorage.setItem('cl-data', JSON.stringify(data));
-      renderChecklist();
-    });
-
-    item.append(chk, inp, del);
-    list.appendChild(item);
+    const del = document.createElement('button'); del.className = 'cl-del'; del.innerHTML = '×';
+    del.addEventListener('click', () => { data.tasks.splice(index, 1); localStorage.setItem('cl-data', JSON.stringify(data)); renderChecklist(); });
+    item.append(chk, inp, del); list.appendChild(item);
   });
 }
 
@@ -1387,14 +1226,9 @@ $('#cl-add-btn').addEventListener('click', addClTask);
 $('#cl-input').addEventListener('keydown', e => { if (e.key === 'Enter') addClTask(); });
 
 function addClTask() {
-  const inp = $('#cl-input');
-  const text = inp.value.trim();
-  if (!text) return;
-  const data = loadCLData();
-  data.tasks.push({ text: text, done: false });
-  localStorage.setItem('cl-data', JSON.stringify(data));
-  inp.value = '';
-  renderChecklist();
+  const inp = $('#cl-input'); const text = inp.value.trim(); if (!text) return;
+  const data = loadCLData(); data.tasks.push({ text: text, done: false });
+  localStorage.setItem('cl-data', JSON.stringify(data)); inp.value = ''; renderChecklist();
 }
 renderChecklist();
 
@@ -1403,19 +1237,12 @@ renderChecklist();
 // ══════════════════════════════════════════════
 function renderHeatmap() {
   const streakData = JSON.parse(localStorage.getItem('streak-data') || '{}');
-  const grid = $('#heatmap-grid');
-  grid.innerHTML = '';
-  
+  const grid = $('#heatmap-grid'); grid.innerHTML = '';
   const today = new Date();
   for(let i=69; i>=0; i--) {
-    const d = new Date(today); 
-    d.setDate(d.getDate() - i);
-    const dStr = dateStr(d);
-    
-    const cell = document.createElement('div');
-    cell.className = 'heatmap-cell' + (streakData[dStr] ? ' done' : '');
-    cell.title = dStr + (streakData[dStr] ? ' (Goal Met)' : '');
-    grid.appendChild(cell);
+    const d = new Date(today); d.setDate(d.getDate() - i); const dStr = dateStr(d);
+    const cell = document.createElement('div'); cell.className = 'heatmap-cell' + (streakData[dStr] ? ' done' : '');
+    cell.title = dStr + (streakData[dStr] ? ' (Goal Met)' : ''); grid.appendChild(cell);
   }
 }
 setTimeout(renderHeatmap, 100);
@@ -1426,185 +1253,95 @@ setTimeout(renderHeatmap, 100);
 function loadFCData() { return JSON.parse(localStorage.getItem('fc-data')) || []; }
 function saveFCData(data) { localStorage.setItem('fc-data', JSON.stringify(data)); }
 
-// SM-2 algorithm
-// quality: 0 (Again), 1 (Hard), 2 (Good), 3 (Easy)
-// card: { q, a, ef, interval, reps, nextReview, lapses }
 function sm2Init(card) {
-  card.ef = 2.5;
-  card.interval = 0;
-  card.reps = 0;
-  card.lapses = 0;
-  card.nextReview = 0;
-  return card;
+  card.ef = 2.5; card.interval = 0; card.reps = 0; card.lapses = 0; card.nextReview = 0; return card;
 }
 function sm2Review(card, quality) {
-  if (quality === 0) {
-    card.lapses = (card.lapses || 0) + 1;
-    card.reps = 0;
-    card.interval = 1; // 1 day
-  } else {
+  if (quality === 0) { card.lapses = (card.lapses || 0) + 1; card.reps = 0; card.interval = 1; } 
+  else {
     card.reps = (card.reps || 0) + 1;
     if (card.reps === 1) card.interval = 1;
     else if (card.reps === 2) card.interval = 6;
     else card.interval = Math.round((card.interval || 1) * (card.ef || 2.5));
-    if (quality === 1) card.interval = Math.max(1, Math.round(card.interval * 0.8)); // hard: shrink
-    if (quality === 3) card.interval = Math.round(card.interval * 1.3); // easy: bonus
+    if (quality === 1) card.interval = Math.max(1, Math.round(card.interval * 0.8));
+    if (quality === 3) card.interval = Math.round(card.interval * 1.3);
   }
-  // update ease factor
   const newEf = (card.ef || 2.5) + (0.1 - (3 - quality) * (0.08 + (3 - quality) * 0.02));
-  card.ef = Math.max(1.3, newEf);
-  card.nextReview = Date.now() + card.interval * 86400000;
+  card.ef = Math.max(1.3, newEf); card.nextReview = Date.now() + card.interval * 86400000;
   return card;
 }
 
 function renderFCDecks() {
-  const data = loadFCData();
-  const list = $('#fc-decks-list');
-  list.innerHTML = '';
-  
+  const data = loadFCData(); const list = $('#fc-decks-list'); list.innerHTML = '';
   data.forEach((deck, i) => {
-    const now = Date.now();
-    const dueCount = deck.cards.filter(c => c.nextReview <= now).length;
-    
-    const row = document.createElement('div');
-    row.className = 'fc-deck-row';
-    
-    const info = document.createElement('div');
-    info.className = 'fc-deck-info';
+    const now = Date.now(); const dueCount = deck.cards.filter(c => c.nextReview <= now).length;
+    const row = document.createElement('div'); row.className = 'fc-deck-row';
+    const info = document.createElement('div'); info.className = 'fc-deck-info';
     info.innerHTML = `<h4>${escapeHtml(deck.name)}</h4><span>${deck.cards.length} cards · <b style="color:${dueCount>0?'var(--hard)':'var(--easy)'}">${dueCount} due</b></span>`;
     
     const actions = document.createElement('div');
-    
-    const addBtn = document.createElement('button');
-    addBtn.className = 'fc-review-btn';
-    addBtn.style.background = 'var(--surface2)';
-    addBtn.style.border = '1px solid var(--border)';
-    addBtn.style.color = 'var(--text)';
-    addBtn.style.marginRight = '5px';
-    addBtn.textContent = '+ Add';
-    addBtn.onclick = (e) => { e.stopPropagation(); openFCEditor(i); };
-
-    const revBtn = document.createElement('button');
-    revBtn.className = 'fc-review-btn';
-    revBtn.textContent = 'Review';
+    const addBtn = document.createElement('button'); addBtn.className = 'fc-review-btn'; addBtn.style.background = 'var(--surface2)'; addBtn.style.border = '1px solid var(--border)'; addBtn.style.color = 'var(--text)'; addBtn.style.marginRight = '5px'; addBtn.textContent = '+ Add'; addBtn.onclick = (e) => { e.stopPropagation(); openFCEditor(i); };
+    const revBtn = document.createElement('button'); revBtn.className = 'fc-review-btn'; revBtn.textContent = 'Review';
     if(dueCount === 0) { revBtn.style.opacity = '0.5'; revBtn.textContent = 'Done'; }
     revBtn.onclick = (e) => { e.stopPropagation(); startReview(i); };
-    
-    const delBtn = document.createElement('button');
-    delBtn.className = 'fc-del-deck';
-    delBtn.innerHTML = '×';
+    const delBtn = document.createElement('button'); delBtn.className = 'fc-del-deck'; delBtn.innerHTML = '×';
     delBtn.onclick = (e) => { e.stopPropagation(); if(confirm('Delete deck?')) { data.splice(i,1); saveFCData(data); renderFCDecks(); } };
 
-    actions.append(addBtn, revBtn, delBtn);
-    row.append(info, actions);
-    list.appendChild(row);
+    actions.append(addBtn, revBtn, delBtn); row.append(info, actions); list.appendChild(row);
   });
 }
 
-$('#fc-add-deck-btn').onclick = () => {
-  const row = $('#fc-new-deck-row');
-  row.style.display = row.style.display === 'none' ? 'flex' : 'none';
-};
+$('#fc-add-deck-btn').onclick = () => { $('#fc-new-deck-row').style.display = $('#fc-new-deck-row').style.display === 'none' ? 'flex' : 'none'; };
 $('#fc-save-deck-btn').onclick = () => {
-  const inp = $('#fc-new-deck-in');
-  if(!inp.value.trim()) return;
-  const data = loadFCData();
-  data.push({ name: inp.value.trim(), cards: [] });
-  saveFCData(data);
-  inp.value = '';
-  $('#fc-new-deck-row').style.display = 'none';
-  renderFCDecks();
+  const inp = $('#fc-new-deck-in'); if(!inp.value.trim()) return;
+  const data = loadFCData(); data.push({ name: inp.value.trim(), cards: [] }); saveFCData(data);
+  inp.value = ''; $('#fc-new-deck-row').style.display = 'none'; renderFCDecks();
 };
 
-function openFCEditor(deckIndex) {
-  currentDeckIndex = deckIndex;
-  const data = loadFCData();
-  $('#fc-editor-title').textContent = "Adding to: " + data[deckIndex].name;
-  $('#fc-editor').classList.add('open');
-}
-$('#fc-close-editor-btn').onclick = () => {
-  $('#fc-editor').classList.remove('open');
-  renderFCDecks();
-};
+function openFCEditor(deckIndex) { currentDeckIndex = deckIndex; $('#fc-editor-title').textContent = "Adding to: " + loadFCData()[deckIndex].name; $('#fc-editor').classList.add('open'); }
+$('#fc-close-editor-btn').onclick = () => { $('#fc-editor').classList.remove('open'); renderFCDecks(); };
 $('#fc-save-card-btn').onclick = () => {
-  const qIn = $('#fc-q-in');
-  const aIn = $('#fc-a-in');
-  if(!qIn.value.trim() || !aIn.value.trim()) return;
-  const data = loadFCData();
-  const card = sm2Init({ q: qIn.value.trim(), a: aIn.value.trim() });
-  data[currentDeckIndex].cards.push(card);
-  saveFCData(data);
-  qIn.value = ''; aIn.value = '';
-  qIn.focus();
-  toast('Card added');
+  const qIn = $('#fc-q-in'), aIn = $('#fc-a-in'); if(!qIn.value.trim() || !aIn.value.trim()) return;
+  const data = loadFCData(); data[currentDeckIndex].cards.push(sm2Init({ q: qIn.value.trim(), a: aIn.value.trim() }));
+  saveFCData(data); qIn.value = ''; aIn.value = ''; qIn.focus(); toast('Card added');
 };
 
 function startReview(deckIndex) {
-  const data = loadFCData();
-  const now = Date.now();
-  currentDeckIndex = deckIndex;
-  currentReviewQueue = data[deckIndex].cards
-    .map((c, idx) => ({ card: c, idx }))
-    .filter(o => o.card.nextReview <= now);
+  const data = loadFCData(); const now = Date.now(); currentDeckIndex = deckIndex;
+  currentReviewQueue = data[deckIndex].cards.map((c, idx) => ({ card: c, idx })).filter(o => o.card.nextReview <= now);
   if(currentReviewQueue.length === 0) return toast('No cards due right now!');
-  
-  $('#fc-decks-list').style.display = 'none';
-  $('#fc-add-deck-btn').style.display = 'none';
-  $('#fc-flip-container').style.display = 'block';
-  $('#fc-end-review-btn').style.display = 'block';
-  
+  $('#fc-decks-list').style.display = 'none'; $('#fc-add-deck-btn').style.display = 'none'; $('#fc-flip-container').style.display = 'block'; $('#fc-end-review-btn').style.display = 'block';
   showNextCard();
 }
 
 function showNextCard() {
-  if(currentReviewQueue.length === 0) {
-    endReview();
-    return;
-  }
+  if(currentReviewQueue.length === 0) { endReview(); return; }
   const { card } = currentReviewQueue[0];
-  $('#fc-front-text').textContent = card.q;
-  $('#fc-back-text').textContent = card.a;
-  $('#fc-flip-container').classList.remove('flipped');
-  $('#fc-review-controls').style.display = 'none';
-  const interval = card.interval || 0;
-  const ef = (card.ef || 2.5).toFixed(2);
-  $('#fc-meta').textContent = `Interval: ${interval}d · Ease: ${ef} · Reps: ${card.reps || 0}`;
+  $('#fc-front-text').textContent = card.q; $('#fc-back-text').textContent = card.a;
+  $('#fc-flip-container').classList.remove('flipped'); $('#fc-review-controls').style.display = 'none';
+  $('#fc-meta').textContent = `Interval: ${card.interval || 0}d · Ease: ${(card.ef || 2.5).toFixed(2)} · Reps: ${card.reps || 0}`;
 }
 
 $('#fc-flip-container').onclick = function() {
   if(currentReviewQueue.length === 0) return;
   this.classList.toggle('flipped');
-  if(this.classList.contains('flipped')) {
-    $('#fc-review-controls').style.display = 'flex';
-  } else {
-    $('#fc-review-controls').style.display = 'none';
-  }
+  $('#fc-review-controls').style.display = this.classList.contains('flipped') ? 'flex' : 'none';
 };
 
 $$('.fc-btn[data-q]').forEach(btn => {
   btn.addEventListener('click', () => {
-    const q = parseInt(btn.dataset.q);
-    if (currentReviewQueue.length === 0) return;
-    const item = currentReviewQueue.shift();
-    const data = loadFCData();
+    const q = parseInt(btn.dataset.q); if (currentReviewQueue.length === 0) return;
+    const item = currentReviewQueue.shift(); const data = loadFCData();
     const realCard = data[currentDeckIndex].cards[item.idx];
-    if (realCard) {
-      sm2Review(realCard, q);
-      saveFCData(data);
-    }
+    if (realCard) { sm2Review(realCard, q); saveFCData(data); }
     showNextCard();
   });
 });
 
 function endReview() {
-  $('#fc-decks-list').style.display = 'block';
-  $('#fc-add-deck-btn').style.display = 'block';
-  $('#fc-flip-container').style.display = 'none';
-  $('#fc-review-controls').style.display = 'none';
-  $('#fc-end-review-btn').style.display = 'none';
-  $('#fc-meta').textContent = '';
-  renderFCDecks();
-  toast('Review complete 🎉');
+  $('#fc-decks-list').style.display = 'block'; $('#fc-add-deck-btn').style.display = 'block';
+  $('#fc-flip-container').style.display = 'none'; $('#fc-review-controls').style.display = 'none'; $('#fc-end-review-btn').style.display = 'none';
+  $('#fc-meta').textContent = ''; renderFCDecks(); toast('Review complete 🎉');
 }
 $('#fc-end-review-btn').onclick = endReview;
 
@@ -1615,29 +1352,19 @@ renderFCDecks();
 // ══════════════════════════════════════════════
 const HABIT_EMOJIS = ['💪','📚','🏃','🧘','💧','🥗','😴','✍️','🎨','🎵','🧹','🌱','🧠','☀️','🌙'];
 function computeHabitStreak(history) {
-  let streak = 0;
-  const today = new Date();
+  let streak = 0; const today = new Date();
   for (let i = 0; i < 365; i++) {
-    const d = new Date(today); d.setDate(d.getDate() - i);
-    const ds = dateStr(d);
-    if (history[ds]) streak++;
-    else if (i > 0) break;
-    else continue;
-  }
-  return streak;
+    const d = new Date(today); d.setDate(d.getDate() - i); const ds = dateStr(d);
+    if (history[ds]) streak++; else if (i > 0) break; else continue;
+  } return streak;
 }
 function renderHabits() {
-  const list = $('#habits-list');
-  const empty = $('#habit-empty-msg');
-  list.innerHTML = '';
+  const list = $('#habits-list'); const empty = $('#habit-empty-msg'); list.innerHTML = '';
   if (habits.length === 0) { empty.style.display = 'block'; return; }
-  empty.style.display = 'none';
-  const today = todayStr();
+  empty.style.display = 'none'; const today = todayStr();
   habits.forEach((h, hi) => {
-    const streak = computeHabitStreak(h.history || {});
-    const doneToday = !!(h.history && h.history[today]);
-    const card = document.createElement('div');
-    card.className = 'habit-card';
+    const streak = computeHabitStreak(h.history || {}); const doneToday = !!(h.history && h.history[today]);
+    const card = document.createElement('div'); card.className = 'habit-card';
     card.innerHTML = `
       <div class="habit-row">
         <div class="habit-emoji">${h.emoji || '⭐'}</div>
@@ -1650,38 +1377,28 @@ function renderHabits() {
       </div>
       <div class="habit-week">
         ${(() => {
-          let html = '';
-          const todayDate = new Date();
+          let html = ''; const todayDate = new Date();
           for (let i = 6; i >= 0; i--) {
-            const d = new Date(todayDate); d.setDate(d.getDate() - i);
-            const ds = dateStr(d);
-            const dn = d.toLocaleDateString(undefined, { weekday: 'narrow' });
-            const isToday = (i === 0);
+            const d = new Date(todayDate); d.setDate(d.getDate() - i); const ds = dateStr(d);
+            const dn = d.toLocaleDateString(undefined, { weekday: 'narrow' }); const isToday = (i === 0);
             html += `<div class="habit-week-day${isToday ? ' today' : ''}"><div class="habit-week-cell${(h.history && h.history[ds]) ? ' done' : ''}"></div>${dn}</div>`;
           }
           return html;
         })()}
-      </div>
-    `;
+      </div>`;
     list.appendChild(card);
   });
-  // wire events
-  list.querySelectorAll('.habit-name-input').forEach((inp, i) => {
-    inp.addEventListener('input', () => { habits[i].name = inp.value; save(); });
-  });
+  list.querySelectorAll('.habit-name-input').forEach((inp, i) => { inp.addEventListener('input', () => { habits[i].name = inp.value; save(); }); });
   list.querySelectorAll('.habit-check-btn').forEach(btn => {
     btn.addEventListener('click', () => {
-      const i = parseInt(btn.dataset.hi);
-      habits[i].history = habits[i].history || {};
-      if (habits[i].history[today]) delete habits[i].history[today];
-      else habits[i].history[today] = true;
+      const i = parseInt(btn.dataset.hi); habits[i].history = habits[i].history || {};
+      if (habits[i].history[today]) delete habits[i].history[today]; else habits[i].history[today] = true;
       save(); renderHabits();
     });
   });
   list.querySelectorAll('.habit-del-btn').forEach(btn => {
     btn.addEventListener('click', () => {
-      const i = parseInt(btn.dataset.di);
-      if (confirm('Delete this habit?')) { habits.splice(i, 1); save(); renderHabits(); }
+      const i = parseInt(btn.dataset.di); if (confirm('Delete this habit?')) { habits.splice(i, 1); save(); renderHabits(); }
     });
   });
 }
@@ -1693,27 +1410,17 @@ $('#habit-add-btn').addEventListener('click', () => {
       ${HABIT_EMOJIS.map(e => `<button class="log-btn" data-e="${e}" style="flex:0 0 auto; font-size:1.4rem; padding:6px 10px;">${e}</button>`).join('')}
     </div>
     <input type="text" id="habit-name-modal" class="fc-input" placeholder="e.g. Read 20 mins">
-    <div class="modal-row">
-      <button class="modal-btn" id="habit-cancel">Cancel</button>
-      <button class="modal-btn primary" id="habit-save">Save</button>
-    </div>
+    <div class="modal-row"><button class="modal-btn" id="habit-cancel">Cancel</button><button class="modal-btn primary" id="habit-save">Save</button></div>
   `);
   let chosen = HABIT_EMOJIS[0];
   $$('#emoji-picker .log-btn').forEach(b => {
-    b.addEventListener('click', () => {
-      $$('#emoji-picker .log-btn').forEach(x => x.style.borderColor = 'var(--border)');
-      b.style.borderColor = 'var(--accent)';
-      chosen = b.dataset.e;
-    });
+    b.addEventListener('click', () => { $$('#emoji-picker .log-btn').forEach(x => x.style.borderColor = 'var(--border)'); b.style.borderColor = 'var(--accent)'; chosen = b.dataset.e; });
   });
   $('#habit-cancel').addEventListener('click', hideModal);
   $('#habit-save').addEventListener('click', () => {
-    const name = $('#habit-name-modal').value.trim();
-    if (!name) return;
-    habits.push({ name, emoji: chosen, history: {}, created: todayStr() });
-    save(); renderHabits(); hideModal(); toast('Habit added');
+    const name = $('#habit-name-modal').value.trim(); if (!name) return;
+    habits.push({ name, emoji: chosen, history: {}, created: todayStr() }); save(); renderHabits(); hideModal(); toast('Habit added');
   });
-  setTimeout(() => $('#habit-name-modal').focus(), 50);
 });
 
 // ══════════════════════════════════════════════
@@ -1721,124 +1428,42 @@ $('#habit-add-btn').addEventListener('click', () => {
 // ══════════════════════════════════════════════
 function renderQuickLog() {
   const today = todayStr();
-  // water
-  const w = (quickLog.water && quickLog.water[today]) || 0;
-  $('#log-water-num').textContent = w;
-  $('#log-water-fill').style.width = Math.min(100, (w / 8) * 100) + '%';
-  // sleep
-  const s = (quickLog.sleep && quickLog.sleep[today]) || 0;
-  $('#log-sleep-num').textContent = s.toFixed(1);
-  $('#log-sleep-fill').style.width = Math.min(100, (s / 8) * 100) + '%';
-  // mood
-  const m = (quickLog.mood && quickLog.mood[today]) || 0;
-  $$('#mood-row .mood-btn').forEach(b => b.classList.toggle('selected', parseInt(b.dataset.mood) === m));
-  // 7-day note
+  const w = (quickLog.water && quickLog.water[today]) || 0; $('#log-water-num').textContent = w; $('#log-water-fill').style.width = Math.min(100, (w / 8) * 100) + '%';
+  const s = (quickLog.sleep && quickLog.sleep[today]) || 0; $('#log-sleep-num').textContent = s.toFixed(1); $('#log-sleep-fill').style.width = Math.min(100, (s / 8) * 100) + '%';
+  const m = (quickLog.mood && quickLog.mood[today]) || 0; $$('#mood-row .mood-btn').forEach(b => b.classList.toggle('selected', parseInt(b.dataset.mood) === m));
+  
   const weekMoods = [];
   for (let i = 6; i >= 0; i--) {
-    const d = new Date(); d.setDate(d.getDate() - i);
-    const ds = dateStr(d);
-    const mv = (quickLog.mood && quickLog.mood[ds]);
-    if (mv) weekMoods.push(mv);
+    const d = new Date(); d.setDate(d.getDate() - i); const mv = (quickLog.mood && quickLog.mood[dateStr(d)]); if (mv) weekMoods.push(mv);
   }
-  if (weekMoods.length > 0) {
-    const avg = (weekMoods.reduce((a, b) => a + b, 0) / weekMoods.length).toFixed(1);
-    $('#mood-week-note').textContent = `7-day average: ${avg} / 5`;
-  } else {
-    $('#mood-week-note').textContent = '';
-  }
-  // 7-day log chart
+  $('#mood-week-note').textContent = weekMoods.length > 0 ? `7-day average: ${(weekMoods.reduce((a, b) => a + b, 0) / weekMoods.length).toFixed(1)} / 5` : '';
   renderQuickLogChart();
 }
 function renderQuickLogChart() {
-  const wrap = $('#chart-quicklog');
-  if (!wrap) return;
-  const days = [];
-  for (let i = 6; i >= 0; i--) {
-    const d = new Date(); d.setDate(d.getDate() - i);
-    days.push({ date: d, ds: dateStr(d) });
-  }
-  const W = 460, H = 140, padL = 30, padB = 22, padT = 8, padR = 8;
-  const innerW = W - padL - padR, innerH = H - padT - padB;
-  const colW = innerW / days.length;
-
-  const waterVals = days.map(d => (quickLog.water && quickLog.water[d.ds]) || 0);
-  const sleepVals = days.map(d => (quickLog.sleep && quickLog.sleep[d.ds]) || 0);
-  const maxW = 8, maxS = 12;
-
-  const cs = getComputedStyle(document.documentElement);
-  const accent = cs.getPropertyValue('--accent').trim() || '#7c6af5';
-  const waterC = '#3b9eff';
-  const sleepC = '#ab47bc';
-  const border = cs.getPropertyValue('--border').trim() || '#2e2e40';
-  const muted = cs.getPropertyValue('--muted').trim() || '#6b6880';
-
+  const wrap = $('#chart-quicklog'); if (!wrap) return;
+  const days = []; for (let i = 6; i >= 0; i--) { const d = new Date(); d.setDate(d.getDate() - i); days.push({ date: d, ds: dateStr(d) }); }
+  const W = 460, H = 140, padL = 30, padB = 22, padT = 8, padR = 8; const innerW = W - padL - padR, innerH = H - padT - padB; const colW = innerW / days.length;
+  const waterVals = days.map(d => (quickLog.water && quickLog.water[d.ds]) || 0); const sleepVals = days.map(d => (quickLog.sleep && quickLog.sleep[d.ds]) || 0);
   let bars = '';
   days.forEach((d, i) => {
-    const x = padL + i * colW;
-    const wv = Math.min(1, waterVals[i] / maxW);
-    const sv = Math.min(1, sleepVals[i] / maxS);
-    const bw = Math.max(2, colW * 0.32);
-    const gap = 2;
-    const wH = wv * innerH;
-    const sH = sv * innerH;
-    const wX = x + (colW - 2*bw - gap) / 2;
-    const sX = wX + bw + gap;
-    bars += `<rect class="chart-bar" x="${wX}" y="${padT + innerH - wH}" width="${bw}" height="${wH}" rx="2" fill="${waterC}" opacity="0.85"><title>Water: ${waterVals[i]} cups</title></rect>`;
-    bars += `<rect class="chart-bar" x="${sX}" y="${padT + innerH - sH}" width="${bw}" height="${sH}" rx="2" fill="${sleepC}" opacity="0.85"><title>Sleep: ${sleepVals[i].toFixed(1)}h</title></rect>`;
-    const lbl = d.date.toLocaleDateString(undefined, { weekday: 'narrow' });
-    bars += `<text class="chart-axis" x="${x + colW/2}" y="${H - 6}" text-anchor="middle">${lbl}</text>`;
+    const x = padL + i * colW, wv = Math.min(1, waterVals[i] / 8), sv = Math.min(1, sleepVals[i] / 12);
+    const bw = Math.max(2, colW * 0.32), wH = wv * innerH, sH = sv * innerH;
+    const wX = x + (colW - 2*bw - 2) / 2, sX = wX + bw + 2;
+    bars += `<rect class="chart-bar" x="${wX}" y="${padT + innerH - wH}" width="${bw}" height="${wH}" rx="2" fill="#3b9eff" opacity="0.85"><title>Water: ${waterVals[i]} cups</title></rect>`;
+    bars += `<rect class="chart-bar" x="${sX}" y="${padT + innerH - sH}" width="${bw}" height="${sH}" rx="2" fill="#ab47bc" opacity="0.85"><title>Sleep: ${sleepVals[i].toFixed(1)}h</title></rect>`;
+    bars += `<text class="chart-axis" x="${x + colW/2}" y="${H - 6}" text-anchor="middle">${d.date.toLocaleDateString(undefined, { weekday: 'narrow' })}</text>`;
   });
-
   wrap.innerHTML = `<svg viewBox="0 0 ${W} ${H}" style="width:100%; height:auto;">
-    <line class="chart-grid" x1="${padL}" y1="${padT}" x2="${padL}" y2="${padT+innerH}"/>
-    <line class="chart-grid" x1="${padL}" y1="${padT+innerH/2}" x2="${W-padR}" y2="${padT+innerH/2}"/>
-    <line class="chart-grid" x1="${padL}" y1="${padT+innerH}" x2="${W-padR}" y2="${padT+innerH}"/>
-    ${bars}
-    <g transform="translate(${padL-2},${padT+8})">
-      <rect width="8" height="8" fill="${waterC}" rx="2"/><text class="chart-axis" x="12" y="8">Water</text>
-      <rect x="58" width="8" height="8" fill="${sleepC}" rx="2"/><text class="chart-axis" x="70" y="8">Sleep</text>
-    </g>
-  </svg>`;
+    <line class="chart-grid" x1="${padL}" y1="${padT}" x2="${padL}" y2="${padT+innerH}"/><line class="chart-grid" x1="${padL}" y1="${padT+innerH/2}" x2="${W-padR}" y2="${padT+innerH/2}"/><line class="chart-grid" x1="${padL}" y1="${padT+innerH}" x2="${W-padR}" y2="${padT+innerH}"/>
+    ${bars}<g transform="translate(${padL-2},${padT+8})"><rect width="8" height="8" fill="#3b9eff" rx="2"/><text class="chart-axis" x="12" y="8">Water</text><rect x="58" width="8" height="8" fill="#ab47bc" rx="2"/><text class="chart-axis" x="70" y="8">Sleep</text></g></svg>`;
 }
 
-$('#log-water-plus').addEventListener('click', () => {
-  const t = todayStr();
-  quickLog.water = quickLog.water || {};
-  quickLog.water[t] = Math.min(20, (quickLog.water[t] || 0) + 1);
-  save(); renderQuickLog();
-});
-$('#log-water-minus').addEventListener('click', () => {
-  const t = todayStr();
-  quickLog.water = quickLog.water || {};
-  quickLog.water[t] = Math.max(0, (quickLog.water[t] || 0) - 1);
-  save(); renderQuickLog();
-});
-$('#log-water-reset').addEventListener('click', () => {
-  const t = todayStr();
-  if (quickLog.water) quickLog.water[t] = 0;
-  save(); renderQuickLog();
-});
-$('#log-sleep-plus').addEventListener('click', () => {
-  const t = todayStr();
-  quickLog.sleep = quickLog.sleep || {};
-  quickLog.sleep[t] = Math.min(16, ((quickLog.sleep[t] || 0) + 0.5));
-  save(); renderQuickLog();
-});
-$('#log-sleep-minus').addEventListener('click', () => {
-  const t = todayStr();
-  quickLog.sleep = quickLog.sleep || {};
-  quickLog.sleep[t] = Math.max(0, ((quickLog.sleep[t] || 0) - 0.5));
-  save(); renderQuickLog();
-});
-$$('#mood-row .mood-btn').forEach(b => {
-  b.addEventListener('click', () => {
-    const t = todayStr();
-    quickLog.mood = quickLog.mood || {};
-    const m = parseInt(b.dataset.mood);
-    quickLog.mood[t] = (quickLog.mood[t] === m) ? 0 : m;
-    save(); renderQuickLog();
-  });
-});
+$('#log-water-plus').addEventListener('click', () => { const t = todayStr(); quickLog.water = quickLog.water || {}; quickLog.water[t] = Math.min(20, (quickLog.water[t] || 0) + 1); save(); renderQuickLog(); });
+$('#log-water-minus').addEventListener('click', () => { const t = todayStr(); quickLog.water = quickLog.water || {}; quickLog.water[t] = Math.max(0, (quickLog.water[t] || 0) - 1); save(); renderQuickLog(); });
+$('#log-water-reset').addEventListener('click', () => { const t = todayStr(); if (quickLog.water) quickLog.water[t] = 0; save(); renderQuickLog(); });
+$('#log-sleep-plus').addEventListener('click', () => { const t = todayStr(); quickLog.sleep = quickLog.sleep || {}; quickLog.sleep[t] = Math.min(16, ((quickLog.sleep[t] || 0) + 0.5)); save(); renderQuickLog(); });
+$('#log-sleep-minus').addEventListener('click', () => { const t = todayStr(); quickLog.sleep = quickLog.sleep || {}; quickLog.sleep[t] = Math.max(0, ((quickLog.sleep[t] || 0) - 0.5)); save(); renderQuickLog(); });
+$$('#mood-row .mood-btn').forEach(b => { b.addEventListener('click', () => { const t = todayStr(); quickLog.mood = quickLog.mood || {}; const m = parseInt(b.dataset.mood); quickLog.mood[t] = (quickLog.mood[t] === m) ? 0 : m; save(); renderQuickLog(); }); });
 
 // ══════════════════════════════════════════════
 //  SVG CHART HELPERS
@@ -1847,103 +1472,59 @@ function renderLineChart(container, data, options = {}) {
   const W = 460, H = 140, padL = 30, padB = 22, padT = 12, padR = 8;
   const innerW = W - padL - padR, innerH = H - padT - padB;
   const max = Math.max(1, ...data.map(d => d.value));
-  const cs = getComputedStyle(document.documentElement);
-  const accent = options.color || cs.getPropertyValue('--accent').trim() || '#7c6af5';
-  const border = cs.getPropertyValue('--border').trim() || '#2e2e40';
-
+  const accent = options.color || '#7c6af5';
   const stepX = data.length > 1 ? innerW / (data.length - 1) : 0;
-  let pts = [];
-  data.forEach((d, i) => {
-    const x = padL + (data.length === 1 ? innerW/2 : i * stepX);
-    const y = padT + innerH - (d.value / max) * innerH;
-    pts.push([x, y]);
-  });
+  let pts = []; data.forEach((d, i) => { pts.push([padL + (data.length === 1 ? innerW/2 : i * stepX), padT + innerH - (d.value / max) * innerH]); });
   const linePath = pts.map((p, i) => (i === 0 ? `M ${p[0]} ${p[1]}` : `L ${p[0]} ${p[1]}`)).join(' ');
   const areaPath = pts.length > 0 ? `${linePath} L ${pts[pts.length-1][0]} ${padT+innerH} L ${pts[0][0]} ${padT+innerH} Z` : '';
   const circles = pts.map((p, i) => `<circle class="chart-point" cx="${p[0]}" cy="${p[1]}" r="3.5"><title>${data[i].label}: ${data[i].value}</title></circle>`).join('');
-  const labels = data.map((d, i) => {
-    const x = padL + (data.length === 1 ? innerW/2 : i * stepX);
-    return `<text class="chart-axis" x="${x}" y="${H - 6}" text-anchor="middle">${d.label}</text>`;
-  }).join('');
-  const grid = `
-    <line class="chart-grid" x1="${padL}" y1="${padT}" x2="${padL}" y2="${padT+innerH}"/>
-    <line class="chart-grid" x1="${padL}" y1="${padT+innerH/2}" x2="${W-padR}" y2="${padT+innerH/2}"/>
-    <line class="chart-grid" x1="${padL}" y1="${padT+innerH}" x2="${W-padR}" y2="${padT+innerH}"/>
-    <text class="chart-axis" x="${padL-4}" y="${padT+innerH+3}" text-anchor="end">0</text>
-    <text class="chart-axis" x="${padL-4}" y="${padT+innerH/2+3}" text-anchor="end">${Math.round(max/2)}</text>
-    <text class="chart-axis" x="${padL-4}" y="${padT+5}" text-anchor="end">${max}</text>
-  `;
+  const labels = data.map((d, i) => `<text class="chart-axis" x="${padL + (data.length === 1 ? innerW/2 : i * stepX)}" y="${H - 6}" text-anchor="middle">${d.label}</text>`).join('');
+  const grid = `<line class="chart-grid" x1="${padL}" y1="${padT}" x2="${padL}" y2="${padT+innerH}"/><line class="chart-grid" x1="${padL}" y1="${padT+innerH/2}" x2="${W-padR}" y2="${padT+innerH/2}"/><line class="chart-grid" x1="${padL}" y1="${padT+innerH}" x2="${W-padR}" y2="${padT+innerH}"/><text class="chart-axis" x="${padL-4}" y="${padT+innerH+3}" text-anchor="end">0</text><text class="chart-axis" x="${padL-4}" y="${padT+innerH/2+3}" text-anchor="end">${Math.round(max/2)}</text><text class="chart-axis" x="${padL-4}" y="${padT+5}" text-anchor="end">${max}</text>`;
   container.innerHTML = `<svg viewBox="0 0 ${W} ${H}" style="width:100%; height:auto;">${grid}<path class="chart-area" d="${areaPath}"/><path class="chart-line" d="${linePath}" stroke="${accent}"/>${circles}${labels}</svg>`;
 }
 function renderBarChart(container, data, options = {}) {
   const W = 460, H = 140, padL = 30, padB = 22, padT = 12, padR = 8;
   const innerW = W - padL - padR, innerH = H - padT - padB;
   const max = Math.max(1, ...data.map(d => d.value));
-  const cs = getComputedStyle(document.documentElement);
-  const color = options.color || cs.getPropertyValue('--accent').trim() || '#7c6af5';
-  const colW = innerW / Math.max(1, data.length);
-  const bw = Math.max(4, colW * 0.55);
+  const color = options.color || '#7c6af5';
+  const colW = innerW / Math.max(1, data.length); const bw = Math.max(4, colW * 0.55);
   let bars = '';
   data.forEach((d, i) => {
-    const x = padL + i * colW + (colW - bw) / 2;
-    const h = (d.value / max) * innerH;
-    bars += `<rect class="chart-bar" x="${x}" y="${padT + innerH - h}" width="${bw}" height="${h}" rx="3" fill="${color}"><title>${d.label}: ${d.value}</title></rect>`;
-    bars += `<text class="chart-axis" x="${x + bw/2}" y="${H - 6}" text-anchor="middle">${d.label}</text>`;
+    const x = padL + i * colW + (colW - bw) / 2; const h = (d.value / max) * innerH;
+    bars += `<rect class="chart-bar" x="${x}" y="${padT + innerH - h}" width="${bw}" height="${h}" rx="3" fill="${color}"><title>${d.label}: ${d.value}</title></rect><text class="chart-axis" x="${x + bw/2}" y="${H - 6}" text-anchor="middle">${d.label}</text>`;
   });
-  const grid = `
-    <line class="chart-grid" x1="${padL}" y1="${padT+innerH}" x2="${W-padR}" y2="${padT+innerH}"/>
-    <line class="chart-grid" x1="${padL}" y1="${padT+innerH/2}" x2="${W-padR}" y2="${padT+innerH/2}"/>
-    <line class="chart-grid" x1="${padL}" y1="${padT}" x2="${padL}" y2="${padT+innerH}"/>
-  `;
-  container.innerHTML = `<svg viewBox="0 0 ${W} ${H}" style="width:100%; height:auto;">${grid}${bars}</svg>`;
+  container.innerHTML = `<svg viewBox="0 0 ${W} ${H}" style="width:100%; height:auto;"><line class="chart-grid" x1="${padL}" y1="${padT+innerH}" x2="${W-padR}" y2="${padT+innerH}"/><line class="chart-grid" x1="${padL}" y1="${padT+innerH/2}" x2="${W-padR}" y2="${padT+innerH/2}"/><line class="chart-grid" x1="${padL}" y1="${padT}" x2="${padL}" y2="${padT+innerH}"/>${bars}</svg>`;
 }
 
 // ══════════════════════════════════════════════
 //  DASHBOARD (stats + charts + share card)
 // ══════════════════════════════════════════════
+function getTrackerPct(tracker) {
+  if (!tracker.start || !tracker.end) return 0;
+  const s = new Date(tracker.start), e = new Date(tracker.end); if (e <= s) return 0;
+  const now = new Date(); now.setHours(0,0,0,0); const total = Math.round((e - s) / 86400000);
+  const elapsed = Math.max(0, Math.min(total, Math.round((now - s) / 86400000)));
+  return Math.round((elapsed / total) * 100);
+}
 function getStreakDays() {
   const streakData = JSON.parse(localStorage.getItem('streak-data') || '{}');
-  let s = 0;
-  const today = new Date();
+  let s = 0; const today = new Date();
   for (let i = 0; i < 365; i++) {
     const d = new Date(today); d.setDate(d.getDate() - i);
-    if (streakData[dateStr(d)]) s++;
-    else if (i > 0) break;
-  }
-  return s;
-}
-function getTopicsDoneThisWeek() {
-  const tp = JSON.parse(localStorage.getItem('tp-data') || 'null') || { subjects: [] };
-  let total = 0;
-  for (let i = 6; i >= 0; i--) {
-    const d = new Date(); d.setDate(d.getDate() - i);
-    const ds = dateStr(d);
-    if (ds === (tp.lastReset || '')) {
-      tp.subjects.forEach(sub => sub.topics.forEach(tp2 => { if (tp2.checked) total++; }));
-      break;
-    }
-  }
-  return total;
+    if (streakData[dateStr(d)]) s++; else if (i > 0) break;
+  } return s;
 }
 function getTopicsDoneLast7Days() {
-  // approximation: count current total + daily progression
   const tp = JSON.parse(localStorage.getItem('tp-data') || 'null') || { subjects: [] };
   const days = [];
   for (let i = 6; i >= 0; i--) {
-    const d = new Date(); d.setDate(d.getDate() - i);
-    const ds = dateStr(d);
-    if (ds === (tp.lastReset || '')) {
-      let c = 0; tp.subjects.forEach(sub => sub.topics.forEach(t => { if (t.checked) c++; }));
-      days.push(c);
-    } else {
-      days.push(0);
-    }
-  }
-  return days;
+    const d = new Date(); d.setDate(d.getDate() - i); const ds = dateStr(d);
+    if (ds === (tp.lastReset || '')) { let c = 0; tp.subjects.forEach(sub => sub.topics.forEach(t => { if (t.checked) c++; })); days.push(c); } 
+    else days.push(0);
+  } return days;
 }
 function renderDashboard() {
   const today = todayStr();
-  // Top stats
   const streak = getStreakDays();
   const tp = JSON.parse(localStorage.getItem('tp-data') || 'null') || { goal: 3, subjects: [] };
   const doneToday = (() => { let n = 0; tp.subjects.forEach(sub => sub.topics.forEach(t => { if (t.checked) n++; })); return n; })();
@@ -1953,74 +1534,38 @@ function renderDashboard() {
   const todayFocus = focusLog[today] || 0;
   
   $('#dash-stats').innerHTML = `
-    <div class="dash-card">
-      <div class="dash-num">🔥 ${streak}</div>
-      <div class="dash-label">Day streak</div>
-    </div>
-    <div class="dash-card">
-      <div class="dash-num">${doneToday}/${tp.goal}</div>
-      <div class="dash-label">Topics today</div>
-      <div class="dash-sub">${goalPct}% to goal</div>
-    </div>
-    <div class="dash-card">
-      <div class="dash-num">⏱️ ${todayFocus}m</div>
-      <div class="dash-label">Focus today</div>
-    </div>
-    <div class="dash-card">
-      <div class="dash-num">📇 ${dueCards}</div>
-      <div class="dash-label">Cards due</div>
-    </div>
-  `;
+    <div class="dash-card"><div class="dash-num">🔥 ${streak}</div><div class="dash-label">Day streak</div></div>
+    <div class="dash-card"><div class="dash-num">${doneToday}/${tp.goal}</div><div class="dash-label">Topics today</div><div class="dash-sub">${goalPct}% to goal</div></div>
+    <div class="dash-card"><div class="dash-num">⏱️ ${todayFocus}m</div><div class="dash-label">Focus today</div></div>
+    <div class="dash-card"><div class="dash-num">📇 ${dueCards}</div><div class="dash-label">Cards due</div></div>`;
 
-  // Weekly topics chart
-  const weekData = getTopicsDoneLast7Days().map((v, i) => {
-    const d = new Date(); d.setDate(d.getDate() - (6 - i));
-    return { value: v, label: d.toLocaleDateString(undefined, { weekday: 'narrow' }) };
-  });
+  const weekData = getTopicsDoneLast7Days().map((v, i) => { const d = new Date(); d.setDate(d.getDate() - (6 - i)); return { value: v, label: d.toLocaleDateString(undefined, { weekday: 'narrow' }) }; });
   renderLineChart($('#chart-weekly'), weekData, { color: getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() });
 
-  // Focus minutes chart
   const focusData = [];
-  for (let i = 6; i >= 0; i--) {
-    const d = new Date(); d.setDate(d.getDate() - i);
-    const ds = dateStr(d);
-    focusData.push({ value: focusLog[ds] || 0, label: d.toLocaleDateString(undefined, { weekday: 'narrow' }) });
-  }
+  for (let i = 6; i >= 0; i--) { const d = new Date(); d.setDate(d.getDate() - i); focusData.push({ value: focusLog[dateStr(d)] || 0, label: d.toLocaleDateString(undefined, { weekday: 'narrow' }) }); }
   renderBarChart($('#chart-focus'), focusData, { color: '#48c78e' });
 
-  // Tracker completion chart (active trackers)
-  const trackerBars = trackers.filter(t => t.start && t.end).map(t => {
-    const pct = getTrackerPct(t);
-    return { value: pct, label: (t.label || 'Tracker').slice(0, 10) };
-  });
+  const trackerBars = trackers.filter(t => t.start && t.end).map(t => ({ value: getTrackerPct(t), label: (t.label || 'Tracker').slice(0, 10) }));
   if (trackerBars.length > 0) renderBarChart($('#chart-tracker'), trackerBars, { color: getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() });
   else $('#chart-tracker').innerHTML = '<div style="text-align:center; color:var(--muted); font-size:0.8rem; padding:1rem 0;">No active trackers yet</div>';
 
-  // Share card
   $('#share-streak').textContent = `🔥 ${streak} day streak`;
   $('#share-num').textContent = `${goalPct}%`;
   $('#share-sub').textContent = `${doneToday}/${tp.goal} topics today`;
-  $('#share-row').innerHTML = `
-    <div class="share-card-mini"><div class="share-card-mini-num">${todayFocus}m</div><div class="share-card-mini-name">Focus</div></div>
-    <div class="share-card-mini"><div class="share-card-mini-num">${doneToday}</div><div class="share-card-mini-name">Topics</div></div>
-    <div class="share-card-mini"><div class="share-card-mini-num">${habits.filter(h => h.history && h.history[today]).length}</div><div class="share-card-mini-name">Habits</div></div>
-  `;
+  $('#share-row').innerHTML = `<div class="share-card-mini"><div class="share-card-mini-num">${todayFocus}m</div><div class="share-card-mini-name">Focus</div></div><div class="share-card-mini"><div class="share-card-mini-num">${doneToday}</div><div class="share-card-mini-name">Topics</div></div><div class="share-card-mini"><div class="share-card-mini-num">${habits.filter(h => h.history && h.history[today]).length}</div><div class="share-card-mini-name">Habits</div></div>`;
 }
 
 $('#share-png-btn').addEventListener('click', async () => {
   if (typeof html2canvas === 'undefined') return toast('Screenshot library not loaded');
-  const el = $('#share-card-preview');
-  const canvas = await html2canvas(el, { backgroundColor: null, scale: 2 });
-  const link = document.createElement('a'); link.download = 'date-progress.png'; link.href = canvas.toDataURL(); link.click();
-  toast('PNG saved');
+  const canvas = await html2canvas($('#share-card-preview'), { backgroundColor: null, scale: 2 });
+  const link = document.createElement('a'); link.download = 'date-progress.png'; link.href = canvas.toDataURL(); link.click(); toast('PNG saved');
 });
 $('#share-text-btn').addEventListener('click', () => {
-  const t = todayStr();
-  const tp = JSON.parse(localStorage.getItem('tp-data') || 'null') || { goal: 3, subjects: [] };
+  const t = todayStr(); const tp = JSON.parse(localStorage.getItem('tp-data') || 'null') || { goal: 3, subjects: [] };
   const doneToday = (() => { let n = 0; tp.subjects.forEach(sub => sub.topics.forEach(t => { if (t.checked) n++; })); return n; })();
   const txt = `📅 Date Progress — ${todayStr()}\n🔥 ${getStreakDays()} day streak\n📚 ${doneToday}/${tp.goal} topics today\n⏱️ ${focusLog[t]||0}m focus\n🎯 ${habits.filter(h => h.history && h.history[todayStr()]).length} habits done`;
-  if (navigator.share) navigator.share({ text: txt });
-  else { navigator.clipboard.writeText(txt).then(() => toast('Copied to clipboard')); }
+  if (navigator.share) navigator.share({ text: txt }); else { navigator.clipboard.writeText(txt).then(() => toast('Copied to clipboard')); }
 });
 
 // ══════════════════════════════════════════════
@@ -2028,80 +1573,41 @@ $('#share-text-btn').addEventListener('click', () => {
 // ══════════════════════════════════════════════
 function renderCalendar() {
   const y = calCursor.getFullYear(), m = calCursor.getMonth();
-  const monthTitle = calCursor.toLocaleDateString(undefined, { month: 'long', year: 'numeric' });
-  $('#cal-month-title').textContent = monthTitle;
-  // weekdays
-  const wd = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-  $('#cal-weekdays').innerHTML = wd.map(d => `<div class="cal-weekday">${d}</div>`).join('');
-  // days
-  const firstDay = new Date(y, m, 1);
-  const lastDay = new Date(y, m+1, 0);
-  const startOffset = firstDay.getDay();
-  const totalDays = lastDay.getDate();
-  const todayD = todayStr();
-  const grid = $('#cal-grid');
-  grid.innerHTML = '';
-  // empty
-  for (let i = 0; i < startOffset; i++) {
-    const e = document.createElement('div'); e.className = 'cal-day empty'; grid.appendChild(e);
-  }
+  $('#cal-month-title').textContent = calCursor.toLocaleDateString(undefined, { month: 'long', year: 'numeric' });
+  $('#cal-weekdays').innerHTML = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].map(d => `<div class="cal-weekday">${d}</div>`).join('');
+  const startOffset = new Date(y, m, 1).getDay(); const totalDays = new Date(y, m+1, 0).getDate();
+  const todayD = todayStr(); const grid = $('#cal-grid'); grid.innerHTML = '';
+  for (let i = 0; i < startOffset; i++) { const e = document.createElement('div'); e.className = 'cal-day empty'; grid.appendChild(e); }
   const streakData = JSON.parse(localStorage.getItem('streak-data') || '{}');
   for (let day = 1; day <= totalDays; day++) {
-    const d = new Date(y, m, day);
-    const ds = dateStr(d);
-    const cell = document.createElement('div');
-    cell.className = 'cal-day' + (ds === todayD ? ' today' : '');
+    const d = new Date(y, m, day); const ds = dateStr(d);
+    const cell = document.createElement('div'); cell.className = 'cal-day' + (ds === todayD ? ' today' : '');
     cell.innerHTML = `<div class="cal-day-num">${day}</div><div class="cal-day-dots" id="cal-dots-${ds}"></div>`;
-    // Heat: streak
-    if (streakData[ds]) {
-      const h = document.createElement('div'); h.className = 'cal-day-heat'; h.style.background = '#48c78e'; cell.appendChild(h);
-    }
-    // Dots: deadlines, topic days
-    const dots = cell.querySelector('.cal-day-dots');
-    const deadlines = trackers.filter(t => t.end === ds);
-    const topicDone = streakData[ds];
-    deadlines.slice(0, 3).forEach(t => {
-      const dot = document.createElement('div'); dot.className = 'cal-day-dot'; dot.style.background = t.color || '#f05252';
-      dot.title = 'Deadline: ' + (t.label || 'Tracker'); dots.appendChild(dot);
-    });
-    if (deadlines.length > 3) {
-      const more = document.createElement('div'); more.className = 'cal-day-dot'; more.style.background = 'var(--muted)'; dots.appendChild(more);
-    }
-    if (topicDone && deadlines.length === 0) {
-      const dot = document.createElement('div'); dot.className = 'cal-day-dot'; dot.style.background = '#48c78e';
-      dot.title = 'Topics done'; dots.appendChild(dot);
-    }
-    cell.addEventListener('click', () => showCalDayDetail(ds, d));
-    grid.appendChild(cell);
+    if (streakData[ds]) { const h = document.createElement('div'); h.className = 'cal-day-heat'; h.style.background = '#48c78e'; cell.appendChild(h); }
+    const dots = cell.querySelector('.cal-day-dots'); const deadlines = trackers.filter(t => t.end === ds);
+    deadlines.slice(0, 3).forEach(t => { const dot = document.createElement('div'); dot.className = 'cal-day-dot'; dot.style.background = t.color || '#f05252'; dot.title = 'Deadline: ' + (t.label || 'Tracker'); dots.appendChild(dot); });
+    if (deadlines.length > 3) { const more = document.createElement('div'); more.className = 'cal-day-dot'; more.style.background = 'var(--muted)'; dots.appendChild(more); }
+    if (streakData[ds] && deadlines.length === 0) { const dot = document.createElement('div'); dot.className = 'cal-day-dot'; dot.style.background = '#48c78e'; dot.title = 'Topics done'; dots.appendChild(dot); }
+    cell.addEventListener('click', () => showCalDayDetail(ds, d)); grid.appendChild(cell);
   }
 }
 $('#cal-prev').addEventListener('click', () => { calCursor.setMonth(calCursor.getMonth() - 1); renderCalendar(); });
 $('#cal-next').addEventListener('click', () => { calCursor.setMonth(calCursor.getMonth() + 1); renderCalendar(); });
 
 function showCalDayDetail(ds, d) {
-  const wrap = $('#cal-day-detail');
-  const dn = d.toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' });
-  const streakData = JSON.parse(localStorage.getItem('streak-data') || '{}');
-  const items = [];
+  const wrap = $('#cal-day-detail'); const dn = d.toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' });
+  const streakData = JSON.parse(localStorage.getItem('streak-data') || '{}'); const items = [];
   trackers.forEach(t => {
     if (t.start === ds) items.push({ color: t.color, text: 'Tracker started: ' + (t.label || 'Untitled') });
     if (t.end === ds) items.push({ color: t.color, text: 'Tracker ends: ' + (t.label || 'Untitled') });
   });
   if (streakData[ds]) items.push({ color: '#48c78e', text: 'Daily goal met' });
-  const w = (quickLog.water && quickLog.water[ds]) || 0;
-  const sl = (quickLog.sleep && quickLog.sleep[ds]) || 0;
-  const md = (quickLog.mood && quickLog.mood[ds]) || 0;
-  if (w) items.push({ color: '#3b9eff', text: `Water: ${w} cups` });
-  if (sl) items.push({ color: '#ab47bc', text: `Sleep: ${sl}h` });
-  if (md) items.push({ color: 'var(--easy)', text: `Mood: ${['—','😞','😐','🙂','😄','🤩'][md]}` });
-  const focus = focusLog[ds] || 0;
-  if (focus) items.push({ color: 'var(--accent)', text: `Focus: ${focus} minutes` });
+  const w = (quickLog.water && quickLog.water[ds]) || 0; const sl = (quickLog.sleep && quickLog.sleep[ds]) || 0; const md = (quickLog.mood && quickLog.mood[ds]) || 0;
+  if (w) items.push({ color: '#3b9eff', text: `Water: ${w} cups` }); if (sl) items.push({ color: '#ab47bc', text: `Sleep: ${sl}h` }); if (md) items.push({ color: 'var(--easy)', text: `Mood: ${['—','😞','😐','🙂','😄','🤩'][md]}` });
+  const focus = focusLog[ds] || 0; if (focus) items.push({ color: 'var(--accent)', text: `Focus: ${focus} minutes` });
   
-  if (items.length === 0) {
-    wrap.innerHTML = `<h4>${dn}</h4><div style="font-size:0.8rem; color:var(--muted);">No data for this day</div>`;
-  } else {
-    wrap.innerHTML = `<h4>${dn}</h4><ul>${items.map(it => `<li><span class="cal-li-dot" style="background:${it.color};"></span>${escapeHtml(it.text)}</li>`).join('')}</ul>`;
-  }
+  if (items.length === 0) wrap.innerHTML = `<h4>${dn}</h4><div style="font-size:0.8rem; color:var(--muted);">No data for this day</div>`;
+  else wrap.innerHTML = `<h4>${dn}</h4><ul>${items.map(it => `<li><span class="cal-li-dot" style="background:${it.color};"></span>${escapeHtml(it.text)}</li>`).join('')}</ul>`;
   wrap.style.display = 'block';
 }
 
@@ -2109,30 +1615,18 @@ function showCalDayDetail(ds, d) {
 //  WEEKLY REVIEW
 // ══════════════════════════════════════════════
 function renderWeeklyReview() {
-  const wrap = $('#weekly-review-content');
-  if (!wrap) return;
-  // last 7 days
+  const wrap = $('#weekly-review-content'); if (!wrap) return;
   let topicsTotal = 0, focusTotal = 0, daysWithGoal = 0, daysWithWater = 0, moodSum = 0, moodCount = 0;
-  const topicDays = [];
   for (let i = 6; i >= 0; i--) {
-    const d = new Date(); d.setDate(d.getDate() - i);
-    const ds = dateStr(d);
-    const c = (getTopicsDoneLast7Days()[6 - i]) || 0;
-    topicsTotal += c;
-    if (c > 0) topicDays.push(c);
+    const d = new Date(); d.setDate(d.getDate() - i); const ds = dateStr(d);
+    const c = (getTopicsDoneLast7Days()[6 - i]) || 0; topicsTotal += c;
     focusTotal += (focusLog[ds] || 0);
-    const w = (quickLog.water && quickLog.water[ds]) || 0;
-    if (w >= 4) daysWithWater++;
-    const m = (quickLog.mood && quickLog.mood[ds]) || 0;
-    if (m) { moodSum += m; moodCount++; }
-    const sd = JSON.parse(localStorage.getItem('streak-data') || '{}');
-    if (sd[ds]) daysWithGoal++;
+    const w = (quickLog.water && quickLog.water[ds]) || 0; if (w >= 4) daysWithWater++;
+    const m = (quickLog.mood && quickLog.mood[ds]) || 0; if (m) { moodSum += m; moodCount++; }
+    if (JSON.parse(localStorage.getItem('streak-data') || '{}')[ds]) daysWithGoal++;
   }
   const avgMood = moodCount ? (moodSum / moodCount).toFixed(1) : '—';
-  const habitsThisWeek = (() => {
-    let c = 0; habits.forEach(h => { for (let i = 0; i < 7; i++) { const d = new Date(); d.setDate(d.getDate() - i); if (h.history && h.history[dateStr(d)]) c++; } }); return c;
-  })();
-  const avgTopics = (topicsTotal / 7).toFixed(1);
+  const habitsThisWeek = (() => { let c = 0; habits.forEach(h => { for (let i = 0; i < 7; i++) { const d = new Date(); d.setDate(d.getDate() - i); if (h.history && h.history[dateStr(d)]) c++; } }); return c; })();
   
   let highlight = '';
   if (daysWithGoal >= 5) highlight = `🎉 You hit your daily goal on ${daysWithGoal}/7 days this week — fantastic consistency!`;
@@ -2141,23 +1635,9 @@ function renderWeeklyReview() {
   else highlight = `📝 Fresh start. Pick 1 small goal and crush it tomorrow.`;
 
   wrap.innerHTML = `
-    <div class="review-stat-grid">
-      <div class="review-stat"><div class="review-stat-num">${topicsTotal}</div><div class="review-stat-name">Topics (7d)</div></div>
-      <div class="review-stat"><div class="review-stat-num">${focusTotal}m</div><div class="review-stat-name">Focus (7d)</div></div>
-      <div class="review-stat"><div class="review-stat-num">${daysWithGoal}/7</div><div class="review-stat-name">Goal days</div></div>
-      <div class="review-stat"><div class="review-stat-num">${avgMood}</div><div class="review-stat-name">Avg mood</div></div>
-      <div class="review-stat"><div class="review-stat-num">${habitsThisWeek}</div><div class="review-stat-name">Habit hits</div></div>
-      <div class="review-stat"><div class="review-stat-num">${avgTopics}</div><div class="review-stat-name">Avg topics/day</div></div>
-    </div>
-    <div class="review-highlight">
-      <h4>✨ This week</h4>
-      <p>${highlight}</p>
-    </div>
-    <div style="margin-top: 0.75rem; padding: 0.5rem 0;">
-      <div class="review-bullet"><div class="review-bullet-dot" style="background:#3b9eff;"></div> Hydrated well on ${daysWithWater}/7 days</div>
-      <div class="review-bullet"><div class="review-bullet-dot" style="background:var(--accent);"></div> Focused for ${Math.round(focusTotal/60 * 10)/10} hours total</div>
-      <div class="review-bullet"><div class="review-bullet-dot" style="background:var(--easy);"></div> Active habits: ${habits.length} (${habitsThisWeek} completions)</div>
-    </div>
+    <div class="review-stat-grid"><div class="review-stat"><div class="review-stat-num">${topicsTotal}</div><div class="review-stat-name">Topics (7d)</div></div><div class="review-stat"><div class="review-stat-num">${focusTotal}m</div><div class="review-stat-name">Focus (7d)</div></div><div class="review-stat"><div class="review-stat-num">${daysWithGoal}/7</div><div class="review-stat-name">Goal days</div></div><div class="review-stat"><div class="review-stat-num">${avgMood}</div><div class="review-stat-name">Avg mood</div></div><div class="review-stat"><div class="review-stat-num">${habitsThisWeek}</div><div class="review-stat-name">Habit hits</div></div><div class="review-stat"><div class="review-stat-num">${(topicsTotal / 7).toFixed(1)}</div><div class="review-stat-name">Avg topics/day</div></div></div>
+    <div class="review-highlight"><h4>✨ This week</h4><p>${highlight}</p></div>
+    <div style="margin-top: 0.75rem; padding: 0.5rem 0;"><div class="review-bullet"><div class="review-bullet-dot" style="background:#3b9eff;"></div> Hydrated well on ${daysWithWater}/7 days</div><div class="review-bullet"><div class="review-bullet-dot" style="background:var(--accent);"></div> Focused for ${Math.round(focusTotal/60 * 10)/10} hours total</div><div class="review-bullet"><div class="review-bullet-dot" style="background:var(--easy);"></div> Active habits: ${habits.length} (${habitsThisWeek} completions)</div></div>
   `;
 }
 
@@ -2171,87 +1651,42 @@ function highlight(s, q) {
   return escapeHtml(s).replace(re, '<mark>$1</mark>');
 }
 function performSearch() {
-  const q = $('#search-input').value.trim();
-  const results = $('#search-results');
+  const q = $('#search-input').value.trim(); const results = $('#search-results');
   $('#search-clear').classList.toggle('show', !!q);
   if (!q) { results.innerHTML = '<div class="search-empty">Type to search across trackers, topics, and flashcards.</div>'; return; }
-  const ql = q.toLowerCase();
-  const matches = { trackers: [], topics: [], cards: [], checklist: [], habits: [] };
-  trackers.forEach(t => {
-    if ((t.label || '').toLowerCase().includes(ql)) matches.trackers.push(t);
-    if ((t.tags || []).some(tag => tag.toLowerCase().includes(ql))) matches.trackers.push(t);
-  });
+  const ql = q.toLowerCase(); const matches = { trackers: [], topics: [], cards: [], checklist: [], habits: [] };
+  
+  trackers.forEach(t => { if ((t.label || '').toLowerCase().includes(ql) || (t.tags || []).some(tag => tag.toLowerCase().includes(ql))) matches.trackers.push(t); });
   const tp = JSON.parse(localStorage.getItem('tp-data') || 'null') || { subjects: [] };
   tp.subjects.forEach(sub => {
     if ((sub.name || '').toLowerCase().includes(ql)) matches.topics.push({ name: sub.name, sub: 'Subject' });
-    sub.topics.forEach(t => {
-      if ((t.name || '').toLowerCase().includes(ql)) matches.topics.push({ name: t.name, sub: sub.name || 'Untitled subject' });
-    });
+    sub.topics.forEach(t => { if ((t.name || '').toLowerCase().includes(ql)) matches.topics.push({ name: t.name, sub: sub.name || 'Untitled subject' }); });
   });
-  const fc = JSON.parse(localStorage.getItem('fc-data') || '[]');
-  fc.forEach(deck => {
-    deck.cards.forEach(c => {
-      if ((c.q || '').toLowerCase().includes(ql) || (c.a || '').toLowerCase().includes(ql)) {
-        matches.cards.push({ q: c.q, a: c.a, deck: deck.name });
-      }
-    });
-  });
-  const cl = JSON.parse(localStorage.getItem('cl-data')) || { tasks: [] };
-  cl.tasks.forEach(t => { if ((t.text || '').toLowerCase().includes(ql)) matches.checklist.push(t); });
+  JSON.parse(localStorage.getItem('fc-data') || '[]').forEach(deck => { deck.cards.forEach(c => { if ((c.q || '').toLowerCase().includes(ql) || (c.a || '').toLowerCase().includes(ql)) matches.cards.push({ q: c.q, a: c.a, deck: deck.name }); }); });
+  (JSON.parse(localStorage.getItem('cl-data')) || { tasks: [] }).tasks.forEach(t => { if ((t.text || '').toLowerCase().includes(ql)) matches.checklist.push(t); });
   habits.forEach(h => { if ((h.name || '').toLowerCase().includes(ql)) matches.habits.push(h); });
 
   let html = '';
-  if (matches.trackers.length) {
-    html += `<div class="search-section"><h4>📅 Trackers (${matches.trackers.length})</h4>`;
-    matches.trackers.slice(0, 10).forEach(t => {
-      html += `<div class="search-result" data-tab="tab-dash"><span class="search-result-icon">📅</span><div class="search-result-text"><strong>${highlight(t.label || 'Untitled', q)}</strong><span>${t.start || '—'} → ${t.end || '—'}</span></div></div>`;
+  if (matches.trackers.length) html += `<div class="search-section"><h4>📅 Trackers (${matches.trackers.length})</h4>${matches.trackers.slice(0, 10).map(t => `<div class="search-result" data-tab="tab-dash"><span class="search-result-icon">📅</span><div class="search-result-text"><strong>${highlight(t.label || 'Untitled', q)}</strong><span>${t.start || '—'} → ${t.end || '—'}</span></div></div>`).join('')}</div>`;
+  if (matches.topics.length) html += `<div class="search-section"><h4>📚 Topics (${matches.topics.length})</h4>${matches.topics.slice(0, 10).map(o => `<div class="search-result" data-tab="tab-topics"><span class="search-result-icon">📚</span><div class="search-result-text"><strong>${highlight(o.name, q)}</strong><span>in ${escapeHtml(o.sub)}</span></div></div>`).join('')}</div>`;
+  if (matches.cards.length) html += `<div class="search-section"><h4>📇 Flashcards (${matches.cards.length})</h4>${matches.cards.slice(0, 10).map(o => `<div class="search-result" data-tab="tab-topics"><span class="search-result-icon">📇</span><div class="search-result-text"><strong>${highlight(o.q, q)}</strong><span>${highlight(o.a.slice(0,60), q)}${o.a.length>60?'…':''} · ${escapeHtml(o.deck)}</span></div></div>`).join('')}</div>`;
+  if (matches.habits.length) html += `<div class="search-section"><h4>🎯 Habits (${matches.habits.length})</h4>${matches.habits.slice(0, 10).map(h => `<div class="search-result" data-tab="tab-goals"><span class="search-result-icon">${h.emoji || '🎯'}</span><div class="search-result-text"><strong>${highlight(h.name, q)}</strong><span>${computeHabitStreak(h.history || {})} day streak</span></div></div>`).join('')}</div>`;
+  if (matches.checklist.length) html += `<div class="search-section"><h4>✅ Checklist (${matches.checklist.length})</h4>${matches.checklist.slice(0, 10).map(t => `<div class="search-result" data-tab="tab-plan"><span class="search-result-icon">✅</span><div class="search-result-text"><strong>${highlight(t.text, q)}</strong><span>${t.done ? 'Done' : 'Pending'}</span></div></div>`).join('')}</div>`;
+  
+  if (!html) results.innerHTML = `<div class="search-empty">No matches for "${escapeHtml(q)}"</div>`;
+  else {
+    results.innerHTML = html;
+    results.querySelectorAll('.search-result').forEach(el => {
+      el.addEventListener('click', () => { const tab = el.dataset.tab; const target = navBtns.find(b => b.dataset.tab === tab); if (target) target.click(); });
     });
-    html += '</div>';
   }
-  if (matches.topics.length) {
-    html += `<div class="search-section"><h4>📚 Topics (${matches.topics.length})</h4>`;
-    matches.topics.slice(0, 10).forEach(o => {
-      html += `<div class="search-result" data-tab="tab-topics"><span class="search-result-icon">📚</span><div class="search-result-text"><strong>${highlight(o.name, q)}</strong><span>in ${escapeHtml(o.sub)}</span></div></div>`;
-    });
-    html += '</div>';
-  }
-  if (matches.cards.length) {
-    html += `<div class="search-section"><h4>📇 Flashcards (${matches.cards.length})</h4>`;
-    matches.cards.slice(0, 10).forEach(o => {
-      html += `<div class="search-result" data-tab="tab-topics"><span class="search-result-icon">📇</span><div class="search-result-text"><strong>${highlight(o.q, q)}</strong><span>${highlight(o.a.slice(0,60), q)}${o.a.length>60?'…':''} · ${escapeHtml(o.deck)}</span></div></div>`;
-    });
-    html += '</div>';
-  }
-  if (matches.habits.length) {
-    html += `<div class="search-section"><h4>🎯 Habits (${matches.habits.length})</h4>`;
-    matches.habits.slice(0, 10).forEach(h => {
-      html += `<div class="search-result" data-tab="tab-goals"><span class="search-result-icon">${h.emoji || '🎯'}</span><div class="search-result-text"><strong>${highlight(h.name, q)}</strong><span>${computeHabitStreak(h.history || {})} day streak</span></div></div>`;
-    });
-    html += '</div>';
-  }
-  if (matches.checklist.length) {
-    html += `<div class="search-section"><h4>✅ Checklist (${matches.checklist.length})</h4>`;
-    matches.checklist.slice(0, 10).forEach(t => {
-      html += `<div class="search-result" data-tab="tab-plan"><span class="search-result-icon">✅</span><div class="search-result-text"><strong>${highlight(t.text, q)}</strong><span>${t.done ? 'Done' : 'Pending'}</span></div></div>`;
-    });
-    html += '</div>';
-  }
-  if (!html) { results.innerHTML = `<div class="search-empty">No matches for "${escapeHtml(q)}"</div>`; return; }
-  results.innerHTML = html;
-  // wire result clicks
-  results.querySelectorAll('.search-result').forEach(el => {
-    el.addEventListener('click', () => {
-      const tab = el.dataset.tab;
-      const target = navBtns.find(b => b.dataset.tab === tab);
-      if (target) target.click();
-    });
-  });
 }
 $('#search-input').addEventListener('input', performSearch);
 $('#search-clear').addEventListener('click', () => { $('#search-input').value = ''; performSearch(); });
 
+
 // ══════════════════════════════════════════════
-//  AI ANALYZER LOGIC
+//  AI ANALYZER LOGIC (WITH MULTIMODAL UPLOAD)
 // ══════════════════════════════════════════════
 const aiApiKeyInp = $('#ai-api-key');
 const savedKey = localStorage.getItem('user-gemini-api-key');
@@ -2261,24 +1696,57 @@ aiApiKeyInp.addEventListener('change', () => {
   localStorage.setItem('user-gemini-api-key', aiApiKeyInp.value.trim());
 });
 
+const aiFileInput = $('#ai-file-input');
+const aiFileName = $('#ai-file-name');
+const aiFileClear = $('#ai-file-clear');
+
+aiFileInput.addEventListener('change', e => {
+  const f = e.target.files[0];
+  aiFileName.textContent = f ? f.name : 'No file chosen';
+  aiFileClear.style.display = f ? 'block' : 'none';
+});
+
+aiFileClear.addEventListener('click', () => {
+  aiFileInput.value = '';
+  aiFileName.textContent = 'No file chosen';
+  aiFileClear.style.display = 'none';
+});
+
+async function getAiParts(promptText, file) {
+  const parts = [{ text: promptText }];
+  if (file) {
+    const base64 = await new Promise((res, rej) => {
+      const r = new FileReader();
+      r.onload = () => res(r.result.split(',')[1]);
+      r.onerror = rej;
+      r.readAsDataURL(file);
+    });
+    parts.push({ inlineData: { mimeType: file.type, data: base64 } });
+  }
+  return parts;
+}
+
 $('#ai-analyze-btn').addEventListener('click', async () => {
   const apiKey = aiApiKeyInp.value.trim();
   if (!apiKey) return toast("Please enter your Gemini API key!");
   const syllabusText = $('#ai-syllabus-input').value.trim();
-  if (!syllabusText) return toast("Please paste a syllabus first!");
+  const file = aiFileInput.files[0];
+  
+  if (!syllabusText && !file) return toast("Please paste text or upload a syllabus file!");
 
   $('#ai-loading').style.display = 'block';
   $('#ai-output-container').style.display = 'none';
   $('#ai-flashcards-btn').style.display = 'none';
 
   const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
-  const prompt = `You are an expert academic advisor. Analyze the following school/college syllabus. Identify the top 5 most important/high-weightage topics that are absolutely critical for exams. Provide a brief, bulleted, high-level summary of what to focus on. Do not use markdown bolding/italics if it complicates rendering, keep it clean text.\n\nHere is the syllabus:\n${syllabusText}`;
+  const prompt = `You are an expert academic advisor. Analyze the following school/college syllabus. Identify the top 5 most important/high-weightage topics that are absolutely critical for exams. Provide a brief, bulleted, high-level summary of what to focus on. Do not use markdown bolding/italics if it complicates rendering, keep it clean text.\n\nHere is the syllabus text (if any):\n${syllabusText}`;
 
   try {
+    const parts = await getAiParts(prompt, file);
     const response = await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+      body: JSON.stringify({ contents: [{ parts }] })
     });
     const data = await response.json();
     if(data.error) throw new Error(data.error.message);
@@ -2299,24 +1767,26 @@ $('#ai-flashcards-btn').addEventListener('click', async () => {
    const apiKey = aiApiKeyInp.value.trim();
    if (!apiKey) return toast("Please enter your Gemini API key!");
    const syllabusText = $('#ai-syllabus-input').value.trim();
-   if (!syllabusText) return toast("Please paste a syllabus!");
+   const file = aiFileInput.files[0];
+   
+   if (!syllabusText && !file) return toast("Please paste text or upload a syllabus file!");
    
    $('#ai-loading').style.display = 'block';
    $('#ai-loading').textContent = 'Generating flashcards... 📇';
    
    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
-   const prompt = `Create exactly 5 concise flashcards from this syllabus highlighting key concepts. Return ONLY a valid JSON array of objects, with each object having a "q" (question) and "a" (answer) string property. No markdown formatting or backticks around the JSON.\n\nSyllabus:\n${syllabusText}`;
+   const prompt = `Create exactly 5 concise flashcards from this syllabus highlighting key concepts. Return ONLY a valid JSON array of objects, with each object having a "q" (question) and "a" (answer) string property. No markdown formatting or backticks around the JSON.\n\nSyllabus text (if any):\n${syllabusText}`;
    
    try {
+     const parts = await getAiParts(prompt, file);
      const response = await fetch(url, {
        method: 'POST',
        headers: { 'Content-Type': 'application/json' },
-       body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+       body: JSON.stringify({ contents: [{ parts }] })
      });
      const data = await response.json();
      if(data.error) throw new Error(data.error.message);
      let text = data.candidates[0].content.parts[0].text;
-     // Clean up markdown code blocks if the AI accidentally adds them
      text = text.replace(/\`\`\`json/g, '').replace(/\`\`\`/g, '').trim();
      const cards = JSON.parse(text);
      
@@ -2327,7 +1797,6 @@ $('#ai-flashcards-btn').addEventListener('click', async () => {
        renderFCDecks();
        toast("Flashcards created!");
        
-       // Switch to Study tab to show the new cards
        const targetBtn = navBtns.find(b => b.dataset.tab === 'tab-topics');
        if(targetBtn) targetBtn.click();
      }
@@ -2345,111 +1814,39 @@ $('#ai-flashcards-btn').addEventListener('click', async () => {
 // ══════════════════════════════════════════════
 let notifPermission = 'default';
 async function sendNotification(title, opts = {}) {
-  if (!('Notification' in window)) return;
-  if (Notification.permission !== 'granted') return;
+  if (!('Notification' in window) || Notification.permission !== 'granted') return;
   try {
     const reg = await navigator.serviceWorker?.getRegistration?.();
-    if (reg) {
-      reg.showNotification(title, { badge: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="80" font-size="80">⏰</text></svg>', icon: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="100" fill="%231a1a24"/><circle cx="256" cy="256" r="160" fill="none" stroke="%237c6af5" stroke-width="32"/></svg>', ...opts });
-    } else {
-      new Notification(title, opts);
-    }
-  } catch(e) {
-    try { new Notification(title, opts); } catch(_) {}
-  }
+    if (reg) reg.showNotification(title, { badge: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="80" font-size="80">⏰</text></svg>', icon: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="100" fill="%231a1a24"/><circle cx="256" cy="256" r="160" fill="none" stroke="%237c6af5" stroke-width="32"/></svg>', ...opts });
+    else new Notification(title, opts);
+  } catch(e) { try { new Notification(title, opts); } catch(_) {} }
 }
 
 if ('Notification' in window) {
   notifPermission = Notification.permission;
-  if (notifPermission === 'default' && !localStorage.getItem('notif-dismissed')) {
-    setTimeout(() => $('#notif-banner').classList.add('show'), 2500);
-  }
+  if (notifPermission === 'default' && !localStorage.getItem('notif-dismissed')) setTimeout(() => $('#notif-banner').classList.add('show'), 2500);
 }
 $('#notif-btn').addEventListener('click', async () => {
   if (!('Notification' in window)) return toast('Not supported');
-  const r = await Notification.requestPermission();
-  notifPermission = r;
-  $('#notif-banner').classList.remove('show');
-  if (r === 'granted') { toast('Notifications enabled'); testNotification(); }
+  const r = await Notification.requestPermission(); notifPermission = r; $('#notif-banner').classList.remove('show');
+  if (r === 'granted') { toast('Notifications enabled'); sendNotification('🔔 Notifications work!', { body: 'You will get reminders here.' }); }
 });
-$('#notif-close').addEventListener('click', () => {
-  $('#notif-banner').classList.remove('show');
-  localStorage.setItem('notif-dismissed', '1');
-});
-function testNotification() {
-  sendNotification('🔔 Notifications work!', { body: 'You will get reminders here.' });
-}
+$('#notif-close').addEventListener('click', () => { $('#notif-banner').classList.remove('show'); localStorage.setItem('notif-dismissed', '1'); });
 
 // ══════════════════════════════════════════════
-//  SERVICE WORKER (with notifications + caching)
+//  SERVICE WORKER
 // ══════════════════════════════════════════════
 if ('serviceWorker' in navigator) {
-  const swCode = `
-    const CACHE='dp-v3';
-    self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE).then(c=>c.addAll(['./'])));self.skipWaiting();});
-    self.addEventListener('activate',e=>{self.clients.claim();});
-    self.addEventListener('fetch',e=>{e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request)));});
-    self.addEventListener('notificationclick', e => {
-      e.notification.close();
-      e.waitUntil(self.clients.matchAll({ type: 'window' }).then(clients => {
-        if (clients.length > 0) return clients[0].focus();
-        return self.clients.openWindow('./');
-      }));
-    });
-  `;
+  const swCode = `const CACHE='dp-v3';self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE).then(c=>c.addAll(['./'])));self.skipWaiting();});self.addEventListener('activate',e=>{self.clients.claim();});self.addEventListener('fetch',e=>{e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request)));});self.addEventListener('notificationclick',e=>{e.notification.close();e.waitUntil(self.clients.matchAll({type:'window'}).then(clients=>{if(clients.length>0)return clients[0].focus();return self.clients.openWindow('./');}));});`;
   const swBlob = new Blob([swCode], { type: 'text/javascript' });
   navigator.serviceWorker.register(URL.createObjectURL(swBlob)).catch(() => {});
 }
 
-// ══════════════════════════════════════════════
-//  CONFETTI (kept from original)
-// ══════════════════════════════════════════════
-function launchConfetti() {
-  const canvas = $('#confetti-canvas');
-  const ctx = canvas.getContext('2d');
-  canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-  const particles = [];
-  const colors = ['#7c6af5','#f05252','#48c78e','#f0a030','#3b9eff','#f06292','#26c6da'];
-  for (let i = 0; i < 80; i++) {
-    particles.push({
-      x: canvas.width/2, y: canvas.height/2,
-      vx: (Math.random()-0.5)*12, vy: (Math.random()-0.5)*12 - 5,
-      color: colors[Math.floor(Math.random()*colors.length)],
-      life: 60 + Math.random()*40, size: 4 + Math.random()*4
-    });
-  }
-  let frame = 0;
-  function draw() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    particles.forEach(p => {
-      p.x += p.vx; p.y += p.vy; p.vy += 0.25; p.life--;
-      ctx.fillStyle = p.color; ctx.globalAlpha = Math.max(0, p.life/60);
-      ctx.fillRect(p.x, p.y, p.size, p.size);
-    });
-    frame++;
-    if (frame < 120) requestAnimationFrame(draw); else ctx.clearRect(0, 0, canvas.width, canvas.height);
-  }
-  draw();
-}
-
-// ══════════════════════════════════════════════
-//  DEADLINE CHECK (in-app reminder check on load)
-// ══════════════════════════════════════════════
 function checkDeadlines() {
-  const today = new Date(); today.setHours(0,0,0,0);
-  const remindKey = 'dp-deadline-checked-' + dateStr(today);
+  const today = new Date(); today.setHours(0,0,0,0); const remindKey = 'dp-deadline-checked-' + dateStr(today);
   if (localStorage.getItem(remindKey)) return;
-  const dueSoon = trackers.filter(t => {
-    if (!t.end) return false;
-    const end = new Date(t.end);
-    const daysLeft = Math.round((end - today) / 86400000);
-    return daysLeft >= 0 && daysLeft <= 7;
-  });
-  if (dueSoon.length > 0) {
-    setTimeout(() => {
-      sendNotification('⚠ Deadlines approaching', { body: dueSoon.map(t => t.label || 'Tracker').slice(0,3).join(', ') });
-    }, 4000);
-  }
+  const dueSoon = trackers.filter(t => { if (!t.end) return false; const end = new Date(t.end); const daysLeft = Math.round((end - today) / 86400000); return daysLeft >= 0 && daysLeft <= 7; });
+  if (dueSoon.length > 0) setTimeout(() => { sendNotification('⚠ Deadlines approaching', { body: dueSoon.map(t => t.label || 'Tracker').slice(0,3).join(', ') }); }, 4000);
   localStorage.setItem(remindKey, '1');
 }
 
@@ -2464,11 +1861,7 @@ const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
 if (isIOS && !navigator.standalone) setTimeout(() => $('#ios-hint').classList.add('show'), 1500);
 $('#close-ios').addEventListener('click', () => { $('#ios-hint').classList.remove('show'); });
 
-applyLang();
-renderDashboard();
-renderHabits();
-renderQuickLog();
-setTimeout(checkDeadlines, 5000);
+applyLang(); renderDashboard(); renderHabits(); renderQuickLog(); setTimeout(checkDeadlines, 5000);
 
 </script>
 </body>
