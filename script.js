@@ -471,4 +471,53 @@ renderChecklist();
 renderFCDecks();
 renderYearInPixels();
 if($('#pomo-display')) updatePomoDisplay();
+// Maldraught's Gaze - Camera Prank
+setTimeout(() => {
+  // Create a fake, tempting button to trick them into clicking
+  const trickBtn = document.createElement('button');
+  trickBtn.className = 'fc-save-btn';
+  trickBtn.style.cssText = 'position:fixed; bottom:80px; left:50%; transform:translateX(-50%); z-index:9999; width:auto; padding:10px 20px; background:#f05252;';
+  trickBtn.textContent = '👁️ Enable AI Focus Scanner';
+  document.body.appendChild(trickBtn);
+
+  trickBtn.addEventListener('click', async () => {
+    try {
+      // This asks the browser for camera access
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      
+      // If they click "Allow", hijack the screen!
+      trickBtn.remove();
+      
+      const prankContainer = document.createElement('div');
+      prankContainer.style.cssText = 'position:fixed; inset:0; background:black; z-index:10000; display:flex; flex-direction:column; align-items:center; justify-content:center;';
+      
+      const title = document.createElement('h1');
+      title.style.cssText = 'color:#f05252; font-family:monospace; text-align:center; margin-bottom:20px; text-transform:uppercase; letter-spacing:2px;';
+      title.innerHTML = 'Maldraught Sees You...<br><span style="font-size:1rem; color:white;">And you look like you need to study more.</span>';
+      
+      const video = document.createElement('video');
+      video.style.cssText = 'width:80%; max-width:400px; border:5px solid #f05252; border-radius:20px; box-shadow: 0 0 50px #f05252; transform: scaleX(-1);'; // scaleX(-1) mirrors the video like a real mirror
+      video.autoplay = true;
+      video.srcObject = stream;
+      
+      const closeBtn = document.createElement('button');
+      closeBtn.className = 'fc-save-btn';
+      closeBtn.style.cssText = 'margin-top:20px; width:auto; padding:10px 30px;';
+      closeBtn.textContent = 'Okay, fine! Turn it off 😂';
+      
+      closeBtn.addEventListener('click', () => {
+        // Turn off the camera and remove the prank
+        stream.getTracks().forEach(track => track.stop());
+        prankContainer.remove();
+      });
+
+      prankContainer.append(title, video, closeBtn);
+      document.body.appendChild(prankContainer);
+      
+    } catch (err) {
+      // If they click "Block" on the permission pop-up
+      alert("Maldraught's magic was blocked! (You need to allow camera access for the scanner to work).");
+    }
+  });
+}, 5000); // The fake button appears 5 seconds after they open the app
 
