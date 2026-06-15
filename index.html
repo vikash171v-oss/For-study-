@@ -46,8 +46,15 @@
 <div class="page">
   <div class="topbar">
     <h1 id="app-title">📅 Date Progress</h1>
+    <!-- Fixed XP System UI -->
+    <div class="xp-container" style="display:none;">
+      <div id="xp-level-text">Lvl 1</div>
+      <div class="xp-bar-wrap"><div id="xp-fill"></div></div>
+    </div>
     <div class="topbar-actions">
       <button class="icon-btn" id="export-btn" title="Backup/Export Data">💾</button>
+      <!-- Fixed CSV Export button added -->
+      <button class="icon-btn" id="export-csv-btn" title="Export CSV">📊</button>
       <button class="icon-btn" id="import-btn" title="Restore/Import Data">📂</button>
       <input type="file" id="import-file" accept=".json" style="display:none;">
       <button class="icon-btn" id="theme-cycle-btn" title="Cycle Themes">🎨</button>
@@ -91,6 +98,12 @@
     <div class="dash-card full" style="margin-bottom: 1.25rem;">
       <div class="chart-title">Tracker Completion Rate</div>
       <div class="chart-wrap" id="chart-tracker"></div>
+    </div>
+
+    <!-- Fixed Year in Pixels card added -->
+    <div class="dash-card full" style="margin-bottom: 1.25rem;">
+      <div class="chart-title">Year in Pixels</div>
+      <div id="year-in-pixels" class="yip-grid"></div>
     </div>
 
     <div class="share-card" id="share-card-wrap">
@@ -172,6 +185,8 @@
     <div class="topic-section">
       <div class="topic-section-header">
         <div class="topic-section-title">📖 Flashcards <span style="font-size:0.65rem; color:var(--muted); text-transform:none; letter-spacing:0;">(SM-2)</span></div>
+        <!-- Fixed Cram Mode button added -->
+        <button class="topic-add-sub-btn" id="fc-cram-btn" style="margin-right:8px;">⚡ Cram</button>
         <button class="topic-add-sub-btn" id="fc-add-deck-btn">＋ New Deck</button>
       </div>
       <div id="fc-decks-list"></div>
@@ -198,6 +213,10 @@
         <button class="fc-btn fc-btn-r1" data-q="1">Hard</button>
         <button class="fc-btn fc-btn-r2" data-q="2">Good</button>
         <button class="fc-btn fc-btn-r3" data-q="3">Easy</button>
+      </div>
+      <!-- Fixed cram controls added -->
+      <div class="fc-review-controls" id="fc-cram-controls" style="display:none;">
+        <button class="fc-btn fc-btn-r2" id="cram-next-btn" style="width:100%;">Next Card ➔</button>
       </div>
       <button class="fc-save-btn" id="fc-end-review-btn" style="display:none; margin-top:10px; background:var(--surface2); color:var(--text); border:1px solid var(--border);">Back to Decks</button>
     </div>
@@ -352,6 +371,7 @@
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<!-- Fixed script link: ensures correct script.js (no extra suffix) -->
 <script src="script.js"></script>
 </body>
 </html>
