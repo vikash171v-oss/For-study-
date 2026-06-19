@@ -517,6 +517,29 @@
     .modal-btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
     .modal-btn:hover { opacity: 0.9; }
 
+    /* ════ SPLASH / OPENING ANIMATION ════ */
+    #splash-screen {
+      position: fixed; inset: 0; z-index: 100000; background: var(--bg);
+      display: flex; align-items: center; justify-content: center;
+      transition: opacity 0.45s ease, visibility 0.45s ease;
+    }
+    #splash-screen.hide { opacity: 0; visibility: hidden; pointer-events: none; }
+    .splash-inner { display: flex; flex-direction: column; align-items: center; gap: 16px; }
+    .splash-ring-wrap { position: relative; width: 96px; height: 96px; }
+    .splash-ring-wrap svg { transform: rotate(-90deg); }
+    .splash-track { fill: none; stroke: var(--border); stroke-width: 9; }
+    .splash-arc { fill: none; stroke: var(--accent); stroke-width: 9; stroke-linecap: round; stroke-dasharray: 251.2; stroke-dashoffset: 251.2; animation: splash-fill 1.05s cubic-bezier(.4,0,.2,1) forwards; }
+    .splash-emoji { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 1.6rem; opacity: 0; animation: splash-pop .4s ease forwards; animation-delay: .55s; }
+    .splash-title { font-size: 1.05rem; font-weight: 700; letter-spacing: -0.02em; color: var(--text); opacity: 0; transform: translateY(6px); animation: splash-text-in .5s ease forwards; animation-delay: .35s; }
+    .splash-sub { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; opacity: 0; transform: translateY(6px); animation: splash-text-in .5s ease forwards; animation-delay: .5s; }
+    @keyframes splash-fill { to { stroke-dashoffset: 0; } }
+    @keyframes splash-pop { from { opacity: 0; transform: translate(-50%, -50%) scale(0.5); } to { opacity: 1; transform: translate(-50%, -50%) scale(1); } }
+    @keyframes splash-text-in { to { opacity: 1; transform: translateY(0); } }
+    @media (prefers-reduced-motion: reduce) {
+      .splash-arc { animation: none; stroke-dashoffset: 0; }
+      .splash-emoji, .splash-title, .splash-sub { animation: none; opacity: 1; transform: none; }
+    }
+
     /* Small responsive tweaks */
     @media (max-width: 360px) {
       .dash-grid, .log-grid, .review-stat-grid { grid-template-columns: 1fr; }
@@ -525,6 +548,20 @@
   </style>
 </head>
 <body>
+
+<div id="splash-screen" aria-hidden="true">
+  <div class="splash-inner">
+    <div class="splash-ring-wrap">
+      <svg width="96" height="96" viewBox="0 0 96 96">
+        <circle class="splash-track" cx="48" cy="48" r="40"></circle>
+        <circle class="splash-arc" cx="48" cy="48" r="40"></circle>
+      </svg>
+      <div class="splash-emoji">📅</div>
+    </div>
+    <div class="splash-title">Date Progress</div>
+    <div class="splash-sub">Tracking your journey</div>
+  </div>
+</div>
 
 <canvas id="confetti-canvas"></canvas>
 <div id="toast"></div>
@@ -1105,6 +1142,8 @@ let isWorkSession = true;
 let isPomoRunning = false;
 let sessionStartTs = null;
 let sessionMinsLogged = 0;
+let sessionEndTs = null;   // absolute timestamp the running session should end at (real time, not tick count)
+let wakeLock = null;       // Screen Wake Lock handle, keeps the screen on while a session runs
 
 const pomoDisplay = $('#pomo-display');
 const pomoStatus = $('#pomo-status');
@@ -1164,16 +1203,34 @@ function logFocusMinutes(mins) {
   save();
 }
 
+// --- Wake Lock: best-effort, keeps the screen from auto-locking while a session is running.
+// This only works while the app is open and the screen is still on — it can't stop someone
+// from pressing the power button, and it has no effect on a website's JS once the OS does
+// suspend it. It just reduces how often that happens.
+async function acquireWakeLock() {
+  try {
+    if ('wakeLock' in navigator) {
+      wakeLock = await navigator.wakeLock.request('screen');
+      wakeLock.addEventListener('release', () => { wakeLock = null; });
+    }
+  } catch (e) { /* not supported / permission denied — timer still self-corrects without it */ }
+}
+function releaseWakeLock() {
+  if (wakeLock) { try { wakeLock.release(); } catch(e) {} wakeLock = null; }
+}
+
 function resetPomo() {
   clearInterval(pomoTimer); 
   isPomoRunning = false; 
   isWorkSession = true;
   pomoTimeLeft = pomoData.work * 60; 
+  sessionEndTs = null;
   pomoStatus.textContent = "Ready to Study";
   pomoStatus.style.color = "var(--accent)"; 
   pomoBtnStart.textContent = "Start";
   updatePomoDisplay(); 
   document.title = "Date Progress Tracker";
+  releaseWakeLock();
   if (sessionStartTs) { 
     const elapsedMs = Date.now() - sessionStartTs;
     const mins = Math.floor(elapsedMs / 60000);
@@ -1182,17 +1239,79 @@ function resetPomo() {
   }
 }
 
+// Called once a running session has actually reached its real end time — whether that's
+// caught on a normal 1s tick, or the instant the page becomes visible again after the tab
+// was backgrounded or the phone was locked.
+function completeSession() {
+  clearInterval(pomoTimer);
+  isPomoRunning = false;
+  releaseWakeLock();
+  if (sessionStartTs) {
+    logFocusMinutes(Math.max(1, Math.round((Date.now() - sessionStartTs) / 60000)));
+    sessionStartTs = null;
+  }
+  sessionEndTs = null;
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = ctx.createOscillator(); 
+    osc.type = 'sine'; 
+    osc.frequency.setValueAtTime(440, ctx.currentTime);
+    osc.connect(ctx.destination); 
+    osc.start(); 
+    osc.stop(ctx.currentTime + 0.5);
+  } catch(e) {}
+  sendNotification('Focus session complete!', { body: isWorkSession ? 'Time for a break 🎉' : 'Back to work 💪', icon: '⏱️' });
+  isWorkSession = !isWorkSession; 
+  pomoTimeLeft = (isWorkSession ? pomoData.work : pomoData.break) * 60;
+  pomoStatus.textContent = isWorkSession ? "Ready to Focus" : "Time for a Break!";
+  pomoStatus.style.color = isWorkSession ? "var(--accent)" : "#48c78e";
+  pomoBtnStart.textContent = "Start " + (isWorkSession ? "Work" : "Break"); 
+  updatePomoDisplay();
+}
+
+// Runs on every 1s tick AND immediately whenever the tab/screen becomes visible again.
+// Instead of trusting "did a tick fire", it always recalculates remaining time from the
+// real end timestamp — so missed/throttled ticks while backgrounded never desync the clock.
+function pomoTick() {
+  if (!isPomoRunning || !sessionEndTs) return;
+  if (isInQuietHours() && isWorkSession) {
+    clearInterval(pomoTimer);
+    isPomoRunning = false;
+    releaseWakeLock();
+    pomoBtnStart.textContent = "Start";
+    pomoStatus.textContent = "🌙 Paused (quiet hours)";
+    pomoStatus.style.color = "var(--muted)";
+    if (sessionStartTs) { logFocusMinutes(Math.max(1, Math.round((Date.now() - sessionStartTs)/60000))); sessionStartTs = null; }
+    sessionEndTs = null;
+    toast('🌙 Quiet hours started', 2500);
+    return;
+  }
+  const remaining = Math.round((sessionEndTs - Date.now()) / 1000);
+  if (remaining <= 0) {
+    pomoTimeLeft = 0;
+    updatePomoDisplay();
+    completeSession();
+    return;
+  }
+  if (remaining !== pomoTimeLeft) {
+    pomoTimeLeft = remaining;
+    updatePomoDisplay();
+  }
+}
+
 pomoBtnStart.addEventListener('click', () => {
   if (isPomoRunning) { 
     clearInterval(pomoTimer); 
     isPomoRunning = false; 
     pomoBtnStart.textContent = "Resume";
+    releaseWakeLock();
     if (sessionStartTs) {
       const elapsedMs = Date.now() - sessionStartTs;
-      const mins = Math.max(1, Math.floor(elapsedMs / 60000));
+      const mins = Math.max(1, Math.round(elapsedMs / 60000));
       logFocusMinutes(mins);
       sessionStartTs = null;
     }
+    sessionEndTs = null;
   } else {
     if (isInQuietHours()) {
       toast('🌙 Quiet hours — auto-pausing', 2500);
@@ -1202,43 +1321,23 @@ pomoBtnStart.addEventListener('click', () => {
     pomoBtnStart.textContent = "Pause";
     pomoStatus.textContent = isWorkSession ? "Focusing..." : "Taking a Break!";
     sessionStartTs = Date.now();
-    pomoTimer = setInterval(() => {
-      if (isInQuietHours() && isWorkSession) {
-        clearInterval(pomoTimer);
-        isPomoRunning = false;
-        pomoBtnStart.textContent = "Start";
-        pomoStatus.textContent = "🌙 Paused (quiet hours)";
-        pomoStatus.style.color = "var(--muted)";
-        if (sessionStartTs) { logFocusMinutes(Math.max(1, Math.floor((Date.now() - sessionStartTs)/60000))); sessionStartTs = null; }
-        toast('🌙 Quiet hours started', 2500);
-        return;
-      }
-      pomoTimeLeft--; 
-      updatePomoDisplay();
-      if (pomoTimeLeft <= 0) {
-        clearInterval(pomoTimer); 
-        isPomoRunning = false;
-        if (sessionStartTs) { logFocusMinutes(Math.max(1, Math.floor((Date.now() - sessionStartTs)/60000))); sessionStartTs = null; }
-        const ctx = new (window.AudioContext || window.webkitAudioContext)();
-        const osc = ctx.createOscillator(); 
-        osc.type = 'sine'; 
-        osc.frequency.setValueAtTime(440, ctx.currentTime);
-        osc.connect(ctx.destination); 
-        osc.start(); 
-        osc.stop(ctx.currentTime + 0.5);
-        sendNotification('Focus session complete!', { body: isWorkSession ? 'Time for a break 🎉' : 'Back to work 💪', icon: '⏱️' });
-        isWorkSession = !isWorkSession; 
-        pomoTimeLeft = (isWorkSession ? pomoData.work : pomoData.break) * 60;
-        pomoStatus.textContent = isWorkSession ? "Ready to Focus" : "Time for a Break!";
-        pomoStatus.style.color = isWorkSession ? "var(--accent)" : "#48c78e";
-        pomoBtnStart.textContent = "Start " + (isWorkSession ? "Work" : "Break"); 
-        updatePomoDisplay();
-      }
-    }, 1000);
+    sessionEndTs = Date.now() + pomoTimeLeft * 1000;
+    acquireWakeLock();
+    pomoTimer = setInterval(pomoTick, 1000);
   }
 });
 pomoBtnReset.addEventListener('click', resetPomo); 
 updatePomoDisplay();
+
+// The moment the tab/phone becomes visible again (switched back, unlocked the screen),
+// immediately recompute the real elapsed time instead of waiting for the next tick —
+// this is what fixes the "timer looked frozen / fired late" issue.
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible' && isPomoRunning && sessionEndTs) {
+    pomoTick();
+    if (isPomoRunning) acquireWakeLock(); // re-acquire — most browsers auto-release wake locks while hidden
+  }
+});
 
 // ══════════════════════════════════════════════
 //  TIMETABLE LOGIC
@@ -2719,6 +2818,21 @@ renderDashboard();
 renderHabits();
 renderQuickLog();
 setTimeout(checkDeadlines, 5000);
+
+// ══════════════════════════════════════════════
+//  OPENING ANIMATION (splash screen)
+// ══════════════════════════════════════════════
+function hideSplash() {
+  const splash = $('#splash-screen');
+  if (!splash) return;
+  splash.classList.add('hide');
+  setTimeout(() => splash.remove(), 500);
+}
+if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  hideSplash();
+} else {
+  setTimeout(hideSplash, 1300);
+}
 
 </script>
 </body>
