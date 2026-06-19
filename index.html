@@ -46,11 +46,30 @@
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
+    
     body {
       min-height: 100vh; background: var(--bg);
       font-family: 'Segoe UI', system-ui, sans-serif;
       color: var(--text); transition: background 0.3s, color 0.3s;
+      position: relative;
     }
+    
+    /* ════ COOL BACKGROUND ════ */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      background: radial-gradient(circle at 15% 50px, var(--accent-light), transparent 45%),
+                  radial-gradient(circle at 85% 90%, var(--accent-light), transparent 45%);
+      z-index: -1;
+      pointer-events: none;
+      animation: bgPulse 8s ease-in-out infinite alternate;
+    }
+    @keyframes bgPulse {
+      0% { opacity: 0.5; transform: scale(1); }
+      100% { opacity: 1; transform: scale(1.1); }
+    }
+
     .page { max-width: 500px; margin: 0 auto; padding: 1.5rem 1rem 120px; }
     
     /* ── Top bar ── */
@@ -525,19 +544,47 @@
     }
     #splash-screen.hide { opacity: 0; visibility: hidden; pointer-events: none; }
     .splash-inner { display: flex; flex-direction: column; align-items: center; gap: 16px; }
-    .splash-ring-wrap { position: relative; width: 96px; height: 96px; }
+    .splash-ring-wrap { 
+      position: relative; width: 96px; height: 96px; 
+      /* THIS IS THE BLOW UP ANIMATION */
+      animation: blowRing 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; 
+      animation-delay: 0.9s; 
+    }
     .splash-ring-wrap svg { transform: rotate(-90deg); }
     .splash-track { fill: none; stroke: var(--border); stroke-width: 9; }
-    .splash-arc { fill: none; stroke: var(--accent); stroke-width: 9; stroke-linecap: round; stroke-dasharray: 251.2; stroke-dashoffset: 251.2; animation: splash-fill 1.05s cubic-bezier(.4,0,.2,1) forwards; }
-    .splash-emoji { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 1.6rem; opacity: 0; animation: splash-pop .4s ease forwards; animation-delay: .55s; }
-    .splash-title { font-size: 1.05rem; font-weight: 700; letter-spacing: -0.02em; color: var(--text); opacity: 0; transform: translateY(6px); animation: splash-text-in .5s ease forwards; animation-delay: .35s; }
-    .splash-sub { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; opacity: 0; transform: translateY(6px); animation: splash-text-in .5s ease forwards; animation-delay: .5s; }
+    .splash-arc { 
+      fill: none; stroke: var(--accent); stroke-width: 9; stroke-linecap: round; 
+      stroke-dasharray: 251.2; stroke-dashoffset: 251.2; 
+      animation: splash-fill 1.05s cubic-bezier(.4,0,.2,1) forwards; 
+    }
+    .splash-emoji { 
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); 
+      font-size: 1.6rem; opacity: 0; 
+      animation: splash-pop .4s ease forwards; animation-delay: .55s; 
+    }
+    .splash-title { 
+      font-size: 1.05rem; font-weight: 700; letter-spacing: -0.02em; color: var(--text); 
+      opacity: 0; transform: translateY(6px); 
+      animation: splash-text-in .5s ease forwards; animation-delay: .35s; 
+    }
+    .splash-sub { 
+      font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; 
+      opacity: 0; transform: translateY(6px); 
+      animation: splash-text-in .5s ease forwards; animation-delay: .5s; 
+    }
+    
     @keyframes splash-fill { to { stroke-dashoffset: 0; } }
     @keyframes splash-pop { from { opacity: 0; transform: translate(-50%, -50%) scale(0.5); } to { opacity: 1; transform: translate(-50%, -50%) scale(1); } }
     @keyframes splash-text-in { to { opacity: 1; transform: translateY(0); } }
+    @keyframes blowRing { 
+      0% { transform: scale(1); opacity: 1; filter: blur(0px); } 
+      100% { transform: scale(2.5); opacity: 0; filter: blur(4px); } 
+    }
+    
     @media (prefers-reduced-motion: reduce) {
       .splash-arc { animation: none; stroke-dashoffset: 0; }
       .splash-emoji, .splash-title, .splash-sub { animation: none; opacity: 1; transform: none; }
+      .splash-ring-wrap { animation: none; }
     }
 
     /* Small responsive tweaks */
@@ -606,7 +653,6 @@
     </div>
   </div>
 
-  <!-- DASHBOARD TAB -->
   <div id="tab-dash" class="tab-pane active">
     <div class="streak-card">
       <div class="streak-header" id="streak-head" style="cursor: pointer;">
@@ -656,7 +702,6 @@
     <button class="add-btn" id="add-btn">＋ <span id="add-label">Add another tracker</span></button>
   </div>
 
-  <!-- TIMER TAB -->
   <div id="tab-timer" class="tab-pane">
     <div class="pomo-card">
       <div class="pomo-header" id="pomo-head" style="cursor: pointer;">
@@ -695,7 +740,6 @@
     </div>
   </div>
 
-  <!-- STUDY (Topics + Flashcards) TAB -->
   <div id="tab-topics" class="tab-pane">
     <div class="topic-section" id="topic-section">
       <div class="topic-section-header">
@@ -753,7 +797,6 @@
     </div>
   </div>
 
-  <!-- GOALS / HABITS TAB -->
   <div id="tab-goals" class="tab-pane">
     <div class="topic-section">
       <div class="topic-section-header">
@@ -765,7 +808,6 @@
     </div>
   </div>
 
-  <!-- QUICK LOG TAB -->
   <div id="tab-log" class="tab-pane">
     <div class="log-grid">
       <div class="log-card">
@@ -807,7 +849,6 @@
     </div>
   </div>
 
-  <!-- CALENDAR TAB -->
   <div id="tab-cal" class="tab-pane">
     <div class="topic-section">
       <div class="cal-month-nav">
@@ -826,7 +867,6 @@
     </div>
   </div>
 
-  <!-- PLAN TAB (Timetable + Checklist) -->
   <div id="tab-plan" class="tab-pane">
     <div class="tt-card">
       <div class="tt-header" id="tt-head" style="cursor: pointer;">
@@ -862,7 +902,6 @@
     </div>
   </div>
 
-  <!-- SEARCH TAB -->
   <div id="tab-search" class="tab-pane">
     <div class="topic-section">
       <div class="topic-section-header">
@@ -906,13 +945,21 @@
   </button>
 </nav>
 
-<!-- MODAL -->
 <div class="modal-bg" id="modal-bg">
   <div class="modal" id="modal-content"></div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script>
+
+// ══════════════════════════════════════════════
+//  SPLASH SCREEN INIT
+// ══════════════════════════════════════════════
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    document.body.classList.add('loaded');
+  }, 1200);
+});
 
 // ══════════════════════════════════════════════
 //  UTILITIES
@@ -1045,12 +1092,12 @@ let nextId = Math.max(...trackers.map(t => t.id)) + 1;
 let confettiFired = new Set(JSON.parse(localStorage.getItem('dp-confetti') || '[]'));
 
 let pomoData = JSON.parse(localStorage.getItem('pomo-data')) || { work: 45, break: 10, quietStart: '23:00', quietEnd: '07:00' };
-let focusLog = JSON.parse(localStorage.getItem('focus-log') || '{}'); // date -> minutes
+let focusLog = JSON.parse(localStorage.getItem('focus-log') || '{}'); 
 
 let habits = JSON.parse(localStorage.getItem('habits-data') || 'null') || [];
 let quickLog = JSON.parse(localStorage.getItem('quick-log') || 'null') || { water: {}, sleep: {}, mood: {} };
 
-let calCursor = new Date(); // currently-viewed month
+let calCursor = new Date(); 
 
 let currentDeckIndex = -1;
 let currentReviewQueue = [];
@@ -1134,16 +1181,15 @@ $('#import-file').addEventListener('change', (e) => {
 });
 
 // ══════════════════════════════════════════════
-//  POMODORO TIMER (with quiet hours)
+//  POMODORO TIMER (REAL-TIME FIX + QUIET HOURS)
 // ══════════════════════════════════════════════
 let pomoTimer = null; 
 let pomoTimeLeft = pomoData.work * 60; 
 let isWorkSession = true; 
 let isPomoRunning = false;
 let sessionStartTs = null;
-let sessionMinsLogged = 0;
-let sessionEndTs = null;   // absolute timestamp the running session should end at (real time, not tick count)
-let wakeLock = null;       // Screen Wake Lock handle, keeps the screen on while a session runs
+let pomoExpectedEndTs = null; 
+let wakeLock = null; 
 
 const pomoDisplay = $('#pomo-display');
 const pomoStatus = $('#pomo-status');
@@ -1203,17 +1249,13 @@ function logFocusMinutes(mins) {
   save();
 }
 
-// --- Wake Lock: best-effort, keeps the screen from auto-locking while a session is running.
-// This only works while the app is open and the screen is still on — it can't stop someone
-// from pressing the power button, and it has no effect on a website's JS once the OS does
-// suspend it. It just reduces how often that happens.
 async function acquireWakeLock() {
   try {
     if ('wakeLock' in navigator) {
       wakeLock = await navigator.wakeLock.request('screen');
       wakeLock.addEventListener('release', () => { wakeLock = null; });
     }
-  } catch (e) { /* not supported / permission denied — timer still self-corrects without it */ }
+  } catch (e) {}
 }
 function releaseWakeLock() {
   if (wakeLock) { try { wakeLock.release(); } catch(e) {} wakeLock = null; }
@@ -1239,9 +1281,6 @@ function resetPomo() {
   }
 }
 
-// Called once a running session has actually reached its real end time — whether that's
-// caught on a normal 1s tick, or the instant the page becomes visible again after the tab
-// was backgrounded or the phone was locked.
 function completeSession() {
   clearInterval(pomoTimer);
   isPomoRunning = false;
@@ -1269,9 +1308,6 @@ function completeSession() {
   updatePomoDisplay();
 }
 
-// Runs on every 1s tick AND immediately whenever the tab/screen becomes visible again.
-// Instead of trusting "did a tick fire", it always recalculates remaining time from the
-// real end timestamp — so missed/throttled ticks while backgrounded never desync the clock.
 function pomoTick() {
   if (!isPomoRunning || !sessionEndTs) return;
   if (isInQuietHours() && isWorkSession) {
@@ -1329,13 +1365,10 @@ pomoBtnStart.addEventListener('click', () => {
 pomoBtnReset.addEventListener('click', resetPomo); 
 updatePomoDisplay();
 
-// The moment the tab/phone becomes visible again (switched back, unlocked the screen),
-// immediately recompute the real elapsed time instead of waiting for the next tick —
-// this is what fixes the "timer looked frozen / fired late" issue.
 document.addEventListener('visibilitychange', () => {
   if (document.visibilityState === 'visible' && isPomoRunning && sessionEndTs) {
     pomoTick();
-    if (isPomoRunning) acquireWakeLock(); // re-acquire — most browsers auto-release wake locks while hidden
+    if (isPomoRunning) acquireWakeLock(); 
   }
 });
 
@@ -1508,9 +1541,6 @@ setTimeout(renderHeatmap, 100);
 function loadFCData() { return JSON.parse(localStorage.getItem('fc-data')) || []; }
 function saveFCData(data) { localStorage.setItem('fc-data', JSON.stringify(data)); }
 
-// SM-2 algorithm
-// quality: 0 (Again), 1 (Hard), 2 (Good), 3 (Easy)
-// card: { q, a, ef, interval, reps, nextReview, lapses }
 function sm2Init(card) {
   card.ef = 2.5;
   card.interval = 0;
@@ -1532,7 +1562,6 @@ function sm2Review(card, quality) {
     if (quality === 1) card.interval = Math.max(1, Math.round(card.interval * 0.8)); // hard: shrink
     if (quality === 3) card.interval = Math.round(card.interval * 1.3); // easy: bonus
   }
-  // update ease factor
   const newEf = (card.ef || 2.5) + (0.1 - (3 - quality) * (0.08 + (3 - quality) * 0.02));
   card.ef = Math.max(1.3, newEf);
   card.nextReview = Date.now() + card.interval * 86400000;
@@ -1747,7 +1776,6 @@ function renderHabits() {
     `;
     list.appendChild(card);
   });
-  // wire events
   list.querySelectorAll('.habit-name-input').forEach((inp, i) => {
     inp.addEventListener('input', () => { habits[i].name = inp.value; save(); });
   });
@@ -1803,18 +1831,17 @@ $('#habit-add-btn').addEventListener('click', () => {
 // ══════════════════════════════════════════════
 function renderQuickLog() {
   const today = todayStr();
-  // water
   const w = (quickLog.water && quickLog.water[today]) || 0;
   $('#log-water-num').textContent = w;
   $('#log-water-fill').style.width = Math.min(100, (w / 8) * 100) + '%';
-  // sleep
+  
   const s = (quickLog.sleep && quickLog.sleep[today]) || 0;
   $('#log-sleep-num').textContent = s.toFixed(1);
   $('#log-sleep-fill').style.width = Math.min(100, (s / 8) * 100) + '%';
-  // mood
+  
   const m = (quickLog.mood && quickLog.mood[today]) || 0;
   $$('#mood-row .mood-btn').forEach(b => b.classList.toggle('selected', parseInt(b.dataset.mood) === m));
-  // 7-day note
+  
   const weekMoods = [];
   for (let i = 6; i >= 0; i--) {
     const d = new Date(); d.setDate(d.getDate() - i);
@@ -1828,7 +1855,6 @@ function renderQuickLog() {
   } else {
     $('#mood-week-note').textContent = '';
   }
-  // 7-day log chart
   renderQuickLogChart();
 }
 function renderQuickLogChart() {
@@ -1851,8 +1877,6 @@ function renderQuickLogChart() {
   const accent = cs.getPropertyValue('--accent').trim() || '#7c6af5';
   const waterC = '#3b9eff';
   const sleepC = '#ab47bc';
-  const border = cs.getPropertyValue('--border').trim() || '#2e2e40';
-  const muted = cs.getPropertyValue('--muted').trim() || '#6b6880';
 
   let bars = '';
   days.forEach((d, i) => {
@@ -2008,7 +2032,6 @@ function getTopicsDoneThisWeek() {
   return total;
 }
 function getTopicsDoneLast7Days() {
-  // approximation: count current total + daily progression
   const tp = JSON.parse(localStorage.getItem('tp-data') || 'null') || { subjects: [] };
   const days = [];
   for (let i = 6; i >= 0; i--) {
@@ -2025,7 +2048,6 @@ function getTopicsDoneLast7Days() {
 }
 function renderDashboard() {
   const today = todayStr();
-  // Top stats
   const streak = getStreakDays();
   const tp = JSON.parse(localStorage.getItem('tp-data') || 'null') || { goal: 3, subjects: [] };
   const doneToday = (() => { let n = 0; tp.subjects.forEach(sub => sub.topics.forEach(t => { if (t.checked) n++; })); return n; })();
@@ -2054,14 +2076,12 @@ function renderDashboard() {
     </div>
   `;
 
-  // Weekly topics chart
   const weekData = getTopicsDoneLast7Days().map((v, i) => {
     const d = new Date(); d.setDate(d.getDate() - (6 - i));
     return { value: v, label: d.toLocaleDateString(undefined, { weekday: 'narrow' }) };
   });
   renderLineChart($('#chart-weekly'), weekData, { color: getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() });
 
-  // Focus minutes chart
   const focusData = [];
   for (let i = 6; i >= 0; i--) {
     const d = new Date(); d.setDate(d.getDate() - i);
@@ -2070,7 +2090,6 @@ function renderDashboard() {
   }
   renderBarChart($('#chart-focus'), focusData, { color: '#48c78e' });
 
-  // Tracker completion chart (active trackers)
   const trackerBars = trackers.filter(t => t.start && t.end).map(t => {
     const pct = getTrackerPct(t);
     return { value: pct, label: (t.label || 'Tracker').slice(0, 10) };
@@ -2078,7 +2097,6 @@ function renderDashboard() {
   if (trackerBars.length > 0) renderBarChart($('#chart-tracker'), trackerBars, { color: getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() });
   else $('#chart-tracker').innerHTML = '<div style="text-align:center; color:var(--muted); font-size:0.8rem; padding:1rem 0;">No active trackers yet</div>';
 
-  // Share card
   $('#share-streak').textContent = `🔥 ${streak} day streak`;
   $('#share-num').textContent = `${goalPct}%`;
   $('#share-sub').textContent = `${doneToday}/${tp.goal} topics today`;
@@ -2112,10 +2130,8 @@ function renderCalendar() {
   const y = calCursor.getFullYear(), m = calCursor.getMonth();
   const monthTitle = calCursor.toLocaleDateString(undefined, { month: 'long', year: 'numeric' });
   $('#cal-month-title').textContent = monthTitle;
-  // weekdays
   const wd = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
   $('#cal-weekdays').innerHTML = wd.map(d => `<div class="cal-weekday">${d}</div>`).join('');
-  // days
   const firstDay = new Date(y, m, 1);
   const lastDay = new Date(y, m+1, 0);
   const startOffset = firstDay.getDay();
@@ -2123,7 +2139,6 @@ function renderCalendar() {
   const todayD = todayStr();
   const grid = $('#cal-grid');
   grid.innerHTML = '';
-  // empty
   for (let i = 0; i < startOffset; i++) {
     const e = document.createElement('div'); e.className = 'cal-day empty'; grid.appendChild(e);
   }
@@ -2134,11 +2149,9 @@ function renderCalendar() {
     const cell = document.createElement('div');
     cell.className = 'cal-day' + (ds === todayD ? ' today' : '');
     cell.innerHTML = `<div class="cal-day-num">${day}</div><div class="cal-day-dots" id="cal-dots-${ds}"></div>`;
-    // Heat: streak
     if (streakData[ds]) {
       const h = document.createElement('div'); h.className = 'cal-day-heat'; h.style.background = '#48c78e'; cell.appendChild(h);
     }
-    // Dots: deadlines, topic days
     const dots = cell.querySelector('.cal-day-dots');
     const deadlines = trackers.filter(t => t.end === ds);
     const topicDone = streakData[ds];
@@ -2193,7 +2206,6 @@ function showCalDayDetail(ds, d) {
 function renderWeeklyReview() {
   const wrap = $('#weekly-review-content');
   if (!wrap) return;
-  // last 7 days
   let topicsTotal = 0, focusTotal = 0, daysWithGoal = 0, daysWithWater = 0, moodSum = 0, moodCount = 0;
   const topicDays = [];
   for (let i = 6; i >= 0; i--) {
@@ -2320,7 +2332,6 @@ function performSearch() {
   }
   if (!html) { results.innerHTML = `<div class="search-empty">No matches for "${escapeHtml(q)}"</div>`; return; }
   results.innerHTML = html;
-  // wire result clicks
   results.querySelectorAll('.search-result').forEach(el => {
     el.addEventListener('click', () => {
       const tab = el.dataset.tab;
@@ -2331,363 +2342,6 @@ function performSearch() {
 }
 $('#search-input').addEventListener('input', performSearch);
 $('#search-clear').addEventListener('click', () => { $('#search-input').value = ''; performSearch(); });
-
-// ══════════════════════════════════════════════
-//  MAIN TRACKERS & UTILS
-// ══════════════════════════════════════════════
-function buildBreakdown(container, start, end, now, pct, color) {
-  container.innerHTML = '';
-  if (!start || !end || end <= start) return;
-  const total = Math.round((end - start) / 86400000); if (total < 7) return;
-  const title = document.createElement('div'); title.className = 'breakdown-title'; title.textContent = t('weekBreak'); container.appendChild(title);
-  const grid = document.createElement('div'); grid.className = 'months-grid';
-  const segments = Math.min(12, Math.ceil(total / 30)); const segSize = total / segments;
-  for (let i = 0; i < segments; i++) {
-    const segStart = new Date(start.getTime() + i * segSize * 86400000); const segEnd   = new Date(start.getTime() + (i+1) * segSize * 86400000);
-    const cell = document.createElement('div'); cell.className = 'month-cell';
-    const mn = segStart.toLocaleString(lang === 'en' ? 'en' : lang, {month:'short'});
-    cell.textContent = mn; cell.title = segStart.toLocaleDateString() + ' – ' + segEnd.toLocaleDateString();
-    if (now >= segEnd) { cell.classList.add('filled'); cell.style.background = color; } 
-    else if (now >= segStart) {
-      const segPct = (now - segStart) / (segEnd - segStart); cell.classList.add('partial');
-      cell.style.background = `linear-gradient(90deg, ${color} ${Math.round(segPct*100)}%, var(--surface2) ${Math.round(segPct*100)}%)`;
-      cell.style.color = segPct > 0.4 ? '#fff' : 'var(--muted)';
-    }
-    grid.appendChild(cell);
-  }
-  container.appendChild(grid);
-}
-
-function shareTracker(tracker) {
-  const pct = getTrackerPct(tracker);
-  const text = `📅 ${tracker.label || t('title')}: ${pct}% ${t('elapsed')} — ${tracker.start} → ${tracker.end}`;
-  if (navigator.share) navigator.share({ title: t('title'), text }); else navigator.clipboard.writeText(text).then(() => toast('Copied to clipboard'));
-}
-
-async function screenshotTracker(cardEl) {
-  if (typeof html2canvas === 'undefined') { toast('Screenshot library not loaded'); return; }
-  const canvas = await html2canvas(cardEl, { backgroundColor: null, scale: 2 });
-  const link = document.createElement('a'); link.download = 'date-progress.png'; link.href = canvas.toDataURL(); link.click();
-  toast('PNG saved');
-}
-
-function getTrackerPct(tracker) {
-  if (!tracker.start || !tracker.end) return 0;
-  const s = new Date(tracker.start), e = new Date(tracker.end); if (e <= s) return 0;
-  const now = new Date(); now.setHours(0,0,0,0); const total = Math.round((e - s) / 86400000);
-  const elapsed = Math.max(0, Math.min(total, Math.round((now - s) / 86400000))); return Math.round((elapsed / total) * 100);
-}
-
-function checkReminder(tracker) {
-  if (!tracker.end || tracker.reminder === 'none') return false;
-  const now = new Date(); now.setHours(0,0,0,0); const end = new Date(tracker.end);
-  const daysLeft = Math.round((end - now) / 86400000); return daysLeft >= 0 && daysLeft <= parseInt(tracker.reminder);
-}
-
-function renderTracker(tracker) {
-  const card = document.createElement('div'); card.className = 'card'; card.id = 'card-' + tracker.id;
-
-  const hdr = document.createElement('div'); hdr.className = 'card-header';
-  const dotWrap = document.createElement('div'); dotWrap.style.position = 'relative';
-  const dot = document.createElement('div'); dot.className = 'color-dot'; dot.style.background = tracker.color; dot.title = 'Pick color';
-  const popup = document.createElement('div'); popup.className = 'color-popup';
-  COLORS.forEach(c => {
-    const sw = document.createElement('div'); sw.className = 'cp-swatch' + (c === tracker.color ? ' selected' : ''); sw.style.background = c;
-    sw.addEventListener('click', () => {
-      tracker.color = c; dot.style.background = c; popup.querySelectorAll('.cp-swatch').forEach(s => s.classList.remove('selected'));
-      sw.classList.add('selected'); popup.classList.remove('open'); save(); updateTrackerUI(tracker);
-    });
-    popup.appendChild(sw);
-  });
-  dot.addEventListener('click', e => { e.stopPropagation(); popup.classList.toggle('open'); });
-  document.addEventListener('click', () => popup.classList.remove('open'));
-  dotWrap.appendChild(dot); dotWrap.appendChild(popup);
-
-  const labelInput = document.createElement('input'); labelInput.className = 'tracker-label'; labelInput.type = 'text'; labelInput.placeholder = t('label') + '…'; labelInput.value = tracker.label;
-  labelInput.addEventListener('input', () => { tracker.label = labelInput.value; save(); });
-
-  const delBtn = document.createElement('button'); delBtn.className = 'delete-btn'; delBtn.textContent = '×'; delBtn.title = 'Delete';
-  delBtn.addEventListener('click', () => { trackers = trackers.filter(t => t.id !== tracker.id); save(); renderAll(); });
-
-  hdr.appendChild(dotWrap); hdr.appendChild(labelInput); hdr.appendChild(delBtn); card.appendChild(hdr);
-
-  // Tags row
-  const tagsRow = document.createElement('div'); tagsRow.className = 'tag-row';
-  (tracker.tags || []).forEach((tag, tgi) => {
-    const chip = document.createElement('span');
-    chip.className = 'tag-chip active';
-    chip.innerHTML = `${escapeHtml(tag)} <span style="cursor:pointer; opacity:0.6; margin-left:2px;">×</span>`;
-    chip.querySelector('span').addEventListener('click', (e) => {
-      e.stopPropagation();
-      tracker.tags.splice(tgi, 1); save(); renderAll();
-    });
-    tagsRow.appendChild(chip);
-  });
-  const tagIn = document.createElement('input');
-  tagIn.type = 'text'; tagIn.className = 'tag-add-input'; tagIn.placeholder = '+ tag';
-  tagIn.addEventListener('keydown', e => {
-    if (e.key === 'Enter') {
-      const v = tagIn.value.trim();
-      if (v) {
-        tracker.tags = tracker.tags || [];
-        if (!tracker.tags.includes(v)) tracker.tags.push(v);
-        save(); renderAll();
-      }
-    }
-  });
-  tagsRow.appendChild(tagIn);
-  card.appendChild(tagsRow);
-
-  const inputs = document.createElement('div'); inputs.className = 'inputs';
-  ['start','end'].forEach(key => {
-    const f = document.createElement('div'); f.className = 'field'; const lbl = document.createElement('label'); lbl.textContent = t(key);
-    const inp = document.createElement('input'); inp.type = 'date'; inp.value = tracker[key];
-    inp.addEventListener('change', () => { tracker[key] = inp.value; save(); updateTrackerUI(tracker); });
-    f.appendChild(lbl); f.appendChild(inp); inputs.appendChild(f);
-  });
-  card.appendChild(inputs);
-
-  const ringSection = document.createElement('div'); ringSection.className = 'ring-section';
-  const ringWrap = document.createElement('div'); ringWrap.className = 'ring-wrap';
-  ringWrap.innerHTML = `<svg width="160" height="160" viewBox="0 0 160 160"><circle cx="80" cy="80" r="64" fill="none" stroke="var(--border)" stroke-width="13"/><circle class="arc" cx="80" cy="80" r="64" fill="none" stroke="${tracker.color}" stroke-width="13" stroke-linecap="round" stroke-dasharray="${CIRC}" stroke-dashoffset="${CIRC}" style="transition:stroke-dashoffset 0.6s cubic-bezier(0.4,0,0.2,1),stroke 0.4s;"/></svg><div class="ring-center"><div class="ring-pct">—</div><div class="ring-lbl">${t('pickDates')}</div></div>`;
-  ringSection.appendChild(ringWrap);
-
-  const barWrap = document.createElement('div'); barWrap.className = 'bar-wrap';
-  const barFill = document.createElement('div'); barFill.className = 'bar-fill'; barFill.style.background = tracker.color;
-  barWrap.appendChild(barFill); ringSection.appendChild(barWrap);
-
-  const badge = document.createElement('div'); badge.className = 'status-badge'; badge.textContent = t('waitDates');
-  ringSection.appendChild(badge); card.appendChild(ringSection);
-
-  const stats = document.createElement('div'); stats.className = 'stats';
-  ['elapsed','remaining','total'].forEach(key => {
-    const s = document.createElement('div'); s.className = 'stat'; s.innerHTML = `<div class="stat-num">—</div><div class="stat-name">${t(key)}</div>`; stats.appendChild(s);
-  });
-  card.appendChild(stats);
-
-  const breakdown = document.createElement('div'); breakdown.className = 'breakdown'; card.appendChild(breakdown);
-
-  const remRow = document.createElement('div'); remRow.className = 'reminder-row';
-  const remLabel = document.createElement('label'); remLabel.textContent = t('reminder') + ':';
-  const remSelect = document.createElement('select'); remSelect.className = 'reminder-select';
-  [['none', t('remindNone')],['7',t('remindBefore7')],['14',t('remindBefore14')],['30',t('remindBefore30')]].forEach(([v,lbl]) => {
-    const opt = document.createElement('option'); opt.value = v; opt.textContent = lbl; if (v === tracker.reminder) opt.selected = true; remSelect.appendChild(opt);
-  });
-  remSelect.addEventListener('change', () => { tracker.reminder = remSelect.value; save(); updateTrackerUI(tracker); });
-  const remBadge = document.createElement('span'); remBadge.className = 'reminder-badge'; remBadge.textContent = t('remindActive');
-  remRow.appendChild(remLabel); remRow.appendChild(remSelect); remRow.appendChild(remBadge); card.appendChild(remRow);
-
-  const actionRow = document.createElement('div'); actionRow.className = 'action-row';
-  const shareBtn = document.createElement('button'); shareBtn.className = 'action-btn'; shareBtn.textContent = '↗ ' + t('share'); shareBtn.addEventListener('click', () => shareTracker(tracker));
-  const ssBtn = document.createElement('button'); ssBtn.className = 'action-btn'; ssBtn.textContent = '📸 ' + t('screenshot'); ssBtn.addEventListener('click', () => screenshotTracker(card));
-  actionRow.appendChild(shareBtn); actionRow.appendChild(ssBtn); card.appendChild(actionRow);
-
-  return card;
-}
-
-function updateTrackerUI(tracker) {
-  const card = $(`#card-${tracker.id}`); if (!card) return;
-  const arc      = card.querySelector('.arc'); const pctEl    = card.querySelector('.ring-pct'); const lblEl    = card.querySelector('.ring-lbl');
-  const badge    = card.querySelector('.status-badge'); const barFill = card.querySelector('.bar-fill'); const statNums = card.querySelectorAll('.stat-num');
-  const breakdown= card.querySelector('.breakdown'); const remBadge = card.querySelector('.reminder-badge');
-
-  arc.setAttribute('stroke', tracker.color); barFill.style.background = tracker.color;
-
-  if (!tracker.start || !tracker.end) {
-    arc.setAttribute('stroke-dashoffset', CIRC); pctEl.textContent = '—'; lblEl.textContent = t('pickDates');
-    badge.textContent = t('waitDates'); badge.className = 'status-badge'; barFill.style.width = '0%';
-    statNums.forEach(s => s.textContent = '—'); breakdown.innerHTML = ''; remBadge.classList.remove('show'); return;
-  }
-
-  const start = new Date(tracker.start), end = new Date(tracker.end), now = new Date(); now.setHours(0,0,0,0);
-
-  if (end <= start) {
-    arc.setAttribute('stroke-dashoffset', CIRC * 0.98); pctEl.textContent = '!'; lblEl.textContent = t('endBeforeStart');
-    badge.textContent = t('endBeforeStart'); badge.className = 'status-badge danger'; barFill.style.width = '0%';
-    statNums.forEach(s => s.textContent = '—'); breakdown.innerHTML = ''; remBadge.classList.remove('show'); return;
-  }
-
-  const total   = Math.round((end - start) / 86400000);
-  const elapsed = Math.max(0, Math.min(total, Math.round((now - start) / 86400000)));
-  const left    = Math.max(0, total - elapsed); const pct     = Math.round((elapsed / total) * 100);
-
-  arc.setAttribute('stroke-dashoffset', (CIRC - (pct/100)*CIRC).toFixed(2)); barFill.style.width = pct + '%'; pctEl.textContent = pct + '%';
-
-  let badgeClass, badgeText, subText;
-  if (pct === 0)       { badgeClass='done';   badgeText=t('notStarted');  subText=t('notStarted'); }
-  else if (pct >= 100) { badgeClass='done';   badgeText=t('complete');    subText=t('complete');
-    if (!confettiFired.has(tracker.id)) { launchConfetti(); confettiFired.add(tracker.id); localStorage.setItem('dp-confetti', JSON.stringify([...confettiFired])); }
-  }
-  else if (pct >= 80)  { badgeClass='danger'; badgeText=pct+'% '+t('elapsed'); subText=t('almostDone'); }
-  else if (pct >= 50)  { badgeClass='active'; badgeText=pct+'% '+t('elapsed'); subText=t('pastHalf'); }
-  else                 { badgeClass='active'; badgeText=pct+'% '+t('elapsed'); subText=t('inProgress'); }
-
-  badge.textContent = badgeText; badge.className = 'status-badge ' + badgeClass; lblEl.textContent = subText;
-  statNums[0].textContent = elapsed.toLocaleString() + t('days'); statNums[1].textContent = left.toLocaleString() + t('days'); statNums[2].textContent = total.toLocaleString() + t('days');
-  buildBreakdown(breakdown, start, end, now, pct, tracker.color);
-  if (checkReminder(tracker)) remBadge.classList.add('show'); else remBadge.classList.remove('show');
-}
-
-function renderAll() {
-  const container = $('#trackers'); container.innerHTML = '';
-  trackers.forEach(tracker => { const card = renderTracker(tracker); container.appendChild(card); updateTrackerUI(tracker); });
-  $('#add-label').textContent = t('addTracker');
-}
-
-$('#add-btn').addEventListener('click', () => {
-  const colorIndex = trackers.length % COLORS.length;
-  trackers.push({ id: nextId++, label: '', start: '', end: '', color: COLORS[colorIndex], reminder: 'none', tags: [] });
-  save(); renderAll(); $('#trackers').lastElementChild.scrollIntoView({ behavior: 'smooth' });
-});
-
-// ══════════════════════════════════════════════
-//  TOPIC TRACKER
-// ══════════════════════════════════════════════
-function loadTopicData() { return JSON.parse(localStorage.getItem('tp-data') || 'null') || { goal: 3, subjects: [], lastReset: '' }; }
-function saveTopicData(data) { localStorage.setItem('tp-data', JSON.stringify(data)); }
-
-function maybeResetDaily(data) {
-  const today = todayStr();
-  if (data.lastReset !== today) { data.subjects.forEach(sub => { sub.topics.forEach(tp => { tp.checked = false; }); }); data.lastReset = today; saveTopicData(data); }
-}
-
-function countTodayDone(data) { let n = 0; data.subjects.forEach(sub => sub.topics.forEach(tp => { if (tp.checked) n++; })); return n; }
-
-function renderTopicTracker() {
-  const data = loadTopicData(); maybeResetDaily(data);
-  const container = $('#subjects-container'); const emptyMsg  = $('#topic-empty-msg');
-  const goalInput = $('#topic-goal-input'); const fillEl    = $('#topic-today-fill');
-  const countEl   = $('#topic-today-count'); const resetNote = $('#topic-reset-notice');
-
-  goalInput.value = data.goal;
-  const tomorrow = new Date(); tomorrow.setDate(tomorrow.getDate() + 1);
-  const tStr = tomorrow.toLocaleDateString(undefined, { weekday:'short', month:'short', day:'numeric' });
-  resetNote.textContent = '✦ Checkmarks reset automatically each day · next reset ' + tStr;
-
-  function updateGoalBar() {
-    const done = countTodayDone(data); const goal = data.goal; const pct  = Math.min(100, Math.round((done / goal) * 100));
-    fillEl.style.width = pct + '%'; fillEl.style.background = pct >= 100 ? '#48c78e' : 'var(--accent)';
-    countEl.textContent = done + '/' + goal; countEl.style.color = pct >= 100 ? '#48c78e' : 'var(--accent)';
-    
-    const today = todayStr();
-    let streakData = JSON.parse(localStorage.getItem('streak-data') || '{}');
-    if (done >= goal && done > 0) { streakData[today] = true; } else { streakData[today] = false; }
-    localStorage.setItem('streak-data', JSON.stringify(streakData));
-    renderHeatmap(); 
-  }
-
-  function rebuildSubjects() {
-    Array.from(container.children).forEach(el => { if (el.id !== 'topic-empty-msg') el.remove(); });
-    if (data.subjects.length === 0) { emptyMsg.style.display = ''; } else { emptyMsg.style.display = 'none'; }
-
-    data.subjects.forEach((sub, si) => {
-      const color = SUB_COLORS[si % SUB_COLORS.length]; sub.color = color;
-      const card = document.createElement('div'); card.className = 'subject-card';
-      const hdr = document.createElement('div'); hdr.className = 'subject-header';
-      const dot = document.createElement('div'); dot.className = 'subject-dot'; dot.style.background = color;
-
-      const nameInput = document.createElement('input'); nameInput.className = 'subject-name-input'; nameInput.type = 'text'; nameInput.placeholder = 'Subject name…'; nameInput.value = sub.name;
-      nameInput.addEventListener('input', () => { sub.name = nameInput.value; saveTopicData(data); }); nameInput.addEventListener('click', e => e.stopPropagation());
-
-      const done  = sub.topics.filter(tp => tp.checked).length; const total = sub.topics.length;
-      const pill  = document.createElement('div'); pill.className = 'subject-progress-pill'; pill.textContent = done + '/' + total + ' done';
-      const pillPct = total > 0 ? done/total : 0;
-      pill.style.background = pillPct === 1 ? 'rgba(72,199,142,0.15)' : `rgba(${hexToRgb(color)},0.12)`; pill.style.borderColor = pillPct === 1 ? 'rgba(72,199,142,0.4)' : `rgba(${hexToRgb(color)},0.35)`; pill.style.color = pillPct === 1 ? '#48c78e' : color;
-
-      const toggle = document.createElement('div'); toggle.className = 'subject-toggle'; toggle.textContent = '▼';
-      const delBtn = document.createElement('button'); delBtn.className = 'subject-del-btn'; delBtn.textContent = '×'; delBtn.title = 'Delete subject';
-      delBtn.addEventListener('click', e => { e.stopPropagation(); if (confirm('Delete "' + (sub.name || 'this subject') + '" and all its topics?')) { data.subjects.splice(si, 1); saveTopicData(data); rebuildSubjects(); updateGoalBar(); } });
-
-      hdr.appendChild(dot); hdr.appendChild(nameInput); hdr.appendChild(pill); hdr.appendChild(toggle); hdr.appendChild(delBtn);
-
-      const body = document.createElement('div'); body.style.display = sub.open !== false ? '' : 'none'; if (sub.open !== false) toggle.classList.add('open');
-      hdr.addEventListener('click', () => { const isOpen = body.style.display !== 'none'; body.style.display = isOpen ? 'none' : ''; toggle.classList.toggle('open', !isOpen); sub.open = !isOpen; saveTopicData(data); });
-
-      const list = document.createElement('div'); list.className = 'topics-list';
-      function buildTopicItem(tp, ti) {
-        const row = document.createElement('div'); row.className = 'topic-item';
-        const chk = document.createElement('div'); chk.className = 'topic-check' + (tp.checked ? ' checked' : ''); chk.style.background = tp.checked ? color : ''; chk.style.borderColor = tp.checked ? color : '';
-        chk.addEventListener('click', () => {
-          tp.checked = !tp.checked; chk.classList.toggle('checked', tp.checked); chk.style.background = tp.checked ? color : ''; chk.style.borderColor = tp.checked ? color : ''; tpInput.classList.toggle('done', tp.checked);
-          saveTopicData(data); const newDone = sub.topics.filter(x => x.checked).length; const newTotal = sub.topics.length; pill.textContent = newDone + '/' + newTotal + ' done';
-          const np = newTotal > 0 ? newDone/newTotal : 0; pill.style.background = np === 1 ? 'rgba(72,199,142,0.15)' : `rgba(${hexToRgb(color)},0.12)`; pill.style.borderColor = np === 1 ? 'rgba(72,199,142,0.4)' : `rgba(${hexToRgb(color)},0.35)`; pill.style.color = np === 1 ? '#48c78e' : color;
-          updateGoalBar();
-        });
-
-        const tpInput = document.createElement('input'); tpInput.className = 'topic-name-input' + (tp.checked ? ' done' : ''); tpInput.type = 'text'; tpInput.placeholder = 'Topic name…'; tpInput.value = tp.name;
-        tpInput.addEventListener('input', () => { tp.name = tpInput.value; saveTopicData(data); });
-
-        const diffCycler = document.createElement('div'); diffCycler.className = 'topic-diff ' + (tp.diff || ''); diffCycler.title = "Difficulty: " + (tp.diff || "None");
-        diffCycler.addEventListener('click', () => { const cycle = { '': 'easy', 'easy': 'med', 'med': 'hard', 'hard': '' }; tp.diff = cycle[tp.diff || '']; diffCycler.className = 'topic-diff ' + tp.diff; saveTopicData(data); });
-
-        const tpDel = document.createElement('button'); tpDel.className = 'topic-del-btn'; tpDel.textContent = '×'; tpDel.title = 'Remove topic';
-        tpDel.addEventListener('click', () => { sub.topics.splice(ti, 1); saveTopicData(data); rebuildSubjects(); updateGoalBar(); });
-
-        const tpToCard = document.createElement('button'); tpToCard.className = 'topic-to-card-btn'; tpToCard.textContent = '📇'; tpToCard.title = 'Convert to flashcard';
-        tpToCard.addEventListener('click', (e) => {
-          e.stopPropagation();
-          const fc = loadFCData();
-          if (fc.length === 0) { toast('Create a flashcard deck first'); return; }
-          showModal(`
-            <h3>Add to which deck?</h3>
-            <div id="deck-pick" style="display:flex; flex-direction:column; gap:6px;">
-              ${fc.map((d, i) => `<button class="modal-btn" data-i="${i}">${escapeHtml(d.name)} <span style="color:var(--muted); font-size:0.7rem;">(${d.cards.length})</span></button>`).join('')}
-              <button class="modal-btn" id="deck-new">+ Create new deck</button>
-            </div>
-            <div class="modal-row"><button class="modal-btn" id="deck-cancel">Cancel</button></div>
-          `);
-          $('#deck-cancel').addEventListener('click', hideModal);
-          $('#deck-new').addEventListener('click', () => {
-            const name = prompt('Deck name?'); if (!name) return;
-            fc.push({ name: name.trim(), cards: [] });
-            saveFCData(fc);
-            const idx = fc.length - 1;
-            addToDeck(fc, idx, tp);
-            hideModal();
-          });
-          $$('#deck-pick .modal-btn[data-i]').forEach(b => {
-            b.addEventListener('click', () => {
-              const i = parseInt(b.dataset.i);
-              addToDeck(fc, i, tp);
-              hideModal();
-            });
-          });
-        });
-
-        row.appendChild(chk); row.appendChild(tpInput); row.appendChild(diffCycler); row.appendChild(tpToCard); row.appendChild(tpDel); return row;
-      }
-      function addToDeck(fc, idx, tp) {
-        if (!fc[idx]) return;
-        const card = sm2Init({ q: tp.name, a: '' });
-        fc[idx].cards.push(card);
-        saveFCData(fc);
-        toast(`Added to "${fc[idx].name}"`);
-        if (fc[idx].cards.length === 1) renderFCDecks();
-      }
-      sub.topics.forEach((tp, ti) => list.appendChild(buildTopicItem(tp, ti)));
-
-      const addRow = document.createElement('div'); addRow.className = 'add-topic-row';
-      const addInput = document.createElement('input'); addInput.className = 'add-topic-input'; addInput.type = 'text'; addInput.placeholder = 'New topic…';
-      const addBtn = document.createElement('button'); addBtn.className = 'add-topic-btn'; addBtn.textContent = '+ Add';
-
-      function doAddTopic() {
-        const name = addInput.value.trim(); if (!name) { addInput.focus(); return; }
-        sub.topics.push({ name, checked: false, diff: '' }); saveTopicData(data); rebuildSubjects(); updateGoalBar();
-        setTimeout(() => { const cards = document.querySelectorAll('.subject-card'); const thisCard = cards[si]; if (thisCard) { const b = thisCard.querySelector('.topics-list')?.parentElement; if (b) b.style.display = ''; } }, 10);
-      }
-      addBtn.addEventListener('click', doAddTopic); addInput.addEventListener('keydown', e => { if (e.key === 'Enter') doAddTopic(); });
-
-      addRow.appendChild(addInput); addRow.appendChild(addBtn); body.appendChild(list); body.appendChild(addRow); card.appendChild(hdr); card.appendChild(body); container.appendChild(card);
-    });
-    updateGoalBar();
-  }
-
-  goalInput.addEventListener('change', () => { const v = Math.max(1, parseInt(goalInput.value) || 1); data.goal = v; goalInput.value = v; saveTopicData(data); updateGoalBar(); });
-  $('#topic-add-sub-btn').onclick = () => { data.subjects.push({ name: '', topics: [], open: true }); saveTopicData(data); rebuildSubjects(); setTimeout(() => { const cards = container.querySelectorAll('.subject-card'); const last = cards[cards.length - 1]; if (last) last.querySelector('.subject-name-input')?.focus(); }, 30); };
-  rebuildSubjects();
-}
-
-renderTopicTracker();
 
 // ══════════════════════════════════════════════
 //  NOTIFICATIONS
@@ -2730,7 +2384,7 @@ function testNotification() {
 }
 
 // ══════════════════════════════════════════════
-//  SERVICE WORKER (with notifications + caching)
+//  SERVICE WORKER
 // ══════════════════════════════════════════════
 if ('serviceWorker' in navigator) {
   const swCode = `
@@ -2751,38 +2405,7 @@ if ('serviceWorker' in navigator) {
 }
 
 // ══════════════════════════════════════════════
-//  CONFETTI (kept from original)
-// ══════════════════════════════════════════════
-function launchConfetti() {
-  const canvas = $('#confetti-canvas');
-  const ctx = canvas.getContext('2d');
-  canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-  const particles = [];
-  const colors = ['#7c6af5','#f05252','#48c78e','#f0a030','#3b9eff','#f06292','#26c6da'];
-  for (let i = 0; i < 80; i++) {
-    particles.push({
-      x: canvas.width/2, y: canvas.height/2,
-      vx: (Math.random()-0.5)*12, vy: (Math.random()-0.5)*12 - 5,
-      color: colors[Math.floor(Math.random()*colors.length)],
-      life: 60 + Math.random()*40, size: 4 + Math.random()*4
-    });
-  }
-  let frame = 0;
-  function draw() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    particles.forEach(p => {
-      p.x += p.vx; p.y += p.vy; p.vy += 0.25; p.life--;
-      ctx.fillStyle = p.color; ctx.globalAlpha = Math.max(0, p.life/60);
-      ctx.fillRect(p.x, p.y, p.size, p.size);
-    });
-    frame++;
-    if (frame < 120) requestAnimationFrame(draw); else ctx.clearRect(0, 0, canvas.width, canvas.height);
-  }
-  draw();
-}
-
-// ══════════════════════════════════════════════
-//  DEADLINE CHECK (in-app reminder check on load)
+//  DEADLINE CHECK
 // ══════════════════════════════════════════════
 function checkDeadlines() {
   const today = new Date(); today.setHours(0,0,0,0);
@@ -2837,3 +2460,52 @@ if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
 </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
