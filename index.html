@@ -129,6 +129,24 @@
     .collapsible-body { display: none; width: 100%; margin-top: 1rem; }
     #pomo-body.open { display: flex; flex-direction: column; align-items: center; }
 
+    /* ════ LEVEL & XP SYSTEM ════ */
+    .level-card { 
+      background: linear-gradient(135deg, var(--surface2) 0%, var(--surface) 100%); 
+      border: 1px solid var(--accent); border-radius: 20px; padding: 1.25rem; 
+      margin-bottom: 1.25rem; position: relative; overflow: hidden; 
+    }
+    .level-card::after { 
+      content: '⭐'; position: absolute; right: -10px; bottom: -20px; 
+      font-size: 5rem; opacity: 0.05; pointer-events: none; 
+    }
+    .level-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 0.75rem; }
+    .level-info { display: flex; flex-direction: column; }
+    .level-num { font-size: 1.6rem; font-weight: 800; color: var(--accent); line-height: 1; letter-spacing: -0.03em; }
+    .level-title { font-size: 0.8rem; color: var(--text); font-weight: 600; margin-top: 4px; }
+    .xp-bar-wrap { width: 100%; height: 8px; background: rgba(0,0,0,0.2); border-radius: 99px; overflow: hidden; border: 1px solid var(--border); }
+    .xp-bar-fill { height: 100%; background: linear-gradient(90deg, var(--accent), #b388ff); border-radius: 99px; transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+    .xp-details { display: flex; justify-content: space-between; margin-top: 6px; font-size: 0.7rem; color: var(--muted); font-weight: 500; }
+
     /* ════ STREAK HEATMAP ════ */
     .streak-card {
       background: var(--surface); border: 1px solid var(--border);
@@ -546,7 +564,6 @@
     .splash-inner { display: flex; flex-direction: column; align-items: center; gap: 16px; }
     .splash-ring-wrap { 
       position: relative; width: 96px; height: 96px; 
-      /* THIS IS THE BLOW UP ANIMATION */
       animation: blowRing 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; 
       animation-delay: 0.9s; 
     }
@@ -590,7 +607,7 @@
     /* Small responsive tweaks */
     @media (max-width: 360px) {
       .dash-grid, .log-grid, .review-stat-grid { grid-template-columns: 1fr; }
-      .share-card-row { grid-template-columns: 1fr 1fr 1fr; }
+      .share-card-row { grid-template-columns: 1fr 1fr; }
     }
   </style>
 </head>
@@ -653,7 +670,26 @@
     </div>
   </div>
 
+  <!-- DASHBOARD TAB -->
   <div id="tab-dash" class="tab-pane active">
+    
+    <!-- LEVEL CARD -->
+    <div class="level-card" id="level-card">
+      <div class="level-header">
+        <div class="level-info">
+          <span style="font-size:0.7rem; color:var(--muted); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:2px;">Current Rank</span>
+          <div class="level-num">Level <span id="lvl-num">1</span></div>
+          <div class="level-title" id="lvl-title">Novice</div>
+        </div>
+        <div style="font-size:2.2rem;">🏅</div>
+      </div>
+      <div class="xp-bar-wrap"><div class="xp-bar-fill" id="xp-fill" style="width:0%"></div></div>
+      <div class="xp-details">
+        <span>XP Progress</span>
+        <span id="xp-text">0 / 300 XP</span>
+      </div>
+    </div>
+
     <div class="streak-card">
       <div class="streak-header" id="streak-head" style="cursor: pointer;">
         <span>🔥 70-Day Study Streak</span>
@@ -702,6 +738,7 @@
     <button class="add-btn" id="add-btn">＋ <span id="add-label">Add another tracker</span></button>
   </div>
 
+  <!-- TIMER TAB -->
   <div id="tab-timer" class="tab-pane">
     <div class="pomo-card">
       <div class="pomo-header" id="pomo-head" style="cursor: pointer;">
@@ -740,6 +777,7 @@
     </div>
   </div>
 
+  <!-- STUDY (Topics + Flashcards) TAB -->
   <div id="tab-topics" class="tab-pane">
     <div class="topic-section" id="topic-section">
       <div class="topic-section-header">
@@ -797,6 +835,7 @@
     </div>
   </div>
 
+  <!-- GOALS / HABITS TAB -->
   <div id="tab-goals" class="tab-pane">
     <div class="topic-section">
       <div class="topic-section-header">
@@ -808,6 +847,7 @@
     </div>
   </div>
 
+  <!-- QUICK LOG TAB -->
   <div id="tab-log" class="tab-pane">
     <div class="log-grid">
       <div class="log-card">
@@ -849,6 +889,7 @@
     </div>
   </div>
 
+  <!-- CALENDAR TAB -->
   <div id="tab-cal" class="tab-pane">
     <div class="topic-section">
       <div class="cal-month-nav">
@@ -867,6 +908,7 @@
     </div>
   </div>
 
+  <!-- PLAN TAB (Timetable + Checklist) -->
   <div id="tab-plan" class="tab-pane">
     <div class="tt-card">
       <div class="tt-header" id="tt-head" style="cursor: pointer;">
@@ -902,6 +944,7 @@
     </div>
   </div>
 
+  <!-- SEARCH TAB -->
   <div id="tab-search" class="tab-pane">
     <div class="topic-section">
       <div class="topic-section-header">
@@ -945,6 +988,7 @@
   </button>
 </nav>
 
+<!-- MODAL -->
 <div class="modal-bg" id="modal-bg">
   <div class="modal" id="modal-content"></div>
 </div>
@@ -958,6 +1002,7 @@
 window.addEventListener('load', () => {
   setTimeout(() => {
     document.body.classList.add('loaded');
+    hideSplash();
   }, 1200);
 });
 
@@ -981,6 +1026,68 @@ function hideModal() { $('#modal-bg').classList.remove('open'); }
 $('#modal-bg').addEventListener('click', e => { if (e.target.id === 'modal-bg') hideModal(); });
 
 // ══════════════════════════════════════════════
+//  LEVEL & XP SYSTEM
+// ══════════════════════════════════════════════
+let userXP = JSON.parse(localStorage.getItem('user-xp')) || { level: 1, xp: 0 };
+const LEVEL_TITLES = ['Novice', 'Apprentice', 'Scholar', 'Adept', 'Expert', 'Master', 'Grandmaster', 'Legend'];
+
+function getLevelTitle(lvl) {
+  return LEVEL_TITLES[Math.min(lvl - 1, LEVEL_TITLES.length - 1)];
+}
+function getXPForNextLevel(lvl) {
+  return lvl * 300; 
+}
+
+function renderLevelUI() {
+  const needed = getXPForNextLevel(userXP.level);
+  const pct = Math.min(100, (userXP.xp / needed) * 100);
+  const lvlNum = $('#lvl-num');
+  const lvlTitle = $('#lvl-title');
+  const xpFill = $('#xp-fill');
+  const xpText = $('#xp-text');
+  
+  if(lvlNum) lvlNum.textContent = userXP.level;
+  if(lvlTitle) lvlTitle.textContent = getLevelTitle(userXP.level);
+  if(xpFill) xpFill.style.width = pct + '%';
+  if(xpText) xpText.textContent = `${userXP.xp} / ${needed} XP`;
+}
+
+function addXP(amount, reason) {
+  userXP.xp += amount;
+  let needed = getXPForNextLevel(userXP.level);
+  let leveledUp = false;
+  
+  while (userXP.xp >= needed) {
+    userXP.xp -= needed;
+    userXP.level++;
+    needed = getXPForNextLevel(userXP.level);
+    leveledUp = true;
+  }
+  
+  localStorage.setItem('user-xp', JSON.stringify(userXP));
+  renderLevelUI();
+  
+  if (leveledUp) {
+    launchConfetti();
+    showModal(`
+      <div style="text-align:center;">
+        <div style="font-size:3rem; margin-bottom:10px;">🏅</div>
+        <h3>Level Up!</h3>
+        <p style="color:var(--muted); margin-bottom:20px;">You reached Level ${userXP.level}: <strong>${getLevelTitle(userXP.level)}</strong></p>
+        <button class="modal-btn primary" id="lvl-close" style="width:100%;">Awesome!</button>
+      </div>
+    `);
+    $('#lvl-close').addEventListener('click', hideModal);
+  } else {
+    toast(`🌟 +${amount} XP (${reason})`);
+  }
+  
+  renderDashboard();
+}
+setTimeout(renderLevelUI, 100);
+
+
+// ══════════════════════════════════════════════
 //  BOTTOM NAVIGATION TAB LOGIC
 // ══════════════════════════════════════════════
 const navBtns = $$('.nav-btn');
@@ -999,6 +1106,7 @@ navBtns.forEach(btn => {
        const scrollContainer = $('#heatmap-scroll');
        if(scrollContainer) scrollContainer.scrollLeft = scrollContainer.scrollWidth;
        renderDashboard();
+       renderLevelUI();
     }
     if(tabId === 'tab-cal') renderCalendar();
     if(tabId === 'tab-goals') renderHabits();
@@ -1072,7 +1180,7 @@ setupCollapsible('tt-head', 'tt-body', 'tt-toggle', 'ui-tt-open', true);
 // ══════════════════════════════════════════════
 const T = {
   en: { title:'Date Progress', start:'Start date', end:'End date', elapsed:'Elapsed', remaining:'Remaining', total:'Total', addTracker:'Add another tracker', label:'Label', pickDates:'pick dates', notStarted:'Not started yet', complete:'✓ Complete', almostDone:'Almost done', pastHalf:'Past halfway', inProgress:'In progress', waitDates:'Waiting for dates', endBeforeStart:'End must be after start', days:'d', share:'Share', screenshot:'Screenshot', weekBreak:'Monthly breakdown', reminder:'Remind at', remindNone:'Off', remindBefore7:'7 days left', remindBefore14:'14 days left', remindBefore30:'30 days left', remindActive:'⚠ Deadline soon!', themeToggle:'theme' },
-  hi: { title:'दिनांक प्रगति', start:'प्रारंभ तिथि', end:'समाप्ति तिथि', elapsed:'बीता', remaining:'शेष', total:'कुल', addTracker:'और ट्रैकर जोड़ें', label:'नाम', pickDates:'तिथियाँ चुनें', notStarted:'अभी शुरू नहीं', complete:'✓ पूर्ण', almostDone:'लगभग हो गया', pastHalf:'आधे से ज़्यादा', inProgress:'जारी है', waitDates:'तिथियों की प्रतीक्षा', endBeforeStart:'समाप्ति बाद में होनी चाहिए', days:'दि', share:'शेयर', screenshot:'स्क्रीनशॉट', weekBreak:'मासिक विवरण', reminder:'याद दिलाएं', remindNone:'बंद', remindBefore7:'7 दिन बचे', remindBefore14:'14 दिन बचे', remindBefore30:'30 दिन बचे', remindActive:'⚠ समय सीमा नज़दीक!', themeToggle:'थीम' },
+  hi: { title:'दिनांक प्रगति', start:'प्रारंभ तिथि', end:'समाप्ति तिथि', elapsed:'बीता', remaining:'शेष', total:'कुल', addTracker:'और ट्रैकर जोड़ें', label:'नाम', pickDates:'तिथियाँ चुनें', notStarted:'अभी शुरू break', complete:'✓ पूर्ण', almostDone:'लगभग हो गया', pastHalf:'आधे से ज़्यादा', inProgress:'जारी है', waitDates:'तिथियों की प्रतीक्षा', endBeforeStart:'समाप्ति बाद में होनी चाहिए', days:'दि', share:'शेयर', screenshot:'स्क्रीनशॉट', weekBreak:'मासिक विवरण', reminder:'याद दिलाएं', remindNone:'बंद', remindBefore7:'7 दिन बचे', remindBefore14:'14 दिन बचे', remindBefore30:'30 दिन बचे', remindActive:'⚠ समय सीमा नज़दीक!', themeToggle:'थीम' },
   ar: { title:'تتبع التاريخ', start:'تاريخ البدء', end:'تاريخ الانتهاء', elapsed:'مضى', remaining:'متبقي', total:'المجموع', addTracker:'إضافة متتبع', label:'تسمية', pickDates:'اختر تواريخ', notStarted:'لم يبدأ بعد', complete:'✓ مكتمل', almostDone:'على وشك الانتهاء', pastHalf:'تجاوز النصف', inProgress:'قيد التنفيذ', waitDates:'في انتظار التواريخ', endBeforeStart:'النهاية يجب أن تكون بعد البداية', days:'ي', share:'مشاركة', screenshot:'لقطة', weekBreak:'تفاصيل شهرية', reminder:'تذكير', remindNone:'إيقاف', remindBefore7:'7 أيام متبقية', remindBefore14:'14 يومًا', remindBefore30:'30 يومًا', remindActive:'⚠ الموعد قريب!', themeToggle:'سمة' },
   fr: { title:'Suivi de dates', start:'Date de début', end:'Date de fin', elapsed:'Écoulé', remaining:'Restant', total:'Total', addTracker:'Ajouter un suivi', label:'Nom', pickDates:'choisir les dates', notStarted:'Pas encore commencé', complete:'✓ Terminé', almostDone:'Presque fini', pastHalf:'Passé la moitié', inProgress:'En cours', waitDates:'En attente de dates', endBeforeStart:'La fin doit être après le début', days:'j', share:'Partager', screenshot:'Capture', weekBreak:'Répartition mensuelle', reminder:'Rappel', remindNone:'Désactivé', remindBefore7:'7 jours restants', remindBefore14:'14 jours', remindBefore30:'30 jours', remindActive:'⚠ Échéance proche!', themeToggle:'thème' },
   es: { title:'Progreso de fecha', start:'Fecha inicio', end:'Fecha fin', elapsed:'Transcurrido', remaining:'Restante', total:'Total', addTracker:'Añadir seguimiento', label:'Nombre', pickDates:'elegir fechas', notStarted:'No iniciado', complete:'✓ Completo', almostDone:'Casi terminado', pastHalf:'Pasada la mitad', inProgress:'En progreso', waitDates:'Esperando fechas', endBeforeStart:'El fin debe ser posterior al inicio', days:'d', share:'Compartir', screenshot:'Captura', weekBreak:'Desglose mensual', reminder:'Recordatorio', remindNone:'Desactivado', remindBefore7:'7 días', remindBefore14:'14 días', remindBefore30:'30 días', remindActive:'⚠ ¡Fecha límite próxima!', themeToggle:'tema' },
@@ -1140,7 +1248,8 @@ $('#export-btn').addEventListener('click', () => {
     fc: localStorage.getItem('fc-data'),
     habits: localStorage.getItem('habits-data'),
     quicklog: localStorage.getItem('quick-log'),
-    focuslog: localStorage.getItem('focus-log')
+    focuslog: localStorage.getItem('focus-log'),
+    xp: localStorage.getItem('user-xp') 
   };
   const blob = new Blob([JSON.stringify(data)], {type: "application/json"});
   const url = URL.createObjectURL(blob);
@@ -1173,6 +1282,7 @@ $('#import-file').addEventListener('change', (e) => {
       if(data.habits) localStorage.setItem('habits-data', data.habits);
       if(data.quicklog) localStorage.setItem('quick-log', data.quicklog);
       if(data.focuslog) localStorage.setItem('focus-log', data.focuslog);
+      if(data.xp) localStorage.setItem('user-xp', data.xp); 
       alert('Data restored successfully! The page will now reload.'); 
       location.reload();
     } catch(err) { alert('Invalid backup file.'); }
@@ -1286,7 +1396,9 @@ function completeSession() {
   isPomoRunning = false;
   releaseWakeLock();
   if (sessionStartTs) {
-    logFocusMinutes(Math.max(1, Math.round((Date.now() - sessionStartTs) / 60000)));
+    const mins = Math.max(1, Math.round((Date.now() - sessionStartTs) / 60000));
+    logFocusMinutes(mins);
+    if (isWorkSession) addXP(mins * 2, 'Focus Session'); 
     sessionStartTs = null;
   }
   sessionEndTs = null;
@@ -1345,6 +1457,7 @@ pomoBtnStart.addEventListener('click', () => {
       const elapsedMs = Date.now() - sessionStartTs;
       const mins = Math.max(1, Math.round(elapsedMs / 60000));
       logFocusMinutes(mins);
+      if (isWorkSession) addXP(mins * 2, 'Partial Focus');
       sessionStartTs = null;
     }
     sessionEndTs = null;
@@ -1482,6 +1595,7 @@ function renderChecklist() {
       chk.classList.toggle('checked', task.done);
       inp.classList.toggle('done', task.done);
       localStorage.setItem('cl-data', JSON.stringify(data));
+      if (task.done) addXP(10, 'Task Finished');
     });
 
     const del = document.createElement('button');
@@ -1702,6 +1816,7 @@ $$('.fc-btn[data-q]').forEach(btn => {
     if (realCard) {
       sm2Review(realCard, q);
       saveFCData(data);
+      addXP(5, 'Card Reviewed');
     }
     showNextCard();
   });
@@ -1783,8 +1898,12 @@ function renderHabits() {
     btn.addEventListener('click', () => {
       const i = parseInt(btn.dataset.hi);
       habits[i].history = habits[i].history || {};
-      if (habits[i].history[today]) delete habits[i].history[today];
-      else habits[i].history[today] = true;
+      if (habits[i].history[today]) {
+        delete habits[i].history[today];
+      } else {
+        habits[i].history[today] = true;
+        addXP(20, 'Daily Habit');
+      }
       save(); renderHabits();
     });
   });
@@ -2101,6 +2220,7 @@ function renderDashboard() {
   $('#share-num').textContent = `${goalPct}%`;
   $('#share-sub').textContent = `${doneToday}/${tp.goal} topics today`;
   $('#share-row').innerHTML = `
+    <div class="share-card-mini"><div class="share-card-mini-num">Lv.${userXP.level}</div><div class="share-card-mini-name">Rank</div></div>
     <div class="share-card-mini"><div class="share-card-mini-num">${todayFocus}m</div><div class="share-card-mini-name">Focus</div></div>
     <div class="share-card-mini"><div class="share-card-mini-num">${doneToday}</div><div class="share-card-mini-name">Topics</div></div>
     <div class="share-card-mini"><div class="share-card-mini-num">${habits.filter(h => h.history && h.history[today]).length}</div><div class="share-card-mini-name">Habits</div></div>
@@ -2118,7 +2238,7 @@ $('#share-text-btn').addEventListener('click', () => {
   const t = todayStr();
   const tp = JSON.parse(localStorage.getItem('tp-data') || 'null') || { goal: 3, subjects: [] };
   const doneToday = (() => { let n = 0; tp.subjects.forEach(sub => sub.topics.forEach(t => { if (t.checked) n++; })); return n; })();
-  const txt = `📅 Date Progress — ${todayStr()}\n🔥 ${getStreakDays()} day streak\n📚 ${doneToday}/${tp.goal} topics today\n⏱️ ${focusLog[t]||0}m focus\n🎯 ${habits.filter(h => h.history && h.history[todayStr()]).length} habits done`;
+  const txt = `📅 Date Progress — ${todayStr()}\n🏅 Level ${userXP.level} (${getLevelTitle(userXP.level)})\n🔥 ${getStreakDays()} day streak\n📚 ${doneToday}/${tp.goal} topics today\n⏱️ ${focusLog[t]||0}m focus\n🎯 ${habits.filter(h => h.history && h.history[todayStr()]).length} habits done`;
   if (navigator.share) navigator.share({ text: txt });
   else { navigator.clipboard.writeText(txt).then(() => toast('Copied to clipboard')); }
 });
@@ -2442,70 +2562,13 @@ renderHabits();
 renderQuickLog();
 setTimeout(checkDeadlines, 5000);
 
-// ══════════════════════════════════════════════
-//  OPENING ANIMATION (splash screen)
-// ══════════════════════════════════════════════
-function hideSplash() {
-  const splash = $('#splash-screen');
-  if (!splash) return;
-  splash.classList.add('hide');
-  setTimeout(() => splash.remove(), 500);
-}
-if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-  hideSplash();
-} else {
-  setTimeout(hideSplash, 1300);
-}
+// Hook into topics to add XP
+const originalCountTodayDone = countTodayDone;
+countTodayDone = function(data) {
+  return originalCountTodayDone(data);
+};
+// Checkmarks add XP via the event listener directly in the topic render logic
 
 </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
