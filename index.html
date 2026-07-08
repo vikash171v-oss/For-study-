@@ -941,6 +941,9 @@ function showModal(html) {
 function hideModal() { $('#modal-bg').classList.remove('open'); }
 $('#modal-bg').addEventListener('click', e => { if (e.target.id === 'modal-bg') hideModal(); });
 
+// Mock launchConfetti fallback in case canvas confetti doesn't run locally
+function launchConfetti() { toast('🎉 Hurray! Confetti Time!'); }
+
 // ══════════════════════════════════════════════
 //  LEVEL & XP SYSTEM
 // ══════════════════════════════════════════════
@@ -1112,7 +1115,7 @@ let lang = localStorage.getItem('dp-lang') || 'en';
 let trackers = JSON.parse(localStorage.getItem('dp-trackers') || 'null') || [
   { id: 1, label: '', start: '', end: '', color: '#7c6af5', reminder: 'none', tags: [] }
 ];
-let nextId = Math.max(...trackers.map(t => t.id)) + 1;
+let nextId = Math.max(...trackers.map(t => t.id), 0) + 1;
 let confettiFired = new Set(JSON.parse(localStorage.getItem('dp-confetti') || '[]'));
 
 let pomoData = JSON.parse(localStorage.getItem('pomo-data')) || { work: 45, break: 10, quietStart: '23:00', quietEnd: '07:00' };
@@ -1216,6 +1219,7 @@ let isPomoRunning = false;
 let sessionStartTs = null;
 let pomoExpectedEndTs = null; 
 let wakeLock = null; 
+let sessionEndTs = null;
 
 const pomoDisplay = $('#pomo-display');
 const pomoStatus = $('#pomo-status');
@@ -1250,6 +1254,20 @@ function savePomoSettings() {
     if(!isPomoRunning) resetPomo();
   });
 });
+
+// Fallback image function if needed
+function countTodayDone(data) {
+  let tp = data || JSON.parse(localStorage.getItem('tp-data') || '{"subjects":[]}');
+  let count = 0;
+  if(tp && tp.subjects) {
+    tp.subjects.forEach(sub => {
+      if(sub.topics) {
+        sub.topics.forEach(t => { if(t.checked) count++; });
+      }
+    });
+  }
+  return count;
+}
 
 function isInQuietHours() {
   if (!pomoData.quietStart || !pomoData.quietEnd) return false;
@@ -1402,6 +1420,127 @@ document.addEventListener('visibilitychange', () => {
 });
 
 // ══════════════════════════════════════════════
+//  TRACKERS LOGIC CORE (RESTORED)
+// ══════════════════════════════════════════════
+function getTrackerPct(t) {
+  if (!t.start || !t.end) return 0;
+  const start = new Date(t.start).setHours(0,0,0,0);
+  const end = new Date(t.end).setHours(23,59,59,999);
+  const now = Date.now();
+  if (now < start) return 0;
+  if (now > end) return 100;
+  const total = end - start;
+  const elapsed = now - start;
+  return Math.min(100, Math.max(0, Math.round((elapsed / total) * 100)));
+}
+
+function renderTrackers() {
+  const container = $('#trackers');
+  if(!container) return;
+  container.innerHTML = '';
+  
+  trackers.forEach((t) => {
+    const pct = getTrackerPct(t);
+    const startObj = t.start ? new Date(t.start) : null;
+    const endObj = t.end ? new Date(t.end) : null;
+    let daysTotal = 0, daysElapsed = 0, daysRem = 0;
+    
+    if (startObj && endObj) {
+      daysTotal = Math.round((endObj - startObj) / 86400000);
+      const nowToday = new Date();
+      nowToday.setHours(0,0,0,0);
+      daysElapsed = Math.round((nowToday - startObj) / 86400000);
+      daysElapsed = Math.max(0, Math.min(daysTotal, daysElapsed));
+      daysRem = daysTotal - daysElapsed;
+    }
+    
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.style.borderLeft = `5px solid ${t.color || '#7c6af5'}`;
+    
+    card.innerHTML = `
+      <div class="card-header">
+        <div class="color-dot" style="background:${t.color || '#7c6af5'}" data-id="${t.id}"></div>
+        <input type="text" class="tracker-label" value="${escapeHtml(t.label || '')}" placeholder="Untitled Tracker Name..." data-id="${t.id}">
+        <button class="delete-btn" data-id="${t.id}">×</button>
+      </div>
+      <div class="inputs">
+        <div class="field">
+          <label>Start Date</label>
+          <input type="date" class="tracker-start" value="${t.start || ''}" data-id="${t.id}">
+        </div>
+        <div class="field">
+          <label>End Date</label>
+          <input type="date" class="tracker-end" value="${t.end || ''}" data-id="${t.id}">
+        </div>
+      </div>
+      <div class="ring-section">
+        <div class="ring-wrap">
+          <svg width="160" height="160" viewBox="0 0 160 160">
+            <circle cx="80" cy="80" r="72" fill="none" stroke="var(--surface2)" stroke-width="8"></circle>
+            <circle cx="80" cy="80" r="72" fill="none" stroke="${t.color || '#7c6af5'}" stroke-width="8" 
+                    stroke-dasharray="${CIRC}" stroke-dashoffset="${CIRC - (pct / 100) * CIRC}" stroke-linecap="round"></circle>
+          </svg>
+          <div class="ring-center">
+            <div class="ring-pct">${pct}%</div>
+            <div class="ring-lbl">Elapsed</div>
+          </div>
+        </div>
+      </div>
+      <div class="stats">
+        <div class="stat"><div class="stat-num">${daysElapsed}d</div><div class="stat-name">Passed</div></div>
+        <div class="stat"><div class="stat-num">${daysRem}d</div><div class="stat-name">Left</div></div>
+        <div class="stat"><div class="stat-num">${daysTotal}d</div><div class="stat-name">Total</div></div>
+      </div>
+    `;
+    
+    // Wire up events inside the tracker cards
+    card.querySelector('.tracker-label').addEventListener('input', (e) => {
+      t.label = e.target.value;
+      save();
+    });
+    card.querySelector('.tracker-start').addEventListener('change', (e) => {
+      t.start = e.target.value;
+      save();
+      renderTrackers();
+      renderDashboard();
+    });
+    card.querySelector('.tracker-end').addEventListener('change', (e) => {
+      t.end = e.target.value;
+      save();
+      renderTrackers();
+      renderDashboard();
+    });
+    card.querySelector('.delete-btn').addEventListener('click', () => {
+      if(confirm('Are you sure you want to delete this tracker?')) {
+        trackers = trackers.filter(tr => tr.id !== t.id);
+        save();
+        renderTrackers();
+        renderDashboard();
+      }
+    });
+    
+    container.appendChild(card);
+  });
+}
+
+$('#add-btn').addEventListener('click', () => {
+  trackers.push({
+    id: nextId++,
+    label: '',
+    start: todayStr(),
+    end: todayStr(),
+    color: COLORS[trackers.length % COLORS.length],
+    reminder: 'none',
+    tags: []
+  });
+  save();
+  renderTrackers();
+  renderDashboard();
+  toast('🌟 New tracker created!');
+});
+
+// ══════════════════════════════════════════════
 //  TIMETABLE LOGIC
 // ══════════════════════════════════════════════
 function loadTTData() {
@@ -1544,11 +1683,159 @@ function addClTask() {
 renderChecklist();
 
 // ══════════════════════════════════════════════
+//  TOPIC TRACKER LOGIC (RESTORED ENGINE)
+// ══════════════════════════════════════════════
+let topicState = JSON.parse(localStorage.getItem('tp-data')) || { goal: 3, subjects: [], lastReset: todayStr() };
+
+function saveTopicData() {
+  localStorage.setItem('tp-data', JSON.stringify(topicState));
+}
+
+function renderTopics() {
+  const container = $('#subjects-container');
+  if(!container) return;
+  container.innerHTML = '';
+  
+  const doneToday = countTodayDone(topicState);
+  const goal = parseInt($('#topic-goal-input').value) || 3;
+  $('#topic-today-count').textContent = `${doneToday}/${goal}`;
+  const progressPct = Math.min(100, (doneToday / goal) * 100);
+  $('#topic-today-fill').style.width = progressPct + '%';
+  
+  if (topicState.subjects.length === 0) {
+    container.innerHTML = '<div class="topic-empty" id="topic-empty-msg">Add a subject to start tracking topics</div>';
+    return;
+  }
+  
+  topicState.subjects.forEach((sub, sIdx) => {
+    const sCard = document.createElement('div');
+    sCard.className = 'subject-card';
+    
+    const checkedCount = sub.topics ? sub.topics.filter(t => t.checked).length : 0;
+    const totalCount = sub.topics ? sub.topics.length : 0;
+    
+    sCard.innerHTML = `
+      <div class="subject-header">
+        <div class="subject-dot" style="background:${COLORS[sIdx % COLORS.length]}"></div>
+        <input type="text" class="subject-name-input" value="${escapeHtml(sub.name || '')}" placeholder="Subject name...">
+        <span class="subject-progress-pill" style="background:var(--accent-light); color:var(--accent)">${checkedCount}/${totalCount}</span>
+        <button class="subject-del-btn">×</button>
+      </div>
+      <div class="topics-list"></div>
+      <div class="add-topic-row">
+        <input type="text" class="add-topic-input" placeholder="New topic chapter...">
+        <button class="add-topic-btn">Add</button>
+      </div>
+    `;
+    
+    const tList = sCard.querySelector('.topics-list');
+    if(sub.topics && sub.topics.length > 0) {
+      sub.topics.forEach((topic, tIdx) => {
+        const tItem = document.createElement('div');
+        tItem.className = 'topic-item';
+        tItem.innerHTML = `
+          <div class="topic-check ${topic.checked ? 'checked' : ''}"></div>
+          <input type="text" class="topic-name-input ${topic.checked ? 'done' : ''}" value="${escapeHtml(topic.name || '')}">
+          <button class="topic-del-btn">×</button>
+        `;
+        
+        tItem.querySelector('.topic-check').addEventListener('click', () => {
+          topic.checked = !topic.checked;
+          saveTopicData();
+          renderTopics();
+          renderDashboard();
+          if (topic.checked) {
+            addXP(15, 'Topic Mastery');
+            // Trigger streak update
+            let streakData = JSON.parse(localStorage.getItem('streak-data') || '{}');
+            streakData[todayStr()] = true;
+            localStorage.setItem('streak-data', JSON.stringify(streakData));
+            renderHeatmap();
+          }
+        });
+        
+        tItem.querySelector('.topic-name-input').addEventListener('input', (e) => {
+          topic.name = e.target.value;
+          saveTopicData();
+        });
+        
+        tItem.querySelector('.topic-del-btn').addEventListener('click', () => {
+          sub.topics.splice(tIdx, 1);
+          saveTopicData();
+          renderTopics();
+          renderDashboard();
+        });
+        
+        tList.appendChild(tItem);
+      });
+    }
+    
+    sCard.querySelector('.subject-name-input').addEventListener('input', (e) => {
+      sub.name = e.target.value;
+      saveTopicData();
+    });
+    
+    sCard.querySelector('.subject-del-btn').addEventListener('click', () => {
+      if(confirm('Delete entire subject?')) {
+        topicState.subjects.splice(sIdx, 1);
+        saveTopicData();
+        renderTopics();
+        renderDashboard();
+      }
+    });
+    
+    const addInput = sCard.querySelector('.add-topic-input');
+    const addBtn = sCard.querySelector('.add-topic-btn');
+    
+    const appendTopic = () => {
+      const val = addInput.value.trim();
+      if(!val) return;
+      if(!sub.topics) sub.topics = [];
+      sub.topics.push({ name: val, checked: false });
+      saveTopicData();
+      addInput.value = '';
+      renderTopics();
+      renderDashboard();
+    };
+    
+    addBtn.addEventListener('click', appendTopic);
+    addInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') appendTopic(); });
+    
+    container.appendChild(sCard);
+  });
+}
+
+$('#topic-add-sub-btn').addEventListener('click', () => {
+  topicState.subjects.push({ name: '', topics: [] });
+  saveTopicData();
+  renderTopics();
+});
+
+$('#topic-goal-input').addEventListener('change', (e) => {
+  topicState.goal = parseInt(e.target.value) || 3;
+  saveTopicData();
+  renderTopics();
+  renderDashboard();
+});
+
+// Master interface render pipeline hook
+function renderAll() {
+  renderTrackers();
+  renderTopics();
+  renderTimeTable();
+  renderChecklist();
+  renderFCDecks();
+  renderHabits();
+  renderQuickLog();
+}
+
+// ══════════════════════════════════════════════
 //  HEATMAP STREAK LOGIC
 // ══════════════════════════════════════════════
 function renderHeatmap() {
   const streakData = JSON.parse(localStorage.getItem('streak-data') || '{}');
   const grid = $('#heatmap-grid');
+  if(!grid) return;
   grid.innerHTML = '';
   
   const today = new Date();
@@ -1601,6 +1888,7 @@ function sm2Review(card, quality) {
 function renderFCDecks() {
   const data = loadFCData();
   const list = $('#fc-decks-list');
+  if(!list) return;
   list.innerHTML = '';
   
   data.forEach((deck, i) => {
@@ -1771,6 +2059,7 @@ function computeHabitStreak(history) {
 function renderHabits() {
   const list = $('#habits-list');
   const empty = $('#habit-empty-msg');
+  if(!list) return;
   list.innerHTML = '';
   if (habits.length === 0) { empty.style.display = 'block'; return; }
   empty.style.display = 'none';
@@ -1982,509 +2271,4 @@ $$('#mood-row .mood-btn').forEach(b => {
 });
 
 // ══════════════════════════════════════════════
-//  SVG CHART HELPERS
-// ══════════════════════════════════════════════
-function renderLineChart(container, data, options = {}) {
-  const W = 460, H = 140, padL = 30, padB = 22, padT = 12, padR = 8;
-  const innerW = W - padL - padR, innerH = H - padT - padB;
-  const max = Math.max(1, ...data.map(d => d.value));
-  const cs = getComputedStyle(document.documentElement);
-  const accent = options.color || cs.getPropertyValue('--accent').trim() || '#7c6af5';
-  const border = cs.getPropertyValue('--border').trim() || '#2e2e40';
-
-  const stepX = data.length > 1 ? innerW / (data.length - 1) : 0;
-  let pts = [];
-  data.forEach((d, i) => {
-    const x = padL + (data.length === 1 ? innerW/2 : i * stepX);
-    const y = padT + innerH - (d.value / max) * innerH;
-    pts.push([x, y]);
-  });
-  const linePath = pts.map((p, i) => (i === 0 ? `M ${p[0]} ${p[1]}` : `L ${p[0]} ${p[1]}`)).join(' ');
-  const areaPath = pts.length > 0 ? `${linePath} L ${pts[pts.length-1][0]} ${padT+innerH} L ${pts[0][0]} ${padT+innerH} Z` : '';
-  const circles = pts.map((p, i) => `<circle class="chart-point" cx="${p[0]}" cy="${p[1]}" r="3.5"><title>${data[i].label}: ${data[i].value}</title></circle>`).join('');
-  const labels = data.map((d, i) => {
-    const x = padL + (data.length === 1 ? innerW/2 : i * stepX);
-    return `<text class="chart-axis" x="${x}" y="${H - 6}" text-anchor="middle">${d.label}</text>`;
-  }).join('');
-  const grid = `
-    <line class="chart-grid" x1="${padL}" y1="${padT}" x2="${padL}" y2="${padT+innerH}"/>
-    <line class="chart-grid" x1="${padL}" y1="${padT+innerH/2}" x2="${W-padR}" y2="${padT+innerH/2}"/>
-    <line class="chart-grid" x1="${padL}" y1="${padT+innerH}" x2="${W-padR}" y2="${padT+innerH}"/>
-    <text class="chart-axis" x="${padL-4}" y="${padT+innerH+3}" text-anchor="end">0</text>
-    <text class="chart-axis" x="${padL-4}" y="${padT+innerH/2+3}" text-anchor="end">${Math.round(max/2)}</text>
-    <text class="chart-axis" x="${padL-4}" y="${padT+5}" text-anchor="end">${max}</text>
-  `;
-  container.innerHTML = `<svg viewBox="0 0 ${W} ${H}" style="width:100%; height:auto;">${grid}<path class="chart-area" d="${areaPath}"/><path class="chart-line" d="${linePath}" stroke="${accent}"/>${circles}${labels}</svg>`;
-}
-function renderBarChart(container, data, options = {}) {
-  const W = 460, H = 140, padL = 30, padB = 22, padT = 12, padR = 8;
-  const innerW = W - padL - padR, innerH = H - padT - padB;
-  const max = Math.max(1, ...data.map(d => d.value));
-  const cs = getComputedStyle(document.documentElement);
-  const color = options.color || cs.getPropertyValue('--accent').trim() || '#7c6af5';
-  const colW = innerW / Math.max(1, data.length);
-  const bw = Math.max(4, colW * 0.55);
-  let bars = '';
-  data.forEach((d, i) => {
-    const x = padL + i * colW + (colW - bw) / 2;
-    const h = (d.value / max) * innerH;
-    bars += `<rect class="chart-bar" x="${x}" y="${padT + innerH - h}" width="${bw}" height="${h}" rx="3" fill="${color}"><title>${d.label}: ${d.value}</title></rect>`;
-    bars += `<text class="chart-axis" x="${x + bw/2}" y="${H - 6}" text-anchor="middle">${d.label}</text>`;
-  });
-  const grid = `
-    <line class="chart-grid" x1="${padL}" y1="${padT+innerH}" x2="${W-padR}" y2="${padT+innerH}"/>
-    <line class="chart-grid" x1="${padL}" y1="${padT+innerH/2}" x2="${W-padR}" y2="${padT+innerH/2}"/>
-    <line class="chart-grid" x1="${padL}" y1="${padT}" x2="${padL}" y2="${padT+innerH}"/>
-  `;
-  container.innerHTML = `<svg viewBox="0 0 ${W} ${H}" style="width:100%; height:auto;">${grid}${bars}</svg>`;
-}
-
-// ══════════════════════════════════════════════
-//  DASHBOARD (stats + charts + share card)
-// ══════════════════════════════════════════════
-function getStreakDays() {
-  const streakData = JSON.parse(localStorage.getItem('streak-data') || '{}');
-  let s = 0;
-  const today = new Date();
-  for (let i = 0; i < 365; i++) {
-    const d = new Date(today); d.setDate(d.getDate() - i);
-    if (streakData[dateStr(d)]) s++;
-    else if (i > 0) break;
-  }
-  return s;
-}
-function getTopicsDoneThisWeek() {
-  const tp = JSON.parse(localStorage.getItem('tp-data') || 'null') || { subjects: [] };
-  let total = 0;
-  for (let i = 6; i >= 0; i--) {
-    const d = new Date(); d.setDate(d.getDate() - i);
-    const ds = dateStr(d);
-    if (ds === (tp.lastReset || '')) {
-      tp.subjects.forEach(sub => sub.topics.forEach(tp2 => { if (tp2.checked) total++; }));
-      break;
-    }
-  }
-  return total;
-}
-function getTopicsDoneLast7Days() {
-  const tp = JSON.parse(localStorage.getItem('tp-data') || 'null') || { subjects: [] };
-  const days = [];
-  for (let i = 6; i >= 0; i--) {
-    const d = new Date(); d.setDate(d.getDate() - i);
-    const ds = dateStr(d);
-    if (ds === (tp.lastReset || '')) {
-      let c = 0; tp.subjects.forEach(sub => sub.topics.forEach(t => { if (t.checked) c++; }));
-      days.push(c);
-    } else {
-      days.push(0);
-    }
-  }
-  return days;
-}
-function renderDashboard() {
-  const today = todayStr();
-  const streak = getStreakDays();
-  const tp = JSON.parse(localStorage.getItem('tp-data') || 'null') || { goal: 3, subjects: [] };
-  const doneToday = (() => { let n = 0; tp.subjects.forEach(sub => sub.topics.forEach(t => { if (t.checked) n++; })); return n; })();
-  const goalPct = Math.min(100, Math.round((doneToday / Math.max(1, tp.goal)) * 100));
-  const fc = JSON.parse(localStorage.getItem('fc-data') || '[]');
-  const dueCards = fc.reduce((sum, deck) => sum + deck.cards.filter(c => c.nextReview <= Date.now()).length, 0);
-  const todayFocus = focusLog[today] || 0;
-  
-  $('#dash-stats').innerHTML = `
-    <div class="dash-card">
-      <div class="dash-num">🔥 ${streak}</div>
-      <div class="dash-label">Day streak</div>
-    </div>
-    <div class="dash-card">
-      <div class="dash-num">${doneToday}/${tp.goal}</div>
-      <div class="dash-label">Topics today</div>
-      <div class="dash-sub">${goalPct}% to goal</div>
-    </div>
-    <div class="dash-card">
-      <div class="dash-num">⏱️ ${todayFocus}m</div>
-      <div class="dash-label">Focus today</div>
-    </div>
-    <div class="dash-card">
-      <div class="dash-num">📇 ${dueCards}</div>
-      <div class="dash-label">Cards due</div>
-    </div>
-  `;
-
-  const weekData = getTopicsDoneLast7Days().map((v, i) => {
-    const d = new Date(); d.setDate(d.getDate() - (6 - i));
-    return { value: v, label: d.toLocaleDateString(undefined, { weekday: 'narrow' }) };
-  });
-  renderLineChart($('#chart-weekly'), weekData, { color: getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() });
-
-  const focusData = [];
-  for (let i = 6; i >= 0; i--) {
-    const d = new Date(); d.setDate(d.getDate() - i);
-    const ds = dateStr(d);
-    focusData.push({ value: focusLog[ds] || 0, label: d.toLocaleDateString(undefined, { weekday: 'narrow' }) });
-  }
-  renderBarChart($('#chart-focus'), focusData, { color: '#48c78e' });
-
-  const trackerBars = trackers.filter(t => t.start && t.end).map(t => {
-    const pct = getTrackerPct(t);
-    return { value: pct, label: (t.label || 'Tracker').slice(0, 10) };
-  });
-  if (trackerBars.length > 0) renderBarChart($('#chart-tracker'), trackerBars, { color: getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() });
-  else $('#chart-tracker').innerHTML = '<div style="text-align:center; color:var(--muted); font-size:0.8rem; padding:1rem 0;">No active trackers yet</div>';
-
-  $('#share-streak').textContent = `🔥 ${streak} day streak`;
-  $('#share-num').textContent = `${goalPct}%`;
-  $('#share-sub').textContent = `${doneToday}/${tp.goal} topics today`;
-  $('#share-row').innerHTML = `
-    <div class="share-card-mini"><div class="share-card-mini-num">Lv.${userXP.level}</div><div class="share-card-mini-name">Rank</div></div>
-    <div class="share-card-mini"><div class="share-card-mini-num">${todayFocus}m</div><div class="share-card-mini-name">Focus</div></div>
-    <div class="share-card-mini"><div class="share-card-mini-num">${doneToday}</div><div class="share-card-mini-name">Topics</div></div>
-    <div class="share-card-mini"><div class="share-card-mini-num">${habits.filter(h => h.history && h.history[today]).length}</div><div class="share-card-mini-name">Habits</div></div>
-  `;
-}
-
-$('#share-png-btn').addEventListener('click', async () => {
-  if (typeof html2canvas === 'undefined') return toast('Screenshot library not loaded');
-  const el = $('#share-card-preview');
-  const canvas = await html2canvas(el, { backgroundColor: null, scale: 2 });
-  const link = document.createElement('a'); link.download = 'date-progress.png'; link.href = canvas.toDataURL(); link.click();
-  toast('PNG saved');
-});
-$('#share-text-btn').addEventListener('click', () => {
-  const t = todayStr();
-  const tp = JSON.parse(localStorage.getItem('tp-data') || 'null') || { goal: 3, subjects: [] };
-  const doneToday = (() => { let n = 0; tp.subjects.forEach(sub => sub.topics.forEach(t => { if (t.checked) n++; })); return n; })();
-  const txt = `📅 Date Progress — ${todayStr()}\n🏅 Level ${userXP.level} (${getLevelTitle(userXP.level)})\n🔥 ${getStreakDays()} day streak\n📚 ${doneToday}/${tp.goal} topics today\n⏱️ ${focusLog[t]||0}m focus\n🎯 ${habits.filter(h => h.history && h.history[todayStr()]).length} habits done`;
-  if (navigator.share) navigator.share({ text: txt });
-  else { navigator.clipboard.writeText(txt).then(() => toast('Copied to clipboard')); }
-});
-
-// ══════════════════════════════════════════════
-//  CALENDAR VIEW
-// ══════════════════════════════════════════════
-function renderCalendar() {
-  const y = calCursor.getFullYear(), m = calCursor.getMonth();
-  const monthTitle = calCursor.toLocaleDateString(undefined, { month: 'long', year: 'numeric' });
-  $('#cal-month-title').textContent = monthTitle;
-  const wd = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-  $('#cal-weekdays').innerHTML = wd.map(d => `<div class="cal-weekday">${d}</div>`).join('');
-  const firstDay = new Date(y, m, 1);
-  const lastDay = new Date(y, m+1, 0);
-  const startOffset = firstDay.getDay();
-  const totalDays = lastDay.getDate();
-  const todayD = todayStr();
-  const grid = $('#cal-grid');
-  grid.innerHTML = '';
-  for (let i = 0; i < startOffset; i++) {
-    const e = document.createElement('div'); e.className = 'cal-day empty'; grid.appendChild(e);
-  }
-  const streakData = JSON.parse(localStorage.getItem('streak-data') || '{}');
-  for (let day = 1; day <= totalDays; day++) {
-    const d = new Date(y, m, day);
-    const ds = dateStr(d);
-    const cell = document.createElement('div');
-    cell.className = 'cal-day' + (ds === todayD ? ' today' : '');
-    cell.innerHTML = `<div class="cal-day-num">${day}</div><div class="cal-day-dots" id="cal-dots-${ds}"></div>`;
-    if (streakData[ds]) {
-      const h = document.createElement('div'); h.className = 'cal-day-heat'; h.style.background = '#48c78e'; cell.appendChild(h);
-    }
-    const dots = cell.querySelector('.cal-day-dots');
-    const deadlines = trackers.filter(t => t.end === ds);
-    const topicDone = streakData[ds];
-    deadlines.slice(0, 3).forEach(t => {
-      const dot = document.createElement('div'); dot.className = 'cal-day-dot'; dot.style.background = t.color || '#f05252';
-      dot.title = 'Deadline: ' + (t.label || 'Tracker'); dots.appendChild(dot);
-    });
-    if (deadlines.length > 3) {
-      const more = document.createElement('div'); more.className = 'cal-day-dot'; more.style.background = 'var(--muted)'; dots.appendChild(more);
-    }
-    if (topicDone && deadlines.length === 0) {
-      const dot = document.createElement('div'); dot.className = 'cal-day-dot'; dot.style.background = '#48c78e';
-      dot.title = 'Topics done'; dots.appendChild(dot);
-    }
-    cell.addEventListener('click', () => showCalDayDetail(ds, d));
-    grid.appendChild(cell);
-  }
-}
-$('#cal-prev').addEventListener('click', () => { calCursor.setMonth(calCursor.getMonth() - 1); renderCalendar(); });
-$('#cal-next').addEventListener('click', () => { calCursor.setMonth(calCursor.getMonth() + 1); renderCalendar(); });
-
-function showCalDayDetail(ds, d) {
-  const wrap = $('#cal-day-detail');
-  const dn = d.toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' });
-  const streakData = JSON.parse(localStorage.getItem('streak-data') || '{}');
-  const items = [];
-  trackers.forEach(t => {
-    if (t.start === ds) items.push({ color: t.color, text: 'Tracker started: ' + (t.label || 'Untitled') });
-    if (t.end === ds) items.push({ color: t.color, text: 'Tracker ends: ' + (t.label || 'Untitled') });
-  });
-  if (streakData[ds]) items.push({ color: '#48c78e', text: 'Daily goal met' });
-  const w = (quickLog.water && quickLog.water[ds]) || 0;
-  const sl = (quickLog.sleep && quickLog.sleep[ds]) || 0;
-  const md = (quickLog.mood && quickLog.mood[ds]) || 0;
-  if (w) items.push({ color: '#3b9eff', text: `Water: ${w} cups` });
-  if (sl) items.push({ color: '#ab47bc', text: `Sleep: ${sl}h` });
-  if (md) items.push({ color: 'var(--easy)', text: `Mood: ${['—','😞','😐','🙂','😄','🤩'][md]}` });
-  const focus = focusLog[ds] || 0;
-  if (focus) items.push({ color: 'var(--accent)', text: `Focus: ${focus} minutes` });
-  
-  if (items.length === 0) {
-    wrap.innerHTML = `<h4>${dn}</h4><div style="font-size:0.8rem; color:var(--muted);">No data for this day</div>`;
-  } else {
-    wrap.innerHTML = `<h4>${dn}</h4><ul>${items.map(it => `<li><span class="cal-li-dot" style="background:${it.color};"></span>${escapeHtml(it.text)}</li>`).join('')}</ul>`;
-  }
-  wrap.style.display = 'block';
-}
-
-// ══════════════════════════════════════════════
-//  WEEKLY REVIEW
-// ══════════════════════════════════════════════
-function renderWeeklyReview() {
-  const wrap = $('#weekly-review-content');
-  if (!wrap) return;
-  let topicsTotal = 0, focusTotal = 0, daysWithGoal = 0, daysWithWater = 0, moodSum = 0, moodCount = 0;
-  const topicDays = [];
-  for (let i = 6; i >= 0; i--) {
-    const d = new Date(); d.setDate(d.getDate() - i);
-    const ds = dateStr(d);
-    const c = (getTopicsDoneLast7Days()[6 - i]) || 0;
-    topicsTotal += c;
-    if (c > 0) topicDays.push(c);
-    focusTotal += (focusLog[ds] || 0);
-    const w = (quickLog.water && quickLog.water[ds]) || 0;
-    if (w >= 4) daysWithWater++;
-    const m = (quickLog.mood && quickLog.mood[ds]) || 0;
-    if (m) { moodSum += m; moodCount++; }
-    const sd = JSON.parse(localStorage.getItem('streak-data') || '{}');
-    if (sd[ds]) daysWithGoal++;
-  }
-  const avgMood = moodCount ? (moodSum / moodCount).toFixed(1) : '—';
-  const habitsThisWeek = (() => {
-    let c = 0; habits.forEach(h => { for (let i = 0; i < 7; i++) { const d = new Date(); d.setDate(d.getDate() - i); if (h.history && h.history[dateStr(d)]) c++; } }); return c;
-  })();
-  const avgTopics = (topicsTotal / 7).toFixed(1);
-  
-  let highlight = '';
-  if (daysWithGoal >= 5) highlight = `🎉 You hit your daily goal on ${daysWithGoal}/7 days this week — fantastic consistency!`;
-  else if (daysWithGoal >= 3) highlight = `💪 Solid week — ${daysWithGoal}/7 days with goal met. Keep the rhythm going.`;
-  else if (topicsTotal > 0) highlight = `🌱 You showed up ${daysWithGoal}/7 days. Small steps compound — try one more tomorrow.`;
-  else highlight = `📝 Fresh start. Pick 1 small goal and crush it tomorrow.`;
-
-  wrap.innerHTML = `
-    <div class="review-stat-grid">
-      <div class="review-stat"><div class="review-stat-num">${topicsTotal}</div><div class="review-stat-name">Topics (7d)</div></div>
-      <div class="review-stat"><div class="review-stat-num">${focusTotal}m</div><div class="review-stat-name">Focus (7d)</div></div>
-      <div class="review-stat"><div class="review-stat-num">${daysWithGoal}/7</div><div class="review-stat-name">Goal days</div></div>
-      <div class="review-stat"><div class="review-stat-num">${avgMood}</div><div class="review-stat-name">Avg mood</div></div>
-      <div class="review-stat"><div class="review-stat-num">${habitsThisWeek}</div><div class="review-stat-name">Habit hits</div></div>
-      <div class="review-stat"><div class="review-stat-num">${avgTopics}</div><div class="review-stat-name">Avg topics/day</div></div>
-    </div>
-    <div class="review-highlight">
-      <h4>✨ This week</h4>
-      <p>${highlight}</p>
-    </div>
-    <div style="margin-top: 0.75rem; padding: 0.5rem 0;">
-      <div class="review-bullet"><div class="review-bullet-dot" style="background:#3b9eff;"></div> Hydrated well on ${daysWithWater}/7 days</div>
-      <div class="review-bullet"><div class="review-bullet-dot" style="background:var(--accent);"></div> Focused for ${Math.round(focusTotal/60 * 10)/10} hours total</div>
-      <div class="review-bullet"><div class="review-bullet-dot" style="background:var(--easy);"></div> Active habits: ${habits.length} (${habitsThisWeek} completions)</div>
-    </div>
-  `;
-}
-
-// ══════════════════════════════════════════════
-//  SEARCH
-// ══════════════════════════════════════════════
-function escapeHtml(s) { return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
-function highlight(s, q) {
-  if (!q) return escapeHtml(s);
-  const re = new RegExp('(' + q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'ig');
-  return escapeHtml(s).replace(re, '<mark>$1</mark>');
-}
-function performSearch() {
-  const q = $('#search-input').value.trim();
-  const results = $('#search-results');
-  $('#search-clear').classList.toggle('show', !!q);
-  if (!q) { results.innerHTML = '<div class="search-empty">Type to search across trackers, topics, and flashcards.</div>'; return; }
-  const ql = q.toLowerCase();
-  const matches = { trackers: [], topics: [], cards: [], checklist: [], habits: [] };
-  trackers.forEach(t => {
-    if ((t.label || '').toLowerCase().includes(ql)) matches.trackers.push(t);
-    if ((t.tags || []).some(tag => tag.toLowerCase().includes(ql))) matches.trackers.push(t);
-  });
-  const tp = JSON.parse(localStorage.getItem('tp-data') || 'null') || { subjects: [] };
-  tp.subjects.forEach(sub => {
-    if ((sub.name || '').toLowerCase().includes(ql)) matches.topics.push({ name: sub.name, sub: 'Subject' });
-    sub.topics.forEach(t => {
-      if ((t.name || '').toLowerCase().includes(ql)) matches.topics.push({ name: t.name, sub: sub.name || 'Untitled subject' });
-    });
-  });
-  const fc = JSON.parse(localStorage.getItem('fc-data') || '[]');
-  fc.forEach(deck => {
-    deck.cards.forEach(c => {
-      if ((c.q || '').toLowerCase().includes(ql) || (c.a || '').toLowerCase().includes(ql)) {
-        matches.cards.push({ q: c.q, a: c.a, deck: deck.name });
-      }
-    });
-  });
-  const cl = JSON.parse(localStorage.getItem('cl-data')) || { tasks: [] };
-  cl.tasks.forEach(t => { if ((t.text || '').toLowerCase().includes(ql)) matches.checklist.push(t); });
-  habits.forEach(h => { if ((h.name || '').toLowerCase().includes(ql)) matches.habits.push(h); });
-
-  let html = '';
-  if (matches.trackers.length) {
-    html += `<div class="search-section"><h4>📅 Trackers (${matches.trackers.length})</h4>`;
-    matches.trackers.slice(0, 10).forEach(t => {
-      html += `<div class="search-result" data-tab="tab-dash"><span class="search-result-icon">📅</span><div class="search-result-text"><strong>${highlight(t.label || 'Untitled', q)}</strong><span>${t.start || '—'} → ${t.end || '—'}</span></div></div>`;
-    });
-    html += '</div>';
-  }
-  if (matches.topics.length) {
-    html += `<div class="search-section"><h4>📚 Topics (${matches.topics.length})</h4>`;
-    matches.topics.slice(0, 10).forEach(o => {
-      html += `<div class="search-result" data-tab="tab-topics"><span class="search-result-icon">📚</span><div class="search-result-text"><strong>${highlight(o.name, q)}</strong><span>in ${escapeHtml(o.sub)}</span></div></div>`;
-    });
-    html += '</div>';
-  }
-  if (matches.cards.length) {
-    html += `<div class="search-section"><h4>📇 Flashcards (${matches.cards.length})</h4>`;
-    matches.cards.slice(0, 10).forEach(o => {
-      html += `<div class="search-result" data-tab="tab-topics"><span class="search-result-icon">📇</span><div class="search-result-text"><strong>${highlight(o.q, q)}</strong><span>${highlight(o.a.slice(0,60), q)}${o.a.length>60?'…':''} · ${escapeHtml(o.deck)}</span></div></div>`;
-    });
-    html += '</div>';
-  }
-  if (matches.habits.length) {
-    html += `<div class="search-section"><h4>🎯 Habits (${matches.habits.length})</h4>`;
-    matches.habits.slice(0, 10).forEach(h => {
-      html += `<div class="search-result" data-tab="tab-goals"><span class="search-result-icon">${h.emoji || '🎯'}</span><div class="search-result-text"><strong>${highlight(h.name, q)}</strong><span>${computeHabitStreak(h.history || {})} day streak</span></div></div>`;
-    });
-    html += '</div>';
-  }
-  if (matches.checklist.length) {
-    html += `<div class="search-section"><h4>✅ Checklist (${matches.checklist.length})</h4>`;
-    matches.checklist.slice(0, 10).forEach(t => {
-      html += `<div class="search-result" data-tab="tab-plan"><span class="search-result-icon">✅</span><div class="search-result-text"><strong>${highlight(t.text, q)}</strong><span>${t.done ? 'Done' : 'Pending'}</span></div></div>`;
-    });
-    html += '</div>';
-  }
-  if (!html) { results.innerHTML = `<div class="search-empty">No matches for "${escapeHtml(q)}"</div>`; return; }
-  results.innerHTML = html;
-  results.querySelectorAll('.search-result').forEach(el => {
-    el.addEventListener('click', () => {
-      const tab = el.dataset.tab;
-      const target = navBtns.find(b => b.dataset.tab === tab);
-      if (target) target.click();
-    });
-  });
-}
-$('#search-input').addEventListener('input', performSearch);
-$('#search-clear').addEventListener('click', () => { $('#search-input').value = ''; performSearch(); });
-
-// ══════════════════════════════════════════════
-//  NOTIFICATIONS
-// ══════════════════════════════════════════════
-let notifPermission = 'default';
-async function sendNotification(title, opts = {}) {
-  if (!('Notification' in window)) return;
-  if (Notification.permission !== 'granted') return;
-  try {
-    const reg = await navigator.serviceWorker?.getRegistration?.();
-    if (reg) {
-      reg.showNotification(title, { badge: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="80" font-size="80">⏰</text></svg>', icon: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="100" fill="%231a1a24"/><circle cx="256" cy="256" r="160" fill="none" stroke="%237c6af5" stroke-width="32"/></svg>', ...opts });
-    } else {
-      new Notification(title, opts);
-    }
-  } catch(e) {
-    try { new Notification(title, opts); } catch(_) {}
-  }
-}
-
-if ('Notification' in window) {
-  notifPermission = Notification.permission;
-  if (notifPermission === 'default' && !localStorage.getItem('notif-dismissed')) {
-    setTimeout(() => $('#notif-banner').classList.add('show'), 2500);
-  }
-}
-$('#notif-btn').addEventListener('click', async () => {
-  if (!('Notification' in window)) return toast('Not supported');
-  const r = await Notification.requestPermission();
-  notifPermission = r;
-  $('#notif-banner').classList.remove('show');
-  if (r === 'granted') { toast('Notifications enabled'); testNotification(); }
-});
-$('#notif-close').addEventListener('click', () => {
-  $('#notif-banner').classList.remove('show');
-  localStorage.setItem('notif-dismissed', '1');
-});
-function testNotification() {
-  sendNotification('🔔 Notifications work!', { body: 'You will get reminders here.' });
-}
-
-// ══════════════════════════════════════════════
-//  SERVICE WORKER
-// ══════════════════════════════════════════════
-if ('serviceWorker' in navigator) {
-  const swCode = `
-    const CACHE='dp-v3';
-    self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE).then(c=>c.addAll(['./'])));self.skipWaiting();});
-    self.addEventListener('activate',e=>{self.clients.claim();});
-    self.addEventListener('fetch',e=>{e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request)));});
-    self.addEventListener('notificationclick', e => {
-      e.notification.close();
-      e.waitUntil(self.clients.matchAll({ type: 'window' }).then(clients => {
-        if (clients.length > 0) return clients[0].focus();
-        return self.clients.openWindow('./');
-      }));
-    });
-  `;
-  const swBlob = new Blob([swCode], { type: 'text/javascript' });
-  navigator.serviceWorker.register(URL.createObjectURL(swBlob)).catch(() => {});
-}
-
-// ══════════════════════════════════════════════
-//  DEADLINE CHECK
-// ══════════════════════════════════════════════
-function checkDeadlines() {
-  const today = new Date(); today.setHours(0,0,0,0);
-  const remindKey = 'dp-deadline-checked-' + dateStr(today);
-  if (localStorage.getItem(remindKey)) return;
-  const dueSoon = trackers.filter(t => {
-    if (!t.end) return false;
-    const end = new Date(t.end);
-    const daysLeft = Math.round((end - today) / 86400000);
-    return daysLeft >= 0 && daysLeft <= 7;
-  });
-  if (dueSoon.length > 0) {
-    setTimeout(() => {
-      sendNotification('⚠ Deadlines approaching', { body: dueSoon.map(t => t.label || 'Tracker').slice(0,3).join(', ') });
-    }, 4000);
-  }
-  localStorage.setItem(remindKey, '1');
-}
-
-// ══════════════════════════════════════════════
-//  INIT
-// ══════════════════════════════════════════════
-let deferredPrompt;
-window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); deferredPrompt = e; $('#install-banner').classList.add('show'); });
-$('#install-btn').addEventListener('click', async () => { if (!deferredPrompt) return; deferredPrompt.prompt(); await deferredPrompt.userChoice; deferredPrompt = null; $('#install-banner').classList.remove('show'); });
-$('#banner-close').addEventListener('click', () => { $('#install-banner').classList.remove('show'); });
-const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
-if (isIOS && !navigator.standalone) setTimeout(() => $('#ios-hint').classList.add('show'), 1500);
-$('#close-ios').addEventListener('click', () => { $('#ios-hint').classList.remove('show'); });
-
-applyLang();
-renderDashboard();
-renderHabits();
-renderQuickLog();
-setTimeout(checkDeadlines, 5000);
-
-// Hook into topics to add XP
-const originalCountTodayDone = countTodayDone;
-countTodayDone = function(data) {
-  return originalCountTodayDone(data);
-};
-// Checkmarks add XP via the event listener directly in the topic render logic
-
-</script>
-</body>
-</html>
+//
