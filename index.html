@@ -554,56 +554,6 @@
     .modal-btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
     .modal-btn:hover { opacity: 0.9; }
 
-    /* ════ SPLASH / OPENING ANIMATION ════ */
-    #splash-screen {
-      position: fixed; inset: 0; z-index: 100000; background: var(--bg);
-      display: flex; align-items: center; justify-content: center;
-      transition: opacity 0.45s ease, visibility 0.45s ease;
-    }
-    #splash-screen.hide { opacity: 0; visibility: hidden; pointer-events: none; }
-    .splash-inner { display: flex; flex-direction: column; align-items: center; gap: 16px; }
-    .splash-ring-wrap { 
-      position: relative; width: 96px; height: 96px; 
-      animation: blowRing 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; 
-      animation-delay: 0.9s; 
-    }
-    .splash-ring-wrap svg { transform: rotate(-90deg); }
-    .splash-track { fill: none; stroke: var(--border); stroke-width: 9; }
-    .splash-arc { 
-      fill: none; stroke: var(--accent); stroke-width: 9; stroke-linecap: round; 
-      stroke-dasharray: 251.2; stroke-dashoffset: 251.2; 
-      animation: splash-fill 1.05s cubic-bezier(.4,0,.2,1) forwards; 
-    }
-    .splash-emoji { 
-      position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); 
-      font-size: 1.6rem; opacity: 0; 
-      animation: splash-pop .4s ease forwards; animation-delay: .55s; 
-    }
-    .splash-title { 
-      font-size: 1.05rem; font-weight: 700; letter-spacing: -0.02em; color: var(--text); 
-      opacity: 0; transform: translateY(6px); 
-      animation: splash-text-in .5s ease forwards; animation-delay: .35s; 
-    }
-    .splash-sub { 
-      font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; 
-      opacity: 0; transform: translateY(6px); 
-      animation: splash-text-in .5s ease forwards; animation-delay: .5s; 
-    }
-    
-    @keyframes splash-fill { to { stroke-dashoffset: 0; } }
-    @keyframes splash-pop { from { opacity: 0; transform: translate(-50%, -50%) scale(0.5); } to { opacity: 1; transform: translate(-50%, -50%) scale(1); } }
-    @keyframes splash-text-in { to { opacity: 1; transform: translateY(0); } }
-    @keyframes blowRing { 
-      0% { transform: scale(1); opacity: 1; filter: blur(0px); } 
-      100% { transform: scale(2.5); opacity: 0; filter: blur(4px); } 
-    }
-    
-    @media (prefers-reduced-motion: reduce) {
-      .splash-arc { animation: none; stroke-dashoffset: 0; }
-      .splash-emoji, .splash-title, .splash-sub { animation: none; opacity: 1; transform: none; }
-      .splash-ring-wrap { animation: none; }
-    }
-
     /* Small responsive tweaks */
     @media (max-width: 360px) {
       .dash-grid, .log-grid, .review-stat-grid { grid-template-columns: 1fr; }
@@ -612,20 +562,6 @@
   </style>
 </head>
 <body>
-
-<div id="splash-screen" aria-hidden="true">
-  <div class="splash-inner">
-    <div class="splash-ring-wrap">
-      <svg width="96" height="96" viewBox="0 0 96 96">
-        <circle class="splash-track" cx="48" cy="48" r="40"></circle>
-        <circle class="splash-arc" cx="48" cy="48" r="40"></circle>
-      </svg>
-      <div class="splash-emoji">📅</div>
-    </div>
-    <div class="splash-title">Date Progress</div>
-    <div class="splash-sub">Tracking your journey</div>
-  </div>
-</div>
 
 <canvas id="confetti-canvas"></canvas>
 <div id="toast"></div>
@@ -670,10 +606,8 @@
     </div>
   </div>
 
-  <!-- DASHBOARD TAB -->
   <div id="tab-dash" class="tab-pane active">
     
-    <!-- LEVEL CARD -->
     <div class="level-card" id="level-card">
       <div class="level-header">
         <div class="level-info">
@@ -738,7 +672,6 @@
     <button class="add-btn" id="add-btn">＋ <span id="add-label">Add another tracker</span></button>
   </div>
 
-  <!-- TIMER TAB -->
   <div id="tab-timer" class="tab-pane">
     <div class="pomo-card">
       <div class="pomo-header" id="pomo-head" style="cursor: pointer;">
@@ -777,7 +710,6 @@
     </div>
   </div>
 
-  <!-- STUDY (Topics + Flashcards) TAB -->
   <div id="tab-topics" class="tab-pane">
     <div class="topic-section" id="topic-section">
       <div class="topic-section-header">
@@ -835,7 +767,6 @@
     </div>
   </div>
 
-  <!-- GOALS / HABITS TAB -->
   <div id="tab-goals" class="tab-pane">
     <div class="topic-section">
       <div class="topic-section-header">
@@ -847,7 +778,6 @@
     </div>
   </div>
 
-  <!-- QUICK LOG TAB -->
   <div id="tab-log" class="tab-pane">
     <div class="log-grid">
       <div class="log-card">
@@ -889,7 +819,6 @@
     </div>
   </div>
 
-  <!-- CALENDAR TAB -->
   <div id="tab-cal" class="tab-pane">
     <div class="topic-section">
       <div class="cal-month-nav">
@@ -908,7 +837,6 @@
     </div>
   </div>
 
-  <!-- PLAN TAB (Timetable + Checklist) -->
   <div id="tab-plan" class="tab-pane">
     <div class="tt-card">
       <div class="tt-header" id="tt-head" style="cursor: pointer;">
@@ -944,7 +872,6 @@
     </div>
   </div>
 
-  <!-- SEARCH TAB -->
   <div id="tab-search" class="tab-pane">
     <div class="topic-section">
       <div class="topic-section-header">
@@ -988,23 +915,12 @@
   </button>
 </nav>
 
-<!-- MODAL -->
 <div class="modal-bg" id="modal-bg">
   <div class="modal" id="modal-content"></div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script>
-
-// ══════════════════════════════════════════════
-//  SPLASH SCREEN INIT
-// ══════════════════════════════════════════════
-window.addEventListener('load', () => {
-  setTimeout(() => {
-    document.body.classList.add('loaded');
-    hideSplash();
-  }, 1200);
-});
 
 // ══════════════════════════════════════════════
 //  UTILITIES
