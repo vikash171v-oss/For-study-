@@ -2060,4 +2060,381 @@ function renderDashboard() {
     return { value: v, label: d.toLocaleDateString(undefined, { weekday: 'narrow' }) };
   });
   const chWeekly = $('#chart-weekly');
-  if(chWeekly) renderLineChart(chWeekly, weekData, { color: getComputedStyle(document.documentElement
+  if(chWeekly) renderLineChart(chWeekly, weekData, { color: getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() });
+
+  const focusData = [];
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date(); d.setDate(d.getDate() - i);
+    const ds = dateStr(d);
+    focusData.push({ value: focusLog[ds] || 0, label: d.toLocaleDateString(undefined, { weekday: 'narrow' }) });
+  }
+  const chFocus = $('#chart-focus');
+  if(chFocus) renderBarChart(chFocus, focusData, { color: '#48c78e' });
+
+  const trackerBars = trackers.filter(t => t.start && t.end).map(t => {
+    const pct = getTrackerPct(t);
+    return { value: pct, label: (t.label || 'Tracker').slice(0, 10) };
+  });
+  const chTracker = $('#chart-tracker');
+  if (chTracker) {
+    if (trackerBars.length > 0) renderBarChart(chTracker, trackerBars, { color: getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() });
+    else chTracker.innerHTML = '<div style="text-align:center; color:var(--muted); font-size:0.8rem; padding:1rem 0;">No active trackers yet</div>';
+  }
+
+  $('#share-streak').textContent = `🔥 ${streak} day streak`;
+  $('#share-num').textContent = `${goalPct}%`;
+  $('#share-sub').textContent = `${doneToday}/${tp.goal} topics today`;
+  $('#share-row').innerHTML = `
+    <div class="share-card-mini"><div class="share-card-mini-num">Lv.${userXP.level}</div><div class="share-card-mini-name">Rank</div></div>
+    <div class="share-card-mini"><div class="share-card-mini-num">${todayFocus}m</div><div class="share-card-mini-name">Focus</div></div>
+    <div class="share-card-mini"><div class="share-card-mini-num">${doneToday}</div><div class="share-card-mini-name">Topics</div></div>
+    <div class="share-card-mini"><div class="share-card-mini-num">${habits.filter(h => h.history && h.history[today]).length}</div><div class="share-card-mini-name">Habits</div></div>
+  `;
+}
+
+$('#share-png-btn').addEventListener('click', async () => {
+  if (typeof html2canvas === 'undefined') return toast('Screenshot library not loaded');
+  const el = $('#share-card-preview');
+  const canvas = await html2canvas(el, { backgroundColor: null, scale: 2 });
+  const link = document.createElement('a'); link.download = 'date-progress.png'; link.href = canvas.toDataURL(); link.click();
+  toast('PNG saved');
+});
+$('#share-text-btn').addEventListener('click', () => {
+  const t = todayStr();
+  const tp = topicState;
+  const doneToday = countTodayDone(tp);
+  const txt = `📅 Date Progress — ${todayStr()}\n🏅 Level ${userXP.level} (${getLevelTitle(userXP.level)})\n🔥 ${getStreakDays()} day streak\n📚 ${doneToday}/${tp.goal} topics today\n⏱️ ${focusLog[t]||0}m focus\n🎯 ${habits.filter(h => h.history && h.history[todayStr()]).length} habits done`;
+  if (navigator.share) navigator.share({ text: txt });
+  else { navigator.clipboard.writeText(txt).then(() => toast('Copied to clipboard')); }
+});
+
+// ══════════════════════════════════════════════
+//  CALENDAR VIEW
+// ══════════════════════════════════════════════
+function renderCalendar() {
+  const y = calCursor.getFullYear(), m = calCursor.getMonth();
+  const monthTitle = calCursor.toLocaleDateString(undefined, { month: 'long', year: 'numeric' });
+  $('#cal-month-title').textContent = monthTitle;
+  const wd = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  $('#cal-weekdays').innerHTML = wd.map(d => `<div class="cal-weekday">${d}</div>`).join('');
+  const firstDay = new Date(y, m, 1);
+  const lastDay = new Date(y, m+1, 0);
+  const startOffset = firstDay.getDay();
+  const totalDays = lastDay.getDate();
+  const todayD = todayStr();
+  const grid = $('#cal-grid');
+  grid.innerHTML = '';
+  for (let i = 0; i < startOffset; i++) {
+    const e = document.createElement('div'); e.className = 'cal-day empty'; grid.appendChild(e);
+  }
+  const streakData = JSON.parse(localStorage.getItem('streak-data') || '{}');
+  for (let day = 1; day <= totalDays; day++) {
+    const d = new Date(y, m, day);
+    const ds = dateStr(d);
+    const cell = document.createElement('div');
+    cell.className = 'cal-day' + (ds === todayD ? ' today' : '');
+    cell.innerHTML = `<div class="cal-day-num">${day}</div><div class="cal-day-dots" id="cal-dots-${ds}"></div>`;
+    if (streakData[ds]) {
+      const h = document.createElement('div'); h.className = 'cal-day-heat'; h.style.background = '#48c78e'; cell.appendChild(h);
+    }
+    const dots = cell.querySelector('.cal-day-dots');
+    const deadlines = trackers.filter(t => t.end === ds);
+    const topicDone = streakData[ds];
+    deadlines.slice(0, 3).forEach(t => {
+      const dot = document.createElement('div'); dot.className = 'cal-day-dot'; dot.style.background = t.color || '#f05252';
+      dot.title = 'Deadline: ' + (t.label || 'Tracker'); dots.appendChild(dot);
+    });
+    if (deadlines.length > 3) {
+      const more = document.createElement('div'); more.className = 'cal-day-dot'; more.style.background = 'var(--muted)'; dots.appendChild(more);
+    }
+    if (topicDone && deadlines.length === 0) {
+      const dot = document.createElement('div'); dot.className = 'cal-day-dot'; dot.style.background = '#48c78e';
+      dot.title = 'Topics done'; dots.appendChild(dot);
+    }
+    cell.addEventListener('click', () => showCalDayDetail(ds, d));
+    grid.appendChild(cell);
+  }
+}
+$('#cal-prev').addEventListener('click', () => { calCursor.setMonth(calCursor.getMonth() - 1); renderCalendar(); });
+$('#cal-next').addEventListener('click', () => { calCursor.setMonth(calCursor.getMonth() + 1); renderCalendar(); });
+
+function showCalDayDetail(ds, d) {
+  const wrap = $('#cal-day-detail');
+  const dn = d.toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' });
+  const streakData = JSON.parse(localStorage.getItem('streak-data') || '{}');
+  const items = [];
+  trackers.forEach(t => {
+    if (t.start === ds) items.push({ color: t.color, text: 'Tracker started: ' + (t.label || 'Untitled') });
+    if (t.end === ds) items.push({ color: t.color, text: 'Tracker ends: ' + (t.label || 'Untitled') });
+  });
+  if (streakData[ds]) items.push({ color: '#48c78e', text: 'Daily goal met' });
+  const w = (quickLog.water && quickLog.water[ds]) || 0;
+  const sl = (quickLog.sleep && quickLog.sleep[ds]) || 0;
+  const md = (quickLog.mood && quickLog.mood[ds]) || 0;
+  if (w) items.push({ color: '#3b9eff', text: `Water: ${w} cups` });
+  if (sl) items.push({ color: '#ab47bc', text: `Sleep: ${sl}h` });
+  if (md) items.push({ color: 'var(--easy)', text: `Mood: ${['—','😞','😐','🙂','😄','🤩'][md]}` });
+  const focus = focusLog[ds] || 0;
+  if (focus) items.push({ color: 'var(--accent)', text: `Focus: ${focus} minutes` });
+  
+  if (items.length === 0) {
+    wrap.innerHTML = `<h4>${dn}</h4><div style="font-size:0.8rem; color:var(--muted);">No data for this day</div>`;
+  } else {
+    wrap.innerHTML = `<h4>${dn}</h4><ul>${items.map(it => `<li><span class="cal-li-dot" style="background:${it.color};"></span>${escapeHtml(it.text)}</li>`).join('')}</ul>`;
+  }
+  wrap.style.display = 'block';
+}
+
+// ══════════════════════════════════════════════
+//  WEEKLY REVIEW PANEL
+// ══════════════════════════════════════════════
+function renderWeeklyReview() {
+  const wrap = $('#weekly-review-content');
+  if (!wrap) return;
+  let topicsTotal = 0, focusTotal = 0, daysWithGoal = 0, daysWithWater = 0, moodSum = 0, moodCount = 0;
+  const topicDays = [];
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date(); d.setDate(d.getDate() - i);
+    const ds = dateStr(d);
+    const c = (getTopicsDoneLast7Days()[6 - i]) || 0;
+    topicsTotal += c;
+    if (c > 0) topicDays.push(c);
+    focusTotal += (focusLog[ds] || 0);
+    const w = (quickLog.water && quickLog.water[ds]) || 0;
+    if (w >= 4) daysWithWater++;
+    const m = (quickLog.mood && quickLog.mood[ds]) || 0;
+    if (m) { moodSum += m; moodCount++; }
+    const sd = JSON.parse(localStorage.getItem('streak-data') || '{}');
+    if (sd[ds]) daysWithGoal++;
+  }
+  const avgMood = moodCount ? (moodSum / moodCount).toFixed(1) : '—';
+  const habitsThisWeek = (() => {
+    let c = 0; habits.forEach(h => { for (let i = 0; i < 7; i++) { const d = new Date(); d.setDate(d.getDate() - i); if (h.history && h.history[dateStr(d)]) c++; } }); return c;
+  })();
+  const avgTopics = (topicsTotal / 7).toFixed(1);
+  
+  let highlightMessage = '';
+  if (daysWithGoal >= 5) highlightMessage = `🎉 You hit your daily goal on ${daysWithGoal}/7 days this week — fantastic consistency!`;
+  else if (daysWithGoal >= 3) highlightMessage = `💪 Solid week — ${daysWithGoal}/7 days with goal met. Keep the rhythm going.`;
+  else if (topicsTotal > 0) highlightMessage = `🌱 You showed up ${daysWithGoal}/7 days. Small steps compound — try one more tomorrow.`;
+  else highlightMessage = `📝 Fresh start. Pick 1 small goal and crush it tomorrow.`;
+
+  wrap.innerHTML = `
+    <div class="review-stat-grid">
+      <div class="review-stat"><div class="review-stat-num">${topicsTotal}</div><div class="review-stat-name">Topics (7d)</div></div>
+      <div class="review-stat"><div class="review-stat-num">${focusTotal}m</div><div class="review-stat-name">Focus (7d)</div></div>
+      <div class="review-stat"><div class="review-stat-num">${daysWithGoal}/7</div><div class="review-stat-name">Goal days</div></div>
+      <div class="review-stat"><div class="review-stat-num">${avgMood}</div><div class="review-stat-name">Avg mood</div></div>
+      <div class="review-stat"><div class="review-stat-num">${habitsThisWeek}</div><div class="review-stat-name">Habit hits</div></div>
+      <div class="review-stat"><div class="review-stat-num">${avgTopics}</div><div class="review-stat-name">Avg topics/day</div></div>
+    </div>
+    <div class="review-highlight">
+      <h4>✨ This week</h4>
+      <p>${highlightMessage}</p>
+    </div>
+    <div style="margin-top: 0.75rem; padding: 0.5rem 0;">
+      <div class="review-bullet"><div class="review-bullet-dot" style="background:#3b9eff;"></div> Hydrated well on ${daysWithWater}/7 days</div>
+      <div class="review-bullet"><div class="review-bullet-dot" style="background:var(--accent);"></div> Focused for ${Math.round(focusTotal/60 * 10)/10} hours total</div>
+      <div class="review-bullet"><div class="review-bullet-dot" style="background:var(--easy);"></div> Active habits: ${habits.length} (${habitsThisWeek} completions)</div>
+    </div>
+  `;
+}
+
+// ══════════════════════════════════════════════
+//  SEARCH LOGIC FIELD
+// ══════════════════════════════════════════════
+function escapeHtml(s) { return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function highlight(s, q) {
+  if (!q) return escapeHtml(s);
+  const re = new RegExp('(' + q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'ig');
+  return escapeHtml(s).replace(re, '<mark>$1</mark>');
+}
+function performSearch() {
+  const q = $('#search-input').value.trim();
+  const results = $('#search-results');
+  $('#search-clear').classList.toggle('show', !!q);
+  if (!q) { results.innerHTML = '<div class="search-empty">Type to search across trackers, topics, and flashcards.</div>'; return; }
+  const ql = q.toLowerCase();
+  const matches = { trackers: [], topics: [], cards: [], checklist: [], habits: [] };
+  
+  trackers.forEach(t => {
+    if ((t.label || '').toLowerCase().includes(ql)) matches.trackers.push(t);
+  });
+  
+  topicState.subjects.forEach(sub => {
+    if ((sub.name || '').toLowerCase().includes(ql)) matches.topics.push({ name: sub.name, sub: 'Subject' });
+    sub.topics.forEach(t => {
+      if ((t.name || '').toLowerCase().includes(ql)) matches.topics.push({ name: t.name, sub: sub.name || 'Untitled subject' });
+    });
+  });
+  
+  const fc = JSON.parse(localStorage.getItem('fc-data') || '[]');
+  fc.forEach(deck => {
+    deck.cards.forEach(c => {
+      if ((c.q || '').toLowerCase().includes(ql) || (c.a || '').toLowerCase().includes(ql)) {
+        matches.cards.push({ q: c.q, a: c.a, deck: deck.name });
+      }
+    });
+  });
+  
+  const cl = JSON.parse(localStorage.getItem('cl-data')) || { tasks: [] };
+  cl.tasks.forEach(t => { if ((t.text || '').toLowerCase().includes(ql)) matches.checklist.push(t); });
+  habits.forEach(h => { if ((h.name || '').toLowerCase().includes(ql)) matches.habits.push(h); });
+
+  let html = '';
+  if (matches.trackers.length) {
+    html += `<div class="search-section"><h4>📅 Trackers (${matches.trackers.length})</h4>`;
+    matches.trackers.slice(0, 10).forEach(t => {
+      html += `<div class="search-result" data-tab="tab-dash"><span class="search-result-icon">📅</span><div class="search-result-text"><strong>${highlight(t.label || 'Untitled', q)}</strong><span>${t.start || '—'} → ${t.end || '—'}</span></div></div>`;
+    });
+    html += '</div>';
+  }
+  if (matches.topics.length) {
+    html += `<div class="search-section"><h4>📚 Topics (${matches.topics.length})</h4>`;
+    matches.topics.slice(0, 10).forEach(o => {
+      html += `<div class="search-result" data-tab="tab-topics"><span class="search-result-icon">📚</span><div class="search-result-text"><strong>${highlight(o.name, q)}</strong><span>in ${escapeHtml(o.sub)}</span></div></div>`;
+    });
+    html += '</div>';
+  }
+  if (matches.cards.length) {
+    html += `<div class="search-section"><h4>📇 Flashcards (${matches.cards.length})</h4>`;
+    matches.cards.slice(0, 10).forEach(o => {
+      html += `<div class="search-result" data-tab="tab-topics"><span class="search-result-icon">📇</span><div class="search-result-text"><strong>${highlight(o.q, q)}</strong><span>${highlight(o.a.slice(0,60), q)}${o.a.length>60?'…':''} · ${escapeHtml(o.deck)}</span></div></div>`;
+    });
+    html += '</div>';
+  }
+  if (matches.habits.length) {
+    html += `<div class="search-section"><h4>🎯 Habits (${matches.habits.length})</h4>`;
+    matches.habits.slice(0, 10).forEach(h => {
+      html += `<div class="search-result" data-tab="tab-goals"><span class="search-result-icon">${h.emoji || '🎯'}</span><div class="search-result-text"><strong>${highlight(h.name, q)}</strong><span>${computeHabitStreak(h.history || {})} day streak</span></div></div>`;
+    });
+    html += '</div>';
+  }
+  if (matches.checklist.length) {
+    html += `<div class="search-section"><h4>✅ Checklist (${matches.checklist.length})</h4>`;
+    matches.checklist.slice(0, 10).forEach(t => {
+      html += `<div class="search-result" data-tab="tab-plan"><span class="search-result-icon">✅</span><div class="search-result-text"><strong>${highlight(t.text, q)}</strong><span>${t.done ? 'Done' : 'Pending'}</span></div></div>`;
+    });
+    html += '</div>';
+  }
+  if (!html) { results.innerHTML = `<div class="search-empty">No matches for "${escapeHtml(q)}"</div>`; return; }
+  results.innerHTML = html;
+  results.querySelectorAll('.search-result').forEach(el => {
+    el.addEventListener('click', () => {
+      const tab = el.dataset.tab;
+      const target = navBtns.find(b => b.dataset.tab === tab);
+      if (target) target.click();
+    });
+  });
+}
+$('#search-input').addEventListener('input', performSearch);
+$('#search-clear').addEventListener('click', () => { $('#search-input').value = ''; performSearch(); });
+
+// ══════════════════════════════════════════════
+//  NOTIFICATIONS SYSTEM
+// ══════════════════════════════════════════════
+let notifPermission = 'default';
+async function sendNotification(title, opts = {}) {
+  if (!('Notification' in window)) return;
+  if (Notification.permission !== 'granted') return;
+  try {
+    const reg = await navigator.serviceWorker?.getRegistration?.();
+    if (reg) {
+      reg.showNotification(title, { badge: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="80" font-size="80">⏰</text></svg>', icon: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="100" fill="%231a1a24"/><circle cx="256" cy="256" r="160" fill="none" stroke="%237c6af5" stroke-width="32"/></svg>', ...opts });
+    } else {
+      new Notification(title, opts);
+    }
+  } catch(e) {
+    try { new Notification(title, opts); } catch(_) {}
+  }
+}
+
+if ('Notification' in window) {
+  notifPermission = Notification.permission;
+  if (notifPermission === 'default' && !localStorage.getItem('notif-dismissed')) {
+    setTimeout(() => $('#notif-banner').classList.add('show'), 2500);
+  }
+}
+$('#notif-btn').addEventListener('click', async () => {
+  if (!('Notification' in window)) return toast('Not supported');
+  const r = await Notification.requestPermission();
+  notifPermission = r;
+  $('#notif-banner').classList.remove('show');
+  if (r === 'granted') { toast('Notifications enabled'); testNotification(); }
+});
+$('#notif-close').addEventListener('click', () => {
+  $('#notif-banner').classList.remove('show');
+  localStorage.setItem('notif-dismissed', '1');
+});
+function testNotification() {
+  sendNotification('🔔 Notifications work!', { body: 'You will get reminders here.' });
+}
+
+// ══════════════════════════════════════════════
+//  DEADLINE WATCHER
+// ══════════════════════════════════════════════
+function checkDeadlines() {
+  const today = new Date(); today.setHours(0,0,0,0);
+  const remindKey = 'dp-deadline-checked-' + dateStr(today);
+  if (localStorage.getItem(remindKey)) return;
+  const dueSoon = trackers.filter(t => {
+    if (!t.end) return false;
+    const end = new Date(t.end);
+    const daysLeft = Math.round((end - today) / 86400000);
+    return daysLeft >= 0 && daysLeft <= 7;
+  });
+  if (dueSoon.length > 0) {
+    setTimeout(() => {
+      sendNotification('⚠ Deadlines approaching', { body: dueSoon.map(t => t.label || 'Tracker').slice(0,3).join(', ') });
+    }, 4000);
+  }
+  localStorage.setItem(remindKey, '1');
+}
+
+// ══════════════════════════════════════════════
+//  SERVICE WORKER REGISTRATION
+// ══════════════════════════════════════════════
+if ('serviceWorker' in navigator) {
+  const swCode = `
+    const CACHE='dp-v3';
+    self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE).then(c=>c.addAll(['./'])));self.skipWaiting();});
+    self.addEventListener('activate',e=>{self.clients.claim();});
+    self.addEventListener('fetch',e=>{e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request)));});
+    self.addEventListener('notificationclick', e => {
+      e.notification.close();
+      e.waitUntil(self.clients.matchAll({ type: 'window' }).then(clients => {
+        if (clients.length > 0) return clients[0].focus();
+        return self.clients.openWindow('./');
+      }));
+    });
+  `;
+  const swBlob = new Blob([swCode], { type: 'text/javascript' });
+  navigator.serviceWorker.register(URL.createObjectURL(swBlob)).catch(() => {});
+}
+
+// ══════════════════════════════════════════════
+//  PWA INITIALIZATION
+// ══════════════════════════════════════════════
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); deferredPrompt = e; $('#install-banner').classList.add('show'); });
+$('#install-btn').addEventListener('click', async () => { if (!deferredPrompt) return; deferredPrompt.prompt(); await deferredPrompt.userChoice; deferredPrompt = null; $('#install-banner').classList.remove('show'); });
+$('#banner-close').addEventListener('click', () => { $('#install-banner').classList.remove('show'); });
+const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+if (isIOS && !navigator.standalone) setTimeout(() => $('#ios-hint').classList.add('show'), 1500);
+$('#close-ios').addEventListener('click', () => { $('#ios-hint').classList.remove('show'); });
+
+// ══════════════════════════════════════════════
+//  RUN PIPELINE RUNTIME
+// ══════════════════════════════════════════════
+applyLang();
+renderDashboard();
+renderHabits();
+renderQuickLog();
+renderTrackers();
+renderTopics();
+renderFCDecks();
+setTimeout(checkDeadlines, 5000);
+
+</script>
+</body>
+</html>
