@@ -553,6 +553,37 @@
     .modal-btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
     .modal-btn:hover { opacity: 0.9; }
 
+    /* ════ RPG PARTY SYSTEM ════ */
+    .party-grid { display: flex; flex-direction: column; gap: 10px; }
+    .party-card { display: flex; align-items: center; gap: 12px; background: var(--surface2); border: 1px solid var(--border); border-radius: 14px; padding: 0.75rem 0.9rem; cursor: pointer; transition: border-color 0.2s, background 0.2s; position: relative; overflow: hidden; }
+    .party-card.active { border-color: var(--accent); background: var(--accent-light); }
+    .party-card.locked { cursor: not-allowed; opacity: 0.55; }
+    .party-avatar { font-size: 1.9rem; width: 52px; height: 52px; border-radius: 50%; background: var(--surface); border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .party-card.active .party-avatar { border-color: var(--accent); }
+    .party-info { flex: 1; min-width: 0; }
+    .party-name-row { display: flex; align-items: baseline; gap: 6px; flex-wrap: wrap; }
+    .party-name { font-size: 0.9rem; font-weight: 700; color: var(--text); }
+    .party-class { font-size: 0.65rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+    .party-lvl-badge { font-size: 0.68rem; font-weight: 700; color: var(--accent); background: var(--surface); border: 1px solid var(--border); border-radius: 99px; padding: 1px 8px; margin-left: auto; flex-shrink: 0; }
+    .party-xp-wrap { width: 100%; height: 6px; background: rgba(0,0,0,0.2); border-radius: 99px; overflow: hidden; border: 1px solid var(--border); margin-top: 6px; }
+    .party-xp-fill { height: 100%; background: linear-gradient(90deg, var(--accent), #b388ff); border-radius: 99px; transition: width 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .party-xp-text { font-size: 0.62rem; color: var(--muted); margin-top: 3px; }
+    .party-lock-note { font-size: 0.68rem; color: var(--muted); margin-top: 4px; }
+    .party-active-tag { font-size: 0.6rem; color: var(--accent); font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
+
+    /* ════ RPG STAT DISTRIBUTION ════ */
+    .stat-dist-list { display: flex; flex-direction: column; gap: 10px; }
+    .stat-dist-row { display: flex; align-items: center; gap: 10px; }
+    .stat-dist-icon { font-size: 1.1rem; width: 24px; text-align: center; flex-shrink: 0; }
+    .stat-dist-body { flex: 1; min-width: 0; }
+    .stat-dist-head { display: flex; justify-content: space-between; font-size: 0.72rem; color: var(--text); margin-bottom: 3px; }
+    .stat-dist-head span:last-child { color: var(--muted); font-weight: 700; }
+    .stat-dist-bar { height: 7px; background: var(--surface2); border: 1px solid var(--border); border-radius: 99px; overflow: hidden; }
+    .stat-dist-fill { height: 100%; border-radius: 99px; transition: width 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .subject-stat-select { background: var(--surface); border: 1px solid var(--border); border-radius: 7px; font-size: 0.64rem; color: var(--muted); padding: 3px 4px; outline: none; flex-shrink: 0; max-width: 92px; }
+    .fc-deck-stat-badge { font-size: 0.62rem; padding: 1px 7px; border-radius: 99px; background: var(--accent-light); color: var(--accent); margin-left: 6px; font-weight: 600; white-space: nowrap; }
+    .fc-stat-select { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 7px 8px; font-size: 0.82rem; color: var(--text); outline: none; margin-bottom: 8px; width: 100%; }
+
     /* Small responsive tweaks */
     @media (max-width: 360px) {
       .dash-grid, .log-grid, .review-stat-grid { grid-template-columns: 1fr; }
@@ -736,8 +767,15 @@
       
       <div id="fc-decks-list"></div>
       
-      <div class="add-topic-row" id="fc-new-deck-row" style="display:none; padding:0; margin-bottom:10px;">
-        <input type="text" id="fc-new-deck-in" class="add-topic-input" placeholder="Deck name (e.g. Physics)">
+      <div class="add-topic-row" id="fc-new-deck-row" style="display:none; padding:0; margin-bottom:10px; flex-direction:column; align-items:stretch;">
+        <input type="text" id="fc-new-deck-in" class="add-topic-input" placeholder="Deck name (e.g. Physics)" style="margin-bottom:8px;">
+        <select id="fc-new-deck-stat" class="fc-stat-select" title="RPG Attribute Tag">
+          <option value="LOG">🧠 Logic</option>
+          <option value="CHA">💬 Charisma</option>
+          <option value="VIT">💪 Vitality</option>
+          <option value="WIS">📖 Wisdom</option>
+          <option value="CRE">🎨 Creativity</option>
+        </select>
         <button id="fc-save-deck-btn" class="add-topic-btn">Save</button>
       </div>
       
@@ -774,6 +812,22 @@
       </div>
       <div id="habits-list"></div>
       <div class="topic-empty" id="habit-empty-msg" style="display:none;">Add a habit to start tracking streaks</div>
+    </div>
+
+    <div class="topic-section">
+      <div class="topic-section-header">
+        <div class="topic-section-title">⚔️ Adventurer's Party</div>
+      </div>
+      <div style="font-size:0.72rem; color:var(--muted); margin-bottom:0.85rem; line-height:1.4;">Tap a hero to make them active — your active hero gains XP and levels up from every real Focus Timer session you complete.</div>
+      <div class="party-grid" id="party-grid"></div>
+    </div>
+
+    <div class="topic-section">
+      <div class="topic-section-header">
+        <div class="topic-section-title">📊 Attribute Stats</div>
+      </div>
+      <div style="font-size:0.72rem; color:var(--muted); margin-bottom:0.85rem; line-height:1.4;">Tag subjects (Study tab) and flashcard decks with an RPG attribute — completing their topics or reviewing their cards boosts that stat.</div>
+      <div class="stat-dist-list" id="stat-dist-list"></div>
     </div>
   </div>
 
@@ -973,6 +1027,34 @@ let habits = JSON.parse(localStorage.getItem('habits-data')) || [];
 let quickLog = JSON.parse(localStorage.getItem('quick-log')) || { water: {}, sleep: {}, mood: {} };
 let topicState = JSON.parse(localStorage.getItem('tp-data')) || { goal: 3, subjects: [], lastReset: todayStr() };
 
+// ══════════════════════════════════════════════
+//  RPG STAT DISTRIBUTION — STATE
+// ══════════════════════════════════════════════
+const STATS = {
+  LOG: { name: 'Logic',      emoji: '🧠', color: '#3b9eff' },
+  CHA: { name: 'Charisma',   emoji: '💬', color: '#f06292' },
+  VIT: { name: 'Vitality',   emoji: '💪', color: '#48c78e' },
+  WIS: { name: 'Wisdom',     emoji: '📖', color: '#ab47bc' },
+  CRE: { name: 'Creativity', emoji: '🎨', color: '#f0a030' }
+};
+let rpgStats = JSON.parse(localStorage.getItem('rpg-stats')) || {};
+Object.keys(STATS).forEach(k => { if (typeof rpgStats[k] !== 'number') rpgStats[k] = 0; });
+
+// ══════════════════════════════════════════════
+//  RPG PARTY MECHANICS — STATE
+// ══════════════════════════════════════════════
+const PARTY_MEMBERS = [
+  { id: 'arinor',     name: 'Arinor',     title: 'Blade of Dawn',      class: 'Warrior', emoji: '⚔️', unlockAt: null },
+  { id: 'eldric',     name: 'Eldric',     title: 'Keeper of Frost',    class: 'Mage',    emoji: '🧙', unlockAt: { member: 'arinor', level: 5 } },
+  { id: 'maldraught', name: 'Maldraught', title: 'Shadow of the Vale', class: 'Rogue',   emoji: '🗡️', unlockAt: { member: 'eldric', level: 5 } }
+];
+let partyState = JSON.parse(localStorage.getItem('party-data')) || { active: 'arinor', members: {} };
+if (!partyState.members) partyState.members = {};
+PARTY_MEMBERS.forEach(def => {
+  if (!partyState.members[def.id]) partyState.members[def.id] = { level: 1, xp: 0 };
+});
+if (!partyState.active) partyState.active = 'arinor';
+
 let calCursor = new Date(); 
 let currentDeckIndex = -1;
 let currentReviewQueue = [];
@@ -1063,6 +1145,136 @@ function addXP(amount, reason) {
 }
 
 // ══════════════════════════════════════════════
+//  RPG STAT DISTRIBUTION — LOGIC
+// ══════════════════════════════════════════════
+function saveRPGStats() { localStorage.setItem('rpg-stats', JSON.stringify(rpgStats)); }
+
+function addRPGStat(tag, amount) {
+  if (!STATS[tag]) tag = 'LOG';
+  rpgStats[tag] = (rpgStats[tag] || 0) + amount;
+  saveRPGStats();
+  renderRPGStats();
+  toast(`${STATS[tag].emoji} +${amount} ${STATS[tag].name}`);
+}
+
+function renderRPGStats() {
+  const list = $('#stat-dist-list');
+  if (!list) return;
+  const vals = Object.values(rpgStats);
+  const maxVal = Math.max(20, ...vals);
+  list.innerHTML = Object.entries(STATS).map(([k, v]) => {
+    const val = rpgStats[k] || 0;
+    const pct = Math.min(100, (val / maxVal) * 100);
+    return `
+      <div class="stat-dist-row">
+        <div class="stat-dist-icon">${v.emoji}</div>
+        <div class="stat-dist-body">
+          <div class="stat-dist-head"><span>${v.name}</span><span>${val}</span></div>
+          <div class="stat-dist-bar"><div class="stat-dist-fill" style="width:${pct}%; background:${v.color}"></div></div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+// ══════════════════════════════════════════════
+//  RPG PARTY MECHANICS — LOGIC
+// ══════════════════════════════════════════════
+function saveParty() { localStorage.setItem('party-data', JSON.stringify(partyState)); }
+
+function partyXPForNext(level) { return level * 100; }
+
+function isMemberUnlocked(id) {
+  const def = PARTY_MEMBERS.find(p => p.id === id);
+  if (!def || !def.unlockAt) return true;
+  const req = partyState.members[def.unlockAt.member];
+  return !!(req && req.level >= def.unlockAt.level);
+}
+
+function checkPartyUnlocks() {
+  PARTY_MEMBERS.forEach(def => {
+    if (def.unlockAt && isMemberUnlocked(def.id) && !partyState.members[def.id].announced) {
+      partyState.members[def.id].announced = true;
+      saveParty();
+      launchConfetti();
+      showModal(`
+        <div style="text-align:center;">
+          <div style="font-size:3rem; margin-bottom:10px;">${def.emoji}</div>
+          <h3>${def.name} joins your party!</h3>
+          <p style="color:var(--muted); margin-bottom:20px;">${def.title} — a ${def.class} has answered your call to adventure. Keep logging real focus time to level them up.</p>
+          <button class="modal-btn primary" id="party-unlock-close" style="width:100%;">Recruit</button>
+        </div>
+      `);
+      $('#party-unlock-close').addEventListener('click', hideModal);
+    }
+  });
+}
+
+function addPartyXP(minutes) {
+  if (!minutes || minutes <= 0) return;
+  let id = partyState.active;
+  if (!isMemberUnlocked(id)) id = partyState.active = 'arinor';
+  const m = partyState.members[id];
+  const amount = Math.round(minutes * 4);
+  m.xp += amount;
+  let needed = partyXPForNext(m.level);
+  let leveled = false;
+  while (m.xp >= needed) {
+    m.xp -= needed;
+    m.level++;
+    needed = partyXPForNext(m.level);
+    leveled = true;
+  }
+  saveParty();
+  renderParty();
+  if (leveled) {
+    const def = PARTY_MEMBERS.find(p => p.id === id);
+    toast(`⚔️ ${def.name} reached Level ${m.level}!`);
+    checkPartyUnlocks();
+    renderParty();
+  }
+}
+
+function renderParty() {
+  const grid = $('#party-grid');
+  if (!grid) return;
+  grid.innerHTML = PARTY_MEMBERS.map(def => {
+    const m = partyState.members[def.id];
+    const unlocked = isMemberUnlocked(def.id);
+    const needed = partyXPForNext(m.level);
+    const pct = unlocked ? Math.min(100, (m.xp / needed) * 100) : 0;
+    const isActive = unlocked && partyState.active === def.id;
+    const lockDef = def.unlockAt ? PARTY_MEMBERS.find(p => p.id === def.unlockAt.member) : null;
+    return `
+      <div class="party-card ${isActive ? 'active' : ''} ${unlocked ? '' : 'locked'}" data-id="${def.id}">
+        <div class="party-avatar">${unlocked ? def.emoji : '🔒'}</div>
+        <div class="party-info">
+          <div class="party-name-row">
+            <span class="party-name">${unlocked ? def.name : '???'}</span>
+            <span class="party-class">${unlocked ? def.class : ''}</span>
+            <span class="party-lvl-badge">Lv.${unlocked ? m.level : '--'}</span>
+          </div>
+          ${unlocked ? `
+            <div class="party-xp-wrap"><div class="party-xp-fill" style="width:${pct}%"></div></div>
+            <div class="party-xp-text">${m.xp} / ${needed} XP${isActive ? ' · <span class="party-active-tag">ACTIVE</span>' : ''}</div>
+          ` : `<div class="party-lock-note">🔒 Unlocks when ${lockDef ? lockDef.name : ''} reaches Lv.${def.unlockAt.level}</div>`}
+        </div>
+      </div>
+    `;
+  }).join('');
+  $$('.party-card').forEach(card => {
+    card.addEventListener('click', () => {
+      const id = card.dataset.id;
+      if (!isMemberUnlocked(id)) return toast('🔒 This hero is still locked');
+      partyState.active = id;
+      saveParty();
+      renderParty();
+      toast(`${PARTY_MEMBERS.find(p => p.id === id).name} is now your active hero`);
+    });
+  });
+}
+
+// ══════════════════════════════════════════════
 //  POMODORO / FOCUS TIMER LOGIC
 // ══════════════════════════════════════════════
 let pomoTimer = null;
@@ -1123,6 +1335,7 @@ function pomoTick() {
       save();
       renderDashboard();
       addXP(pomoData.work * 2, 'Focus Session');
+      addPartyXP(pomoData.work);
       sendNotification('Focus Complete! 🎯', { body: `Great job! Time for a ${pomoData.break}-minute break.` });
       toast('Focus session complete!');
     } else {
@@ -1320,6 +1533,9 @@ function renderTopics() {
       <div class="subject-header">
         <div class="subject-dot" style="background:${COLORS[sIdx % COLORS.length]}"></div>
         <input type="text" class="subject-name-input" value="${escapeHtml(sub.name || '')}" placeholder="Subject name...">
+        <select class="subject-stat-select" title="RPG Attribute Tag">
+          ${Object.entries(STATS).map(([k, v]) => `<option value="${k}" ${((sub.statTag || 'LOG') === k) ? 'selected' : ''}>${v.emoji} ${v.name}</option>`).join('')}
+        </select>
         <span class="subject-progress-pill" style="background:var(--accent-light); color:var(--accent)">${checkedCount}/${totalCount}</span>
         <button class="subject-del-btn">×</button>
       </div>
@@ -1348,6 +1564,7 @@ function renderTopics() {
           renderDashboard();
           if (topic.checked) {
             addXP(15, 'Topic Mastery');
+            addRPGStat(sub.statTag || 'LOG', 3);
             let streakData = JSON.parse(localStorage.getItem('streak-data') || '{}');
             streakData[todayStr()] = true;
             localStorage.setItem('streak-data', JSON.stringify(streakData));
@@ -1373,6 +1590,11 @@ function renderTopics() {
     
     sCard.querySelector('.subject-name-input').addEventListener('input', (e) => {
       sub.name = e.target.value;
+      saveTopicData();
+    });
+
+    sCard.querySelector('.subject-stat-select').addEventListener('change', (e) => {
+      sub.statTag = e.target.value;
       saveTopicData();
     });
     
@@ -1407,7 +1629,7 @@ function renderTopics() {
 }
 
 $('#topic-add-sub-btn').addEventListener('click', () => {
-  topicState.subjects.push({ name: '', topics: [] });
+  topicState.subjects.push({ name: '', topics: [], statTag: 'LOG' });
   saveTopicData();
   renderTopics();
 });
@@ -1441,7 +1663,7 @@ navBtns.forEach(btn => {
        renderLevelUI();
     }
     if(tabId === 'tab-cal') renderCalendar();
-    if(tabId === 'tab-goals') renderHabits();
+    if(tabId === 'tab-goals') { renderHabits(); renderParty(); renderRPGStats(); }
     if(tabId === 'tab-log') renderQuickLog();
     if(tabId === 'tab-plan') renderWeeklyReview();
     if(tabId === 'tab-search') { $('#search-input').focus(); }
@@ -1606,6 +1828,8 @@ function renderAll() {
   renderFCDecks();
   renderHabits();
   renderQuickLog();
+  renderParty();
+  renderRPGStats();
 }
 
 // ══════════════════════════════════════════════
@@ -1684,7 +1908,8 @@ function renderFCDecks() {
     
     const info = document.createElement('div');
     info.className = 'fc-deck-info';
-    info.innerHTML = `<h4>${escapeHtml(deck.name)}</h4><span>${deck.cards.length} cards · <b style="color:${dueCount>0?'var(--hard)':'var(--easy)'}">${dueCount} due</b></span>`;
+    const deckStat = STATS[deck.statTag || 'LOG'];
+    info.innerHTML = `<h4>${escapeHtml(deck.name)}<span class="fc-deck-stat-badge">${deckStat.emoji} ${deckStat.name}</span></h4><span>${deck.cards.length} cards · <b style="color:${dueCount>0?'var(--hard)':'var(--easy)'}">${dueCount} due</b></span>`;
     
     const actions = document.createElement('div');
     
@@ -1722,7 +1947,8 @@ $('#fc-save-deck-btn').onclick = () => {
   const inp = $('#fc-new-deck-in');
   if(!inp.value.trim()) return;
   const data = loadFCData();
-  data.push({ name: inp.value.trim(), cards: [] });
+  const statSel = $('#fc-new-deck-stat');
+  data.push({ name: inp.value.trim(), cards: [], statTag: statSel ? statSel.value : 'LOG' });
   saveFCData(data);
   inp.value = '';
   $('#fc-new-deck-row').style.display = 'none';
@@ -1805,6 +2031,7 @@ $$('.fc-btn[data-q]').forEach(btn => {
       sm2Review(realCard, q);
       saveFCData(data);
       addXP(5, 'Card Reviewed');
+      addRPGStat((data[currentDeckIndex] && data[currentDeckIndex].statTag) || 'LOG', 2);
     }
     showNextCard();
   });
@@ -2449,7 +2676,7 @@ $('#search-clear').addEventListener('click', () => { $('#search-input').value = 
 // ══════════════════════════════════════════════
 $('#export-btn').addEventListener('click', () => {
   const data = {
-    trackers, lang, habits, quickLog, focusLog, topicState, userXP, pomoData,
+    trackers, lang, habits, quickLog, focusLog, topicState, userXP, pomoData, partyState, rpgStats,
     fc: loadFCData(), cl: JSON.parse(localStorage.getItem('cl-data')), tt: loadTTData(),
     streak: JSON.parse(localStorage.getItem('streak-data'))
   };
@@ -2473,12 +2700,26 @@ $('#import-file').addEventListener('change', (e) => {
       if(d.topicState) topicState = d.topicState;
       if(d.userXP) userXP = d.userXP;
       if(d.pomoData) pomoData = d.pomoData;
+      if(d.partyState) {
+        partyState = d.partyState;
+        if (!partyState.members) partyState.members = {};
+        PARTY_MEMBERS.forEach(def => {
+          if (!partyState.members[def.id]) partyState.members[def.id] = { level: 1, xp: 0 };
+        });
+        if (!partyState.active) partyState.active = 'arinor';
+      }
+      if(d.rpgStats) {
+        rpgStats = d.rpgStats;
+        Object.keys(STATS).forEach(k => { if (typeof rpgStats[k] !== 'number') rpgStats[k] = 0; });
+      }
       save();
       if(d.fc) saveFCData(d.fc);
       if(d.cl) localStorage.setItem('cl-data', JSON.stringify(d.cl));
       if(d.tt) localStorage.setItem('tt-data', JSON.stringify(d.tt));
       if(d.streak) localStorage.setItem('streak-data', JSON.stringify(d.streak));
       localStorage.setItem('user-xp', JSON.stringify(userXP));
+      saveParty();
+      saveRPGStats();
       
       applyLang();
       initPomo();
@@ -2631,6 +2872,8 @@ renderQuickLog();
 renderTrackers();
 renderTopics();
 renderFCDecks();
+renderParty();
+renderRPGStats();
 setTimeout(checkDeadlines, 5000);
 
 </script>
