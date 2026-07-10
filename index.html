@@ -402,7 +402,7 @@
     #ios-hint .ios-close { display: block; margin-top: 0.5rem; color: var(--accent); cursor: pointer; font-size: 0.78rem; }
     #ios-hint button { background: var(--accent); color: #fff; border: none; border-radius: 8px; padding: 0.4rem 0.9rem; margin-top: 0.5rem; font-size: 0.78rem; cursor: pointer; }
 
-    /* ════ TAG / CATEGORY UI ════ */
+    /* ════ SIGN / CATEGORY UI ════ */
     .tag-chip { display: inline-flex; align-items: center; gap: 4px; font-size: 0.65rem; padding: 2px 8px; border-radius: 99px; background: var(--surface2); border: 1px solid var(--border); color: var(--muted); cursor: pointer; user-select: none; }
     .tag-chip.active { background: var(--accent-light); border-color: var(--accent); color: var(--accent); }
     .tag-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 0.5rem; align-items: center; }
@@ -466,7 +466,7 @@
     .habit-check-btn.done { background: var(--easy); border-color: var(--easy); }
     .habit-check-btn.done::after { content: '✓'; color: #fff; font-weight: 700; }
     .habit-week { display: flex; gap: 3px; margin-top: 8px; }
-    .habit-week-day { flex: 1; text-align: center; font-size: 0.6rem; color: var(--muted); }
+    .habit-week-day { flex: 1; text-align: center; font-size: 0.6.rem; color: var(--muted); }
     .habit-week-cell { width: 100%; aspect-ratio: 1; border-radius: 4px; background: var(--surface); border: 1px solid var(--border); margin-bottom: 2px; transition: background 0.2s; }
     .habit-week-cell.done { background: var(--easy); border-color: var(--easy); }
     .habit-del-btn { background: none; border: none; color: var(--muted); font-size: 0.9rem; cursor: pointer; padding: 2px 6px; border-radius: 6px; }
@@ -983,6 +983,7 @@ function save() {
   localStorage.setItem('habits-data', JSON.stringify(habits));
   localStorage.setItem('quick-log', JSON.stringify(quickLog));
   localStorage.setItem('focus-log', JSON.stringify(focusLog));
+  localStorage.setItem('pomo-data', JSON.stringify(pomoData));
 }
 
 function t(key) { return (T[lang] || T.en)[key] || key; }
@@ -1060,6 +1061,110 @@ function addXP(amount, reason) {
   
   renderDashboard();
 }
+
+// ══════════════════════════════════════════════
+//  POMODORO / FOCUS TIMER LOGIC
+// ══════════════════════════════════════════════
+let pomoTimer = null;
+let pomoEndTime = null;
+let pomoRemaining = pomoData.work * 60;
+let isPomoRunning = false;
+let isWorkSession = true;
+
+const pomoDisplay = $('#pomo-display');
+const pomoStatus = $('#pomo-status');
+const pomoStartBtn = $('#pomo-start');
+const pomoResetBtn = $('#pomo-reset');
+
+function updatePomoDisplay(seconds) {
+  const m = Math.floor(seconds / 60).toString().padStart(2, '0');
+  const s = (seconds % 60).toString().padStart(2, '0');
+  pomoDisplay.textContent = `${m}:${s}`;
+}
+
+function initPomo() {
+  pomoData.work = parseInt($('#pomo-work-in').value) || 45;
+  pomoData.break = parseInt($('#pomo-break-in').value) || 10;
+  pomoRemaining = (isWorkSession ? pomoData.work : pomoData.break) * 60;
+  updatePomoDisplay(pomoRemaining);
+  pomoStatus.textContent = isWorkSession ? "Ready to Study" : "Ready for Break";
+  pomoStatus.style.color = isWorkSession ? "var(--accent)" : "var(--easy)";
+}
+
+$('#pomo-settings-toggle').addEventListener('click', (e) => {
+  e.stopPropagation();
+  $('#pomo-settings').classList.toggle('open');
+});
+
+$('#pomo-head').addEventListener('click', () => {
+  $('#pomo-toggle').classList.toggle('open');
+  $('#pomo-body').classList.toggle('open');
+});
+
+$('#pomo-work-in').addEventListener('change', () => { if(!isPomoRunning) initPomo(); save(); });
+$('#pomo-break-in').addEventListener('change', () => { if(!isPomoRunning) initPomo(); save(); });
+$('#pomo-quiet-start').addEventListener('change', (e) => { pomoData.quietStart = e.target.value; save(); });
+$('#pomo-quiet-end').addEventListener('change', (e) => { pomoData.quietEnd = e.target.value; save(); });
+
+function pomoTick() {
+  if (!isPomoRunning) return;
+  
+  const now = Date.now();
+  pomoRemaining = Math.round((pomoEndTime - now) / 1000);
+
+  if (pomoRemaining <= 0) {
+    clearInterval(pomoTimer);
+    isPomoRunning = false;
+    pomoStartBtn.textContent = 'Start';
+    
+    if (isWorkSession) {
+      const today = todayStr();
+      focusLog[today] = (focusLog[today] || 0) + pomoData.work;
+      save();
+      renderDashboard();
+      addXP(pomoData.work * 2, 'Focus Session');
+      sendNotification('Focus Complete! 🎯', { body: `Great job! Time for a ${pomoData.break}-minute break.` });
+      toast('Focus session complete!');
+    } else {
+      sendNotification('Break Over! 📚', { body: 'Ready to focus again?' });
+      toast('Break is over!');
+    }
+    
+    isWorkSession = !isWorkSession;
+    initPomo();
+  } else {
+    updatePomoDisplay(pomoRemaining);
+  }
+}
+
+pomoStartBtn.addEventListener('click', () => {
+  if (isPomoRunning) {
+    clearInterval(pomoTimer);
+    isPomoRunning = false;
+    pomoStartBtn.textContent = 'Resume';
+    pomoStatus.textContent = "Paused";
+  } else {
+    pomoEndTime = Date.now() + (pomoRemaining * 1000);
+    isPomoRunning = true;
+    pomoStartBtn.textContent = 'Pause';
+    pomoStatus.textContent = isWorkSession ? "Focusing..." : "Taking a Break...";
+    pomoTimer = setInterval(pomoTick, 1000);
+  }
+});
+
+pomoResetBtn.addEventListener('click', () => {
+  clearInterval(pomoTimer);
+  isPomoRunning = false;
+  isWorkSession = true;
+  pomoStartBtn.textContent = 'Start';
+  initPomo();
+});
+
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible' && isPomoRunning) {
+    pomoTick();
+  }
+});
 
 // ══════════════════════════════════════════════
 //  TRACKERS SYSTEM
@@ -1415,6 +1520,11 @@ $('#tt-add-btn').addEventListener('click', () => {
   renderTimeTable();
 });
 
+$('#tt-head').addEventListener('click', () => {
+  $('#tt-toggle').classList.toggle('open');
+  $('#tt-body').classList.toggle('open');
+});
+
 // ══════════════════════════════════════════════
 //  DAILY CHECKLIST LOGIC
 // ══════════════════════════════════════════════
@@ -1520,6 +1630,11 @@ function renderHeatmap() {
   }
 }
 setTimeout(renderHeatmap, 100);
+
+$('#streak-head').addEventListener('click', () => {
+  $('#streak-toggle').classList.toggle('open');
+  $('#streak-body').classList.toggle('open');
+});
 
 // ══════════════════════════════════════════════
 //  FLASHCARD LOGIC (SM-2 spaced repetition)
@@ -1864,7 +1979,6 @@ function renderQuickLogChart() {
   const sleepVals = days.map(d => (quickLog.sleep && quickLog.sleep[d.ds]) || 0);
   const maxW = 8, maxS = 12;
 
-  const cs = getComputedStyle(document.documentElement);
   const waterC = '#3b9eff';
   const sleepC = '#ab47bc';
 
@@ -2331,6 +2445,89 @@ $('#search-input').addEventListener('input', performSearch);
 $('#search-clear').addEventListener('click', () => { $('#search-input').value = ''; performSearch(); });
 
 // ══════════════════════════════════════════════
+//  BACKUP, EXPORT & THEMES
+// ══════════════════════════════════════════════
+$('#export-btn').addEventListener('click', () => {
+  const data = {
+    trackers, lang, habits, quickLog, focusLog, topicState, userXP, pomoData,
+    fc: loadFCData(), cl: JSON.parse(localStorage.getItem('cl-data')), tt: loadTTData(),
+    streak: JSON.parse(localStorage.getItem('streak-data'))
+  };
+  const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
+  const a = document.createElement('a'); a.download = 'date-progress-backup.json'; a.href = URL.createObjectURL(blob); a.click();
+  toast('💾 Backup downloaded!');
+});
+
+$('#import-btn').addEventListener('click', () => $('#import-file').click());
+$('#import-file').addEventListener('change', (e) => {
+  const file = e.target.files[0]; if(!file) return;
+  const r = new FileReader();
+  r.onload = function(evt) {
+    try {
+      const d = JSON.parse(evt.target.result);
+      if(d.trackers) trackers = d.trackers;
+      if(d.lang) lang = d.lang;
+      if(d.habits) habits = d.habits;
+      if(d.quickLog) quickLog = d.quickLog;
+      if(d.focusLog) focusLog = d.focusLog;
+      if(d.topicState) topicState = d.topicState;
+      if(d.userXP) userXP = d.userXP;
+      if(d.pomoData) pomoData = d.pomoData;
+      save();
+      if(d.fc) saveFCData(d.fc);
+      if(d.cl) localStorage.setItem('cl-data', JSON.stringify(d.cl));
+      if(d.tt) localStorage.setItem('tt-data', JSON.stringify(d.tt));
+      if(d.streak) localStorage.setItem('streak-data', JSON.stringify(d.streak));
+      localStorage.setItem('user-xp', JSON.stringify(userXP));
+      
+      applyLang();
+      initPomo();
+      renderAll();
+      renderDashboard();
+      renderLevelUI();
+      renderHeatmap();
+      toast('📂 Data restored successfully!');
+    } catch(err) { toast('❌ Invalid backup file'); }
+  };
+  r.readAsText(file);
+});
+
+const THEMES = ['dark', 'light', 'midnight', 'forest', 'rose'];
+$('#theme-cycle-btn').addEventListener('click', () => {
+  let curr = document.documentElement.getAttribute('data-theme') || 'dark';
+  let idx = (THEMES.indexOf(curr) + 1) % THEMES.length;
+  let next = THEMES[idx];
+  document.documentElement.setAttribute('data-theme', next);
+  localStorage.setItem('dp-theme', next);
+  
+  const metaColor = { 'dark': '#0f0f14', 'light': '#f4f3fb', 'midnight': '#0b0f19', 'forest': '#0f1712', 'rose': '#1f1316' }[next];
+  $('#theme-meta').setAttribute('content', metaColor);
+  
+  renderDashboard();
+  renderQuickLogChart();
+  toast(`🎨 Theme: ${next}`);
+});
+const savedTheme = localStorage.getItem('dp-theme');
+if (savedTheme) {
+  document.documentElement.setAttribute('data-theme', savedTheme);
+  const metaColor = { 'dark': '#0f0f14', 'light': '#f4f3fb', 'midnight': '#0b0f19', 'forest': '#0f1712', 'rose': '#1f1316' }[savedTheme];
+  $('#theme-meta').setAttribute('content', metaColor);
+}
+
+$('#lang-select').addEventListener('change', (e) => {
+  lang = e.target.value;
+  save();
+  applyLang();
+  renderTrackers();
+});
+
+function applyLang() {
+  $('#lang-select').value = lang;
+  $('#app-title').textContent = '📅 ' + t('title');
+  $('#add-label').textContent = t('addTracker');
+}
+
+// ══════════════════════════════════════════════
 //  NOTIFICATIONS SYSTEM
 // ══════════════════════════════════════════════
 let notifPermission = 'default';
@@ -2427,6 +2624,7 @@ $('#close-ios').addEventListener('click', () => { $('#ios-hint').classList.remov
 //  RUN PIPELINE RUNTIME
 // ══════════════════════════════════════════════
 applyLang();
+initPomo();
 renderDashboard();
 renderHabits();
 renderQuickLog();
